@@ -246,7 +246,6 @@
       <iframe 
         class="banner-iframe"
         src="https://my.spline.design/nexbotrobotcharacterconcept-Zb5s4qJ7pgx5xVCSjat7oEDO/"
-        frameborder="0"
         allow="fullscreen"
         loading="eager"
       ></iframe>
@@ -301,16 +300,9 @@
     startButton.addEventListener('click', hideBannerAndShowContent);
     bannerTitle.addEventListener('click', hideBannerAndShowContent);
     
-    // Keyboard support for Enter key on button
-    startButton.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        hideBannerAndShowContent(e);
-      }
-    });
-    
-    // Keyboard support for Enter key on title
+    // Keyboard support for Enter and Space keys on title (anchor element)
     bannerTitle.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' || e.key === ' ') {
         hideBannerAndShowContent(e);
       }
     });
