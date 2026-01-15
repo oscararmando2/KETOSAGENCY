@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ketos Agency | Marketing que Conquista</title>
+  <meta name="description" content="Agencia de marketing digital en México. Estrategias, creatividad y resultados reales para tu marca."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff6b35;    /* naranja vibrante */
+      --dark: #0f0f1a;
+      --gray: #1e1e2e;
+      --light: #e0e0ff;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--dark);
+      color: var(--light);
+      line-height: 1.6;
+    }
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(15,15,26,0.9);
+      backdrop-filter: blur(10px);
+      padding: 1.2rem 5%;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+    nav a { color: white; text-decoration: none; margin-left: 2rem; font-weight: 500; }
+    nav a:hover { color: var(--primary); }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1e1e2e 100%);
+      padding: 0 5%;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, #ff6b35, #ff8c5e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p { font-size: 1.4rem; max-width: 700px; margin-bottom: 2.5rem; opacity: 0.9; }
+    .cta {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 2.5rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .cta:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(255,107,53,0.4); }
+
+    @media (max-width: 768px) {
+      nav { display: none; } /* después agregamos hamburguesa */
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Ketos Agency</div>
+    <nav>
+      <a href="#servicios">Servicios</a>
+      <a href="#about">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Impulsamos marcas<br>que conquistan</h1>
+    <p>Estrategias digitales creativas y efectivas que generan leads, ventas y reconocimiento real. México y más allá.</p>
+    <button class="cta">Hablemos de tu crecimiento →</button>
+  </section>
+
+  <!-- Aquí irán después las secciones de servicios, about, etc. -->
+
+</body>
+</html>
