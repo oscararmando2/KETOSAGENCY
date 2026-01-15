@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.28/build/spline-viewer.js" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
   <style>
     :root {
       --primary: #ff6b35;    /* naranja vibrante */
@@ -22,6 +21,7 @@
       background: var(--dark);
       color: var(--light);
       line-height: 1.6;
+      overflow-x: hidden;
     }
     header {
       position: fixed;
@@ -38,6 +38,128 @@
     nav a { color: white; text-decoration: none; margin-left: 2rem; font-weight: 500; }
     nav a:hover { color: var(--primary); }
 
+    /* Interactive Banner Hero */
+    #introBanner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 5% 60px;
+      background: var(--dark);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    #introBanner.intro-hidden {
+      opacity: 0;
+      transform: translateY(-30px);
+      pointer-events: none;
+    }
+    
+    .banner-container {
+      position: relative;
+      width: 100%;
+      max-width: 1400px;
+      height: clamp(420px, 55vw, 720px);
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(30, 30, 46, 0.8);
+    }
+    
+    .banner-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+    
+    /* Glassmorphism Overlay */
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      pointer-events: none;
+      z-index: 10;
+    }
+    
+    .overlay-content {
+      background: rgba(15, 15, 26, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2.5rem 3rem;
+      text-align: center;
+      pointer-events: auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .banner-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      background: linear-gradient(90deg, #ff6b35, #ff8c5e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    
+    .banner-title:hover {
+      transform: scale(1.05);
+    }
+    
+    .start-button {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 2.5rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .start-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5);
+    }
+    
+    .start-button:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 4px;
+    }
+    
+    /* Site Content */
+    #siteContent {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+      pointer-events: none;
+    }
+    
+    #siteContent.content-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    
     .hero {
       min-height: 100vh;
       display: flex;
@@ -57,36 +179,6 @@
     }
     .hero p { font-size: 1.4rem; max-width: 700px; margin-bottom: 2.5rem; opacity: 0.9; }
     
-    /* Spline Viewer Container */
-    .spline-container {
-      width: 100%;
-      max-width: 1200px;
-      height: clamp(320px, 55vw, 650px);
-      margin: 3rem 0;
-      border-radius: 24px;
-      overflow: hidden;
-      position: relative;
-      background: rgba(30, 30, 46, 0.5);
-    }
-    
-    /* Fallback placeholder for loading state */
-    .spline-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(255,140,94,0.05) 100%);
-      z-index: -1;
-    }
-    
-    spline-viewer {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-    
     .cta {
       background: var(--primary);
       color: white;
@@ -100,8 +192,40 @@
     }
     .cta:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(255,107,53,0.4); }
 
+    /* Tablet */
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .banner-container {
+        height: 520px;
+      }
+    }
+
+    /* Mobile */
     @media (max-width: 768px) {
-      nav { display: none; } /* después agregamos hamburguesa */
+      nav { display: none; }
+      
+      #introBanner {
+        padding: 80px 4% 40px;
+      }
+      
+      .banner-container {
+        height: 380px;
+        border-radius: 16px;
+      }
+      
+      .overlay-content {
+        padding: 1.5rem 2rem;
+        border-radius: 16px;
+      }
+      
+      .banner-title {
+        font-size: clamp(2rem, 8vw, 2.8rem);
+        margin-bottom: 0.8rem;
+      }
+      
+      .start-button {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
@@ -116,26 +240,72 @@
     </nav>
   </header>
 
-  <section class="hero">
-    <h1>Impulsamos marcas<br>que conquistan</h1>
-    <p>Estrategias digitales creativas y efectivas que generan leads, ventas y reconocimiento real. México y más allá.</p>
-    <div class="spline-container">
-      <spline-viewer url="https://prod.spline.design/Zb5s4qJ7pgx5xVCS/scene.splinecode" loading="lazy"></spline-viewer>
+  <!-- Interactive Banner Hero -->
+  <div id="introBanner">
+    <div class="banner-container">
+      <iframe 
+        class="banner-iframe"
+        src="https://my.spline.design/nexbotrobotcharacterconcept-Zb5s4qJ7pgx5xVCSjat7oEDO/"
+        allow="fullscreen"
+        loading="eager"
+      ></iframe>
+      
+      <div class="banner-overlay">
+        <div class="overlay-content">
+          <a href="javascript:void(0)" class="banner-title" id="bannerTitle" aria-label="Ir al contenido principal">KETOS</a>
+          <button 
+            class="start-button" 
+            id="startButton"
+            aria-label="Comenzar - Ocultar banner y ver contenido"
+          >
+            Comenzar
+          </button>
+        </div>
+      </div>
     </div>
-    <button class="cta">Hablemos de tu crecimiento →</button>
-  </section>
+  </div>
 
-  <!-- Aquí irán después las secciones de servicios, about, etc. -->
+  <!-- Site Content -->
+  <main id="siteContent">
+    <section class="hero">
+      <h1>Impulsamos marcas<br>que conquistan</h1>
+      <p>Estrategias digitales creativas y efectivas que generan leads, ventas y reconocimiento real. México y más allá.</p>
+      <button class="cta">Hablemos de tu crecimiento →</button>
+    </section>
+
+    <!-- Aquí irán después las secciones de servicios, about, etc. -->
+  </main>
 
   <script>
-    // Error handling for Spline viewer
-    const splineViewer = document.querySelector('spline-viewer');
-    if (splineViewer) {
-      splineViewer.addEventListener('error', (e) => {
-        console.warn('Spline viewer failed to load:', e);
-        // Fallback is already handled by CSS background
-      });
+    // Interactive Banner Functionality
+    const introBanner = document.getElementById('introBanner');
+    const siteContent = document.getElementById('siteContent');
+    const startButton = document.getElementById('startButton');
+    const bannerTitle = document.getElementById('bannerTitle');
+    
+    function hideBannerAndShowContent(e) {
+      e.preventDefault();
+      
+      // Hide banner with transition
+      introBanner.classList.add('intro-hidden');
+      
+      // Show content with transition
+      siteContent.classList.add('content-visible');
+      
+      // Ensure body scroll is enabled
+      document.body.style.overflow = 'auto';
     }
+    
+    // Click handlers
+    startButton.addEventListener('click', hideBannerAndShowContent);
+    bannerTitle.addEventListener('click', hideBannerAndShowContent);
+    
+    // Keyboard support for Enter and Space keys on title (anchor element)
+    bannerTitle.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        hideBannerAndShowContent(e);
+      }
+    });
   </script>
 
 </body>
