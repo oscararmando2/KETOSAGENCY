@@ -127,5 +127,16 @@
 
   <!-- Aquí irán después las secciones de servicios, about, etc. -->
 
+  <script>
+    // Error handling for Spline viewer
+    const splineViewer = document.querySelector('spline-viewer');
+    if (splineViewer) {
+      splineViewer.addEventListener('error', (e) => {
+        console.warn('Spline viewer failed to load:', e);
+        // Fallback is already handled by CSS background
+      });
+    }
+  </script>
+
 </body>
 </html>
