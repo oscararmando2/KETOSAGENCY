@@ -16,7 +16,7 @@
       --light: #e0e0ff;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
-    body {
+    html, body {
       font-family: 'Poppins', sans-serif;
       background: var(--dark);
       color: var(--light);
@@ -24,7 +24,10 @@
       overflow-x: hidden;
     }
     
+    html.intro-active,
     body.intro-active {
+      margin: 0;
+      padding: 0;
       overflow: hidden;
     }
     
@@ -214,15 +217,21 @@
     @media (max-width: 768px) {
       nav { display: none; }
       
-      /* Mobile intro should be full screen */
+      /* Mobile intro must be REAL fullscreen */
       #introBanner {
+        width: 100vw;
+        height: 100vh; /* Fallback for all browsers */
+        height: 100svh; /* Small viewport height fallback */
+        height: 100dvh; /* Dynamic viewport height for mobile (preferred) */
         padding: 0;
         margin: 0;
       }
       
       .banner-container {
-        height: 100vh;
         width: 100%;
+        height: 100%;
+        /* Remove all height constraints */
+        max-height: none;
         min-height: 0;
         border-radius: 0;
         margin: 0;
@@ -308,10 +317,12 @@
       // Skip intro, show content immediately
       introBanner.classList.add('intro-hidden');
       siteContent.classList.add('content-visible');
+      document.documentElement.classList.remove('intro-active');
       document.body.classList.remove('intro-active');
       header.classList.remove('header-hidden');
     } else {
       // Intro is visible, hide header and block scroll
+      document.documentElement.classList.add('intro-active');
       document.body.classList.add('intro-active');
       header.classList.add('header-hidden');
     }
@@ -328,7 +339,8 @@
       // Show content with transition
       siteContent.classList.add('content-visible');
       
-      // Enable body scroll
+      // Enable body scroll and remove html/body overrides
+      document.documentElement.classList.remove('intro-active');
       document.body.classList.remove('intro-active');
       
       // Show header with smooth animation
