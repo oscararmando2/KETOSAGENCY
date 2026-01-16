@@ -23,6 +23,11 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
+    
+    body.intro-active {
+      overflow: hidden;
+    }
+    
     header {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -33,6 +38,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    header.header-hidden {
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
     }
     .logo { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
     nav a { color: white; text-decoration: none; margin-left: 2rem; font-weight: 500; }
@@ -200,10 +214,18 @@
     @media (max-width: 768px) {
       nav { display: none; }
       
+      /* Mobile intro should be full screen */
+      #introBanner {
+        padding: 0;
+        margin: 0;
+      }
+      
       .banner-container {
-        height: 78vh;
-        min-height: 420px;
-        border-radius: 16px;
+        height: 100vh;
+        width: 100%;
+        min-height: 0;
+        border-radius: 0;
+        margin: 0;
       }
       
       /* Center overlay at bottom on mobile */
@@ -277,6 +299,7 @@
     const siteContent = document.getElementById('siteContent');
     const startButton = document.getElementById('startButton');
     const bannerTitle = document.getElementById('bannerTitle');
+    const header = document.querySelector('header');
     
     // Check if user has already seen the intro
     const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
@@ -285,7 +308,12 @@
       // Skip intro, show content immediately
       introBanner.classList.add('intro-hidden');
       siteContent.classList.add('content-visible');
-      document.body.style.overflow = 'auto';
+      document.body.classList.remove('intro-active');
+      header.classList.remove('header-hidden');
+    } else {
+      // Intro is visible, hide header and block scroll
+      document.body.classList.add('intro-active');
+      header.classList.add('header-hidden');
     }
     
     function hideBannerAndShowContent(e) {
@@ -300,8 +328,11 @@
       // Show content with transition
       siteContent.classList.add('content-visible');
       
-      // Ensure body scroll is enabled
-      document.body.style.overflow = 'auto';
+      // Enable body scroll
+      document.body.classList.remove('intro-active');
+      
+      // Show header with smooth animation
+      header.classList.remove('header-hidden');
     }
     
     // Click handlers
