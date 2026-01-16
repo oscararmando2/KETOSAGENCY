@@ -306,7 +306,9 @@
     // Cache-busting for Spline iframe
     const splineUrl = 'https://my.spline.design/nexbotrobotcharacterconcept-Zb5s4qJ7pgx5xVCSjat7oEDO/';
     const splineIframe = document.getElementById('splineIframe');
-    splineIframe.src = splineUrl + '?v=' + Date.now();
+    if (splineIframe) {
+      splineIframe.src = splineUrl + '?v=' + Date.now();
+    }
     
     // Premium Spline Hero Intro Functionality
     const introBanner = document.getElementById('introBanner');
