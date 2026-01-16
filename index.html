@@ -273,7 +273,7 @@
     <div class="banner-container">
       <iframe 
         class="banner-iframe"
-        src="https://my.spline.design/nexbotrobotcharacterconcept-Zb5s4qJ7pgx5xVCSjat7oEDO/"
+        id="splineIframe"
         allow="fullscreen"
         loading="eager"
       ></iframe>
@@ -303,6 +303,11 @@
   </main>
 
   <script>
+    // Cache-busting for Spline iframe
+    const splineUrl = 'https://my.spline.design/nexbotrobotcharacterconcept-Zb5s4qJ7pgx5xVCSjat7oEDO/';
+    const splineIframe = document.getElementById('splineIframe');
+    splineIframe.src = splineUrl + '?v=' + Date.now();
+    
     // Premium Spline Hero Intro Functionality
     const introBanner = document.getElementById('introBanner');
     const siteContent = document.getElementById('siteContent');
