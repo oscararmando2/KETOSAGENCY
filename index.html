@@ -220,8 +220,9 @@
       /* Mobile intro must be REAL fullscreen */
       #introBanner {
         width: 100vw;
-        height: 100svh; /* Fallback for older browsers */
-        height: 100dvh; /* Dynamic viewport height for mobile */
+        height: 100vh; /* Fallback for all browsers */
+        height: 100svh; /* Small viewport height fallback */
+        height: 100dvh; /* Dynamic viewport height for mobile (preferred) */
         padding: 0;
         margin: 0;
       }
@@ -231,7 +232,7 @@
         height: 100%;
         /* Remove all height constraints */
         max-height: none;
-        min-height: unset;
+        min-height: 0;
         border-radius: 0;
         margin: 0;
       }
