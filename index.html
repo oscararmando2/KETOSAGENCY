@@ -213,6 +213,62 @@
     }
     .cta:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(255,107,53,0.4); }
 
+    /* Section 2: Qué hacemos diferente */
+    .what-we-do {
+      padding: 100px 5% 80px;
+      background: var(--gray);
+      text-align: center;
+    }
+    .what-we-do h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 1.5rem;
+      color: white;
+      font-weight: 700;
+    }
+    .what-we-do > p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto 4rem;
+      opacity: 0.9;
+      line-height: 1.8;
+    }
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 107, 53, 0.3);
+      box-shadow: 0 10px 40px rgba(255, 107, 53, 0.15);
+    }
+    .card-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: white;
+      font-weight: 600;
+    }
+    .card p {
+      font-size: 1rem;
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+
     /* Mobile */
     @media (max-width: 768px) {
       nav { display: none; }
@@ -253,6 +309,26 @@
       .start-button {
         padding: 0.65rem 1.5rem;
         font-size: 0.95rem;
+      }
+      
+      /* Section 2 mobile adjustments */
+      .what-we-do {
+        padding: 60px 5% 50px;
+      }
+      .what-we-do h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
+      .what-we-do > p {
+        font-size: 1rem;
+        margin-bottom: 3rem;
+      }
+      .cards-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .card {
+        padding: 2rem 1.5rem;
       }
     }
   </style>
@@ -297,6 +373,32 @@
       <h1>Impulsamos marcas<br>que conquistan</h1>
       <p>Estrategias digitales creativas y efectivas que generan leads, ventas y reconocimiento real. México y más allá.</p>
       <button class="cta">Hablemos de tu crecimiento →</button>
+    </section>
+
+    <!-- SECCIÓN 2: Qué hacemos diferente -->
+    <section class="what-we-do">
+      <h2>Marketing, tecnología e inteligencia artificial trabajando juntos.</h2>
+      <p>No hacemos campañas aisladas.<br>Diseñamos sistemas digitales que atraen, convierten y escalan marcas.</p>
+      
+      <div class="cards-container">
+        <div class="card">
+          <span class="card-icon">📈</span>
+          <h3>Estrategia</h3>
+          <p>Análisis profundo y planificación estratégica para maximizar resultados.</p>
+        </div>
+        
+        <div class="card">
+          <span class="card-icon">🧠</span>
+          <h3>IA & Automatización</h3>
+          <p>Tecnología de vanguardia para optimizar procesos y escalar eficientemente.</p>
+        </div>
+        
+        <div class="card">
+          <span class="card-icon">🎨</span>
+          <h3>Creatividad con propósito</h3>
+          <p>Diseño y contenido que conecta emocionalmente y genera acción.</p>
+        </div>
+      </div>
     </section>
 
     <!-- Aquí irán después las secciones de servicios, about, etc. -->
