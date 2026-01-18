@@ -641,7 +641,7 @@
       header.classList.remove('header-hidden');
       
       // Initialize loader after enabling scroll
-      window.initKetosLoader && window.initKetosLoader();
+      window.initKetosLoader?.();
     }
     
     // Click handlers
@@ -731,6 +731,11 @@
           requestAnimationFrame(() => {
             section2.classList.add('is-clear');
           });
+          
+          // Remove dissolve classes after transition completes
+          setTimeout(() => {
+            section2.classList.remove('section-dissolve', 'is-clear');
+          }, 600); // 500ms transition + 100ms buffer
         }
         
         // After show duration, start hiding
@@ -821,12 +826,15 @@
         console.log('[Loader] Observer setup complete for', CONFIG.SENTINEL_SELECTOR);
       }
       
+      // Track initialization state
+      let isInitialized = false;
+      
       /**
        * Initialize the loader system
        */
       function init() {
         // Prevent multiple initializations
-        if (loaderOverlay) {
+        if (isInitialized) {
           console.warn('[Loader] Already initialized.');
           return;
         }
@@ -852,6 +860,7 @@
         // Setup intersection observer
         setupObserver();
         
+        isInitialized = true;
         console.log('[Loader] init OK');
       }
       
