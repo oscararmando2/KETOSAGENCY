@@ -637,7 +637,6 @@
         SHOW_DURATION: 250, // ms to show loader before hiding
         MIN_FADE_OUT: 450, // ms for fast scroll
         MAX_FADE_OUT: 900, // ms for slow scroll
-        SPEED_SAMPLE_INTERVAL: 16, // ms between speed samples (~60fps)
         SPEED_THRESHOLD_SLOW: 100, // px/sec - below this is "slow"
         SPEED_THRESHOLD_FAST: 800, // px/sec - above this is "fast"
       };
@@ -673,7 +672,7 @@
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           });
           
-          // Start RAF loop for Lenis
+          // Start RAF loop for Lenis (runs continuously for smooth scrolling throughout the site)
           function raf(time) {
             lenis.raf(time);
             requestAnimationFrame(raf);
