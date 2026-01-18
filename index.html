@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lenis Smooth Scroll CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  
   <style>
     :root {
       --primary: #ff6b35;    /* naranja vibrante */
@@ -331,6 +335,141 @@
         padding: 2rem 1.5rem;
       }
     }
+
+    /* ========================================
+       PREMIUM SCROLL-TRIGGERED LOADER
+       ======================================== */
+    
+    /* Loader Overlay - Full Screen Fixed */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 12, 20, 0.25);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      pointer-events: none;
+      z-index: 9999;
+      
+      /* Initial hidden state */
+      opacity: 0;
+      visibility: hidden;
+      filter: blur(12px);
+      transform: translateY(10px) scale(1.02);
+    }
+    
+    /* Visible state */
+    .loader-overlay.is-visible {
+      opacity: 1;
+      visibility: visible;
+      filter: blur(0);
+      transform: translateY(0) scale(1);
+      transition: opacity 220ms ease, 
+                  filter 220ms ease, 
+                  transform 220ms ease, 
+                  visibility 0ms;
+    }
+    
+    /* Hiding state with dynamic fade-out duration */
+    .loader-overlay.is-hiding {
+      opacity: 0;
+      filter: blur(14px);
+      transform: translateY(-10px) scale(0.98);
+      transition: opacity var(--fadeOutMs) cubic-bezier(.2,.8,.2,1),
+                  filter var(--fadeOutMs) cubic-bezier(.2,.8,.2,1),
+                  transform var(--fadeOutMs) cubic-bezier(.2,.8,.2,1);
+    }
+    
+    /* Loader Animation */
+    .loader {
+      --uib-size: 2.8rem;
+      --uib-speed: .9s;
+      --uib-color: #ff7a3d;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: var(--uib-size);
+      width: var(--uib-size);
+    }
+
+    .loaders {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100%;
+      width: 100%;
+    }
+
+    .loaders::before {
+      content: '';
+      height: 20%;
+      width: 20%;
+      border-radius: 50%;
+      background-color: var(--uib-color);
+      transform: scale(0);
+      opacity: 0.5;
+      animation: pulse0112 calc(var(--uib-speed) * 1.111) ease-in-out infinite;
+      box-shadow: 0 0 20px rgba(18, 31, 53, 0.3);
+    }
+
+    .loaders:nth-child(2) { transform: rotate(45deg); }
+    .loaders:nth-child(2)::before { animation-delay: calc(var(--uib-speed) * -0.875); }
+
+    .loaders:nth-child(3) { transform: rotate(90deg); }
+    .loaders:nth-child(3)::before { animation-delay: calc(var(--uib-speed) * -0.75); }
+
+    .loaders:nth-child(4) { transform: rotate(135deg); }
+    .loaders:nth-child(4)::before { animation-delay: calc(var(--uib-speed) * -0.625); }
+
+    .loaders:nth-child(5) { transform: rotate(180deg); }
+    .loaders:nth-child(5)::before { animation-delay: calc(var(--uib-speed) * -0.5); }
+
+    .loaders:nth-child(6) { transform: rotate(225deg); }
+    .loaders:nth-child(6)::before { animation-delay: calc(var(--uib-speed) * -0.375); }
+
+    .loaders:nth-child(7) { transform: rotate(270deg); }
+    .loaders:nth-child(7)::before { animation-delay: calc(var(--uib-speed) * -0.25); }
+
+    .loaders:nth-child(8) { transform: rotate(315deg); }
+    .loaders:nth-child(8)::before { animation-delay: calc(var(--uib-speed) * -0.125); }
+
+    @keyframes pulse0112 {
+      0%, 100% { transform: scale(0); opacity: 0.5; }
+      50% { transform: scale(1); opacity: 1; }
+    }
+    
+    /* Reduced Motion Support */
+    @media (prefers-reduced-motion: reduce) {
+      .loader-overlay {
+        filter: none !important;
+        transform: none !important;
+        transition: opacity 150ms ease !important;
+      }
+      
+      .loader-overlay.is-visible {
+        filter: none !important;
+        transform: none !important;
+        transition: opacity 150ms ease !important;
+      }
+      
+      .loader-overlay.is-hiding {
+        filter: none !important;
+        transform: none !important;
+        transition: opacity 150ms ease !important;
+      }
+      
+      .loaders::before {
+        animation: none !important;
+        transform: scale(1) !important;
+        opacity: 1 !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -376,7 +515,7 @@
     </section>
 
     <!-- SECCIÓN 2: Qué hacemos diferente -->
-    <section class="what-we-do">
+    <section id="section-2" class="what-we-do">
       <h2>Marketing, tecnología e inteligencia artificial trabajando juntos.</h2>
       <p>No hacemos campañas aisladas.<br>Diseñamos sistemas digitales que atraen, convierten y escalan marcas.</p>
       
@@ -403,6 +542,20 @@
 
     <!-- Aquí irán después las secciones de servicios, about, etc. -->
   </main>
+
+  <!-- Premium Scroll-Triggered Loader Overlay -->
+  <div class="loader-overlay" aria-hidden="true">
+    <div class="loader">
+      <div class="loaders"></div>
+      <div class="loaders"></div>
+      <div class="loaders"></div>
+      <div class="loaders"></div>
+      <div class="loaders"></div>
+      <div class="loaders"></div>
+      <div class="loaders"></div>
+      <div class="loaders"></div>
+    </div>
+  </div>
 
   <script>
     // Cache-busting for Spline iframe
@@ -466,6 +619,272 @@
         hideBannerAndShowContent(e);
       }
     });
+  </script>
+
+  <script>
+    // ========================================
+    // PREMIUM SCROLL-TRIGGERED LOADER WITH LENIS
+    // ========================================
+    
+    (function() {
+      'use strict';
+      
+      // Configuration
+      const CONFIG = {
+        SECTION_SELECTOR: '#section-2',
+        OBSERVER_THRESHOLD: 0.05,
+        OBSERVER_ROOT_MARGIN: '0px 0px -35% 0px',
+        SHOW_DURATION: 250, // ms to show loader before hiding
+        MIN_FADE_OUT: 450, // ms for fast scroll
+        MAX_FADE_OUT: 900, // ms for slow scroll
+        SPEED_SAMPLE_INTERVAL: 16, // ms between speed samples (~60fps)
+        SPEED_THRESHOLD_SLOW: 100, // px/sec - below this is "slow"
+        SPEED_THRESHOLD_FAST: 800, // px/sec - above this is "fast"
+      };
+      
+      // State
+      let hasTriggered = false;
+      let lenis = null;
+      let observer = null;
+      let loaderOverlay = null;
+      
+      // Speed measurement
+      let lastScrollY = 0;
+      let lastTimestamp = 0;
+      let scrollSpeed = 0; // px/sec
+      let rafId = null;
+      
+      /**
+       * Initialize Lenis smooth scroll if available
+       */
+      function initLenis() {
+        // Check if Lenis is available globally
+        if (typeof Lenis === 'undefined') {
+          console.warn('[Loader] Lenis not found. Proceeding without smooth scroll.');
+          return;
+        }
+        
+        try {
+          lenis = new Lenis({
+            smoothWheel: true,
+            smoothTouch: false,
+            lerp: 0.08,
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          });
+          
+          // Start RAF loop for Lenis
+          function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+          }
+          requestAnimationFrame(raf);
+          
+          console.log('[Loader] Lenis smooth scroll initialized.');
+        } catch (error) {
+          console.warn('[Loader] Lenis initialization failed:', error);
+        }
+      }
+      
+      /**
+       * Measure scroll speed using RAF
+       */
+      function measureScrollSpeed() {
+        const now = performance.now();
+        const currentScrollY = window.scrollY || window.pageYOffset;
+        
+        if (lastTimestamp > 0) {
+          const deltaTime = now - lastTimestamp; // ms
+          const deltaScroll = Math.abs(currentScrollY - lastScrollY); // px
+          
+          if (deltaTime > 0) {
+            // Convert to px/sec with smoothing
+            const instantSpeed = (deltaScroll / deltaTime) * 1000;
+            scrollSpeed = scrollSpeed * 0.7 + instantSpeed * 0.3; // smooth
+          }
+        }
+        
+        lastScrollY = currentScrollY;
+        lastTimestamp = now;
+      }
+      
+      /**
+       * Calculate fade-out duration based on scroll speed
+       */
+      function calculateFadeOutDuration() {
+        const { MIN_FADE_OUT, MAX_FADE_OUT, SPEED_THRESHOLD_SLOW, SPEED_THRESHOLD_FAST } = CONFIG;
+        
+        // Clamp speed to range
+        const clampedSpeed = Math.max(
+          SPEED_THRESHOLD_SLOW,
+          Math.min(SPEED_THRESHOLD_FAST, scrollSpeed)
+        );
+        
+        // Map speed inversely to duration (faster = shorter)
+        const speedRange = SPEED_THRESHOLD_FAST - SPEED_THRESHOLD_SLOW;
+        const normalizedSpeed = (clampedSpeed - SPEED_THRESHOLD_SLOW) / speedRange;
+        const duration = MAX_FADE_OUT - (normalizedSpeed * (MAX_FADE_OUT - MIN_FADE_OUT));
+        
+        return Math.round(duration);
+      }
+      
+      /**
+       * Show the loader overlay
+       */
+      function showLoader() {
+        if (!loaderOverlay) return;
+        
+        // Add visible class
+        loaderOverlay.classList.add('is-visible');
+        
+        // After show duration, start hiding
+        setTimeout(() => {
+          hideLoader();
+        }, CONFIG.SHOW_DURATION);
+      }
+      
+      /**
+       * Hide the loader overlay with speed-adaptive timing
+       */
+      function hideLoader() {
+        if (!loaderOverlay) return;
+        
+        // Calculate dynamic fade-out duration
+        const fadeOutMs = calculateFadeOutDuration();
+        
+        // Set CSS variable for dynamic transition
+        loaderOverlay.style.setProperty('--fadeOutMs', `${fadeOutMs}ms`);
+        
+        // Add hiding class
+        loaderOverlay.classList.add('is-hiding');
+        
+        // Listen for transition end to remove overlay
+        const handleTransitionEnd = (e) => {
+          if (e.propertyName === 'opacity') {
+            loaderOverlay.removeEventListener('transitionend', handleTransitionEnd);
+            
+            // Remove overlay from DOM
+            if (loaderOverlay.parentNode) {
+              loaderOverlay.parentNode.removeChild(loaderOverlay);
+            }
+            
+            // Stop RAF speed measurement
+            if (rafId) {
+              cancelAnimationFrame(rafId);
+              rafId = null;
+            }
+            
+            console.log('[Loader] Loader removed from DOM.');
+          }
+        };
+        
+        loaderOverlay.addEventListener('transitionend', handleTransitionEnd);
+        
+        // Fallback: force remove after max duration + buffer
+        setTimeout(() => {
+          if (loaderOverlay && loaderOverlay.parentNode) {
+            loaderOverlay.removeEventListener('transitionend', handleTransitionEnd);
+            loaderOverlay.parentNode.removeChild(loaderOverlay);
+            console.log('[Loader] Loader removed (fallback).');
+          }
+        }, fadeOutMs + 500);
+      }
+      
+      /**
+       * Handle Section 2 intersection
+       */
+      function handleIntersection(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasTriggered) {
+            hasTriggered = true;
+            
+            console.log('[Loader] Section 2 triggered. Speed:', scrollSpeed.toFixed(2), 'px/sec');
+            
+            // Show loader
+            showLoader();
+            
+            // Disconnect observer (one-time trigger)
+            if (observer) {
+              observer.disconnect();
+              observer = null;
+            }
+          }
+        });
+      }
+      
+      /**
+       * Setup IntersectionObserver for Section 2
+       */
+      function setupObserver() {
+        const section2 = document.querySelector(CONFIG.SECTION_SELECTOR);
+        
+        if (!section2) {
+          console.warn('[Loader] Section 2 not found:', CONFIG.SECTION_SELECTOR);
+          return;
+        }
+        
+        const options = {
+          root: null,
+          threshold: CONFIG.OBSERVER_THRESHOLD,
+          rootMargin: CONFIG.OBSERVER_ROOT_MARGIN,
+        };
+        
+        observer = new IntersectionObserver(handleIntersection, options);
+        observer.observe(section2);
+        
+        console.log('[Loader] Observer setup complete for', CONFIG.SECTION_SELECTOR);
+      }
+      
+      /**
+       * Start RAF loop for speed measurement
+       */
+      function startSpeedMeasurement() {
+        function measureLoop() {
+          measureScrollSpeed();
+          rafId = requestAnimationFrame(measureLoop);
+        }
+        rafId = requestAnimationFrame(measureLoop);
+      }
+      
+      /**
+       * Initialize the loader system
+       */
+      function init() {
+        // Check for reduced motion preference
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (prefersReducedMotion) {
+          console.log('[Loader] Reduced motion detected. Loader animations simplified.');
+        }
+        
+        // Get loader overlay element
+        loaderOverlay = document.querySelector('.loader-overlay');
+        
+        if (!loaderOverlay) {
+          console.warn('[Loader] Loader overlay element not found.');
+          return;
+        }
+        
+        // Initialize Lenis
+        initLenis();
+        
+        // Start speed measurement
+        startSpeedMeasurement();
+        
+        // Setup intersection observer
+        setupObserver();
+        
+        console.log('[Loader] Initialization complete.');
+      }
+      
+      // Initialize when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+      
+    })();
   </script>
 
 </body>
