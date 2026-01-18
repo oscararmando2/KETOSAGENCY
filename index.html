@@ -665,6 +665,7 @@
         MAX_FADE_OUT: 900, // ms for slow scroll
         SPEED_THRESHOLD_SLOW: 100, // px/sec - below this is "slow"
         SPEED_THRESHOLD_FAST: 800, // px/sec - above this is "fast"
+        SECTION2_DISSOLVE_DURATION: 600, // ms for Section 2 dissolve effect (500ms transition + 100ms buffer)
       };
       
       // State
@@ -775,7 +776,7 @@
           // Remove both classes after transition completes
           setTimeout(() => {
             section2.classList.remove('section-dissolve', 'is-clear');
-          }, 600);
+          }, CONFIG.SECTION2_DISSOLVE_DURATION);
         }
         
         // After show duration, start hiding
