@@ -670,6 +670,7 @@
       
       // State
       let hasTriggered = false;
+      let hasSeenHero = false; // Track if we've seen the hero at least once
       let lenis = null;
       let observer = null;
       let loaderOverlay = null;
@@ -837,8 +838,13 @@
        */
       function handleIntersection(entries) {
         entries.forEach(entry => {
-          // Trigger when hero is NOT intersecting (meaning we left the hero)
-          if (!entry.isIntersecting && !hasTriggered) {
+          // First, track if we've seen the hero
+          if (entry.isIntersecting) {
+            hasSeenHero = true;
+          }
+          
+          // Trigger when hero is NOT intersecting AND we've seen it before (meaning we left the hero)
+          if (!entry.isIntersecting && hasSeenHero && !hasTriggered) {
             hasTriggered = true;
             
             console.log('[Loader] Hero left viewport. Speed:', scrollSpeed.toFixed(2), 'px/sec');
