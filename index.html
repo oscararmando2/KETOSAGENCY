@@ -358,6 +358,9 @@
       visibility: hidden;
       filter: blur(12px);
       transform: translateY(10px) scale(1.02);
+      
+      /* Default fade-out duration */
+      --fadeOutMs: 700ms;
     }
     
     /* Visible state */
@@ -444,6 +447,20 @@
       50% { transform: scale(1); opacity: 1; }
     }
     
+    /* Premium Dissolve Effect for Section 2 */
+    #section-2.section-dissolve {
+      opacity: 0.85;
+      filter: blur(8px);
+      transform: translateY(8px);
+      transition: opacity 500ms ease, filter 500ms ease, transform 500ms ease;
+    }
+    
+    #section-2.section-dissolve.is-clear {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+    
     /* Reduced Motion Support */
     @media (prefers-reduced-motion: reduce) {
       .loader-overlay {
@@ -468,6 +485,12 @@
         animation: none !important;
         transform: scale(1) !important;
         opacity: 1 !important;
+      }
+      
+      #section-2.section-dissolve {
+        filter: none !important;
+        transform: none !important;
+        transition: opacity 150ms ease !important;
       }
     }
   </style>
@@ -607,6 +630,9 @@
       
       // Show header with smooth animation
       header.classList.remove('header-hidden');
+      
+      // Dispatch custom event after enabling scroll for loader initialization
+      window.dispatchEvent(new Event('ketos:contentReady'));
     }
     
     // Click handlers
@@ -631,9 +657,9 @@
       
       // Configuration
       const CONFIG = {
-        SECTION_SELECTOR: '#section-2',
-        OBSERVER_THRESHOLD: 0.05,
-        OBSERVER_ROOT_MARGIN: '0px 0px -35% 0px',
+        SECTION_SELECTOR: '.hero',
+        OBSERVER_THRESHOLD: 0,
+        OBSERVER_ROOT_MARGIN: '0px 0px -60% 0px',
         SHOW_DURATION: 250, // ms to show loader before hiding
         MIN_FADE_OUT: 450, // ms for fast scroll
         MAX_FADE_OUT: 900, // ms for slow scroll
@@ -736,6 +762,22 @@
         // Add visible class
         loaderOverlay.classList.add('is-visible');
         
+        // Apply premium dissolve to Section 2
+        const section2 = document.querySelector('#section-2');
+        if (section2) {
+          section2.classList.add('section-dissolve');
+          
+          // Next animation frame, add is-clear to transition to clear state
+          requestAnimationFrame(() => {
+            section2.classList.add('is-clear');
+          });
+          
+          // Remove both classes after transition completes
+          setTimeout(() => {
+            section2.classList.remove('section-dissolve', 'is-clear');
+          }, 600);
+        }
+        
         // After show duration, start hiding
         setTimeout(() => {
           hideLoader();
@@ -790,14 +832,15 @@
       }
       
       /**
-       * Handle Section 2 intersection
+       * Handle hero section intersection
        */
       function handleIntersection(entries) {
         entries.forEach(entry => {
-          if (entry.isIntersecting && !hasTriggered) {
+          // Trigger when hero is NOT intersecting (meaning we left the hero)
+          if (!entry.isIntersecting && !hasTriggered) {
             hasTriggered = true;
             
-            console.log('[Loader] Section 2 triggered. Speed:', scrollSpeed.toFixed(2), 'px/sec');
+            console.log('[Loader] Hero left viewport. Speed:', scrollSpeed.toFixed(2), 'px/sec');
             
             // Show loader
             showLoader();
@@ -812,13 +855,13 @@
       }
       
       /**
-       * Setup IntersectionObserver for Section 2
+       * Setup IntersectionObserver for hero section
        */
       function setupObserver() {
-        const section2 = document.querySelector(CONFIG.SECTION_SELECTOR);
+        const heroSection = document.querySelector(CONFIG.SECTION_SELECTOR);
         
-        if (!section2) {
-          console.warn('[Loader] Section 2 not found:', CONFIG.SECTION_SELECTOR);
+        if (!heroSection) {
+          console.warn('[Loader] Hero section not found:', CONFIG.SECTION_SELECTOR);
           return;
         }
         
@@ -829,7 +872,7 @@
         };
         
         observer = new IntersectionObserver(handleIntersection, options);
-        observer.observe(section2);
+        observer.observe(heroSection);
         
         console.log('[Loader] Observer setup complete for', CONFIG.SECTION_SELECTOR);
       }
@@ -876,11 +919,19 @@
         console.log('[Loader] Initialization complete.');
       }
       
-      // Initialize when DOM is ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+      // Initialize based on intro state
+      const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
+      
+      if (hasSeenIntro === 'true') {
+        // Intro was already seen, initialize immediately
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else {
+          init();
+        }
       } else {
-        init();
+        // Wait for user to click "Comenzar"
+        window.addEventListener('ketos:contentReady', init, { once: true });
       }
       
     })();
