@@ -447,6 +447,12 @@
       50% { transform: scale(1); opacity: 1; }
     }
     
+    /* Scroll Sentinel */
+    #scroll-sentinel {
+      height: 1px;
+      width: 100%;
+    }
+    
     /* Premium Dissolve Effect for Section 2 */
     #section-2.section-dissolve {
       opacity: 0.85;
@@ -536,6 +542,9 @@
       <p>Estrategias digitales creativas y efectivas que generan leads, ventas y reconocimiento real. México y más allá.</p>
       <button class="cta">Hablemos de tu crecimiento →</button>
     </section>
+
+    <!-- Scroll Sentinel -->
+    <div id="scroll-sentinel" aria-hidden="true"></div>
 
     <!-- SECCIÓN 2: Qué hacemos diferente -->
     <section id="section-2" class="what-we-do">
@@ -631,8 +640,8 @@
       // Show header with smooth animation
       header.classList.remove('header-hidden');
       
-      // Dispatch custom event after enabling scroll for loader initialization
-      window.dispatchEvent(new Event('ketos:contentReady'));
+      // Initialize loader after enabling scroll
+      window.initKetosLoader && window.initKetosLoader();
     }
     
     // Click handlers
@@ -657,29 +666,18 @@
       
       // Configuration
       const CONFIG = {
-        SECTION_SELECTOR: '.hero',
+        SENTINEL_SELECTOR: '#scroll-sentinel',
         OBSERVER_THRESHOLD: 0,
-        OBSERVER_ROOT_MARGIN: '0px 0px -60% 0px',
-        SHOW_DURATION: 250, // ms to show loader before hiding
-        MIN_FADE_OUT: 450, // ms for fast scroll
-        MAX_FADE_OUT: 900, // ms for slow scroll
-        SPEED_THRESHOLD_SLOW: 100, // px/sec - below this is "slow"
-        SPEED_THRESHOLD_FAST: 800, // px/sec - above this is "fast"
-        SECTION2_DISSOLVE_DURATION: 600, // ms for Section 2 dissolve effect (500ms transition + 100ms buffer)
+        OBSERVER_ROOT_MARGIN: '0px 0px -70% 0px',
+        SHOW_DURATION: 300, // ms to show loader before hiding (250-400ms)
+        FADE_OUT_DURATION: 350, // ms for hiding animation
       };
       
       // State
       let hasTriggered = false;
-      let hasSeenHero = false; // Track if we've seen the hero at least once
       let lenis = null;
       let observer = null;
       let loaderOverlay = null;
-      
-      // Speed measurement
-      let lastScrollY = 0;
-      let lastTimestamp = 0;
-      let scrollSpeed = 0; // px/sec
-      let rafId = null;
       
       /**
        * Initialize Lenis smooth scroll if available
@@ -714,52 +712,12 @@
       }
       
       /**
-       * Measure scroll speed using RAF
-       */
-      function measureScrollSpeed() {
-        const now = performance.now();
-        const currentScrollY = window.scrollY || window.pageYOffset;
-        
-        if (lastTimestamp > 0) {
-          const deltaTime = now - lastTimestamp; // ms
-          const deltaScroll = Math.abs(currentScrollY - lastScrollY); // px
-          
-          if (deltaTime > 0) {
-            // Convert to px/sec with smoothing
-            const instantSpeed = (deltaScroll / deltaTime) * 1000;
-            scrollSpeed = scrollSpeed * 0.7 + instantSpeed * 0.3; // smooth
-          }
-        }
-        
-        lastScrollY = currentScrollY;
-        lastTimestamp = now;
-      }
-      
-      /**
-       * Calculate fade-out duration based on scroll speed
-       */
-      function calculateFadeOutDuration() {
-        const { MIN_FADE_OUT, MAX_FADE_OUT, SPEED_THRESHOLD_SLOW, SPEED_THRESHOLD_FAST } = CONFIG;
-        
-        // Clamp speed to range
-        const clampedSpeed = Math.max(
-          SPEED_THRESHOLD_SLOW,
-          Math.min(SPEED_THRESHOLD_FAST, scrollSpeed)
-        );
-        
-        // Map speed inversely to duration (faster = shorter)
-        const speedRange = SPEED_THRESHOLD_FAST - SPEED_THRESHOLD_SLOW;
-        const normalizedSpeed = (clampedSpeed - SPEED_THRESHOLD_SLOW) / speedRange;
-        const duration = MAX_FADE_OUT - (normalizedSpeed * (MAX_FADE_OUT - MIN_FADE_OUT));
-        
-        return Math.round(duration);
-      }
-      
-      /**
        * Show the loader overlay
        */
       function showLoader() {
         if (!loaderOverlay) return;
+        
+        console.log('[Loader] TRIGGERED');
         
         // Add visible class
         loaderOverlay.classList.add('is-visible');
@@ -773,11 +731,6 @@
           requestAnimationFrame(() => {
             section2.classList.add('is-clear');
           });
-          
-          // Remove both classes after transition completes
-          setTimeout(() => {
-            section2.classList.remove('section-dissolve', 'is-clear');
-          }, CONFIG.SECTION2_DISSOLVE_DURATION);
         }
         
         // After show duration, start hiding
@@ -787,16 +740,13 @@
       }
       
       /**
-       * Hide the loader overlay with speed-adaptive timing
+       * Hide the loader overlay
        */
       function hideLoader() {
         if (!loaderOverlay) return;
         
-        // Calculate dynamic fade-out duration
-        const fadeOutMs = calculateFadeOutDuration();
-        
-        // Set CSS variable for dynamic transition
-        loaderOverlay.style.setProperty('--fadeOutMs', `${fadeOutMs}ms`);
+        // Set CSS variable for fade-out duration
+        loaderOverlay.style.setProperty('--fadeOutMs', `${CONFIG.FADE_OUT_DURATION}ms`);
         
         // Add hiding class
         loaderOverlay.classList.add('is-hiding');
@@ -811,43 +761,30 @@
               loaderOverlay.parentNode.removeChild(loaderOverlay);
             }
             
-            // Stop RAF speed measurement
-            if (rafId) {
-              cancelAnimationFrame(rafId);
-              rafId = null;
-            }
-            
             console.log('[Loader] Loader removed from DOM.');
           }
         };
         
         loaderOverlay.addEventListener('transitionend', handleTransitionEnd);
         
-        // Fallback: force remove after max duration + buffer
+        // Fallback: force remove after duration + buffer
         setTimeout(() => {
           if (loaderOverlay && loaderOverlay.parentNode) {
             loaderOverlay.removeEventListener('transitionend', handleTransitionEnd);
             loaderOverlay.parentNode.removeChild(loaderOverlay);
             console.log('[Loader] Loader removed (fallback).');
           }
-        }, fadeOutMs + 500);
+        }, CONFIG.FADE_OUT_DURATION + 500);
       }
       
       /**
-       * Handle hero section intersection
+       * Handle sentinel intersection
        */
       function handleIntersection(entries) {
         entries.forEach(entry => {
-          // First, track if we've seen the hero
-          if (entry.isIntersecting) {
-            hasSeenHero = true;
-          }
-          
-          // Trigger when hero is NOT intersecting AND we've seen it before (meaning we left the hero)
-          if (!entry.isIntersecting && hasSeenHero && !hasTriggered) {
+          // Trigger when sentinel intersects for the first time
+          if (entry.isIntersecting && !hasTriggered) {
             hasTriggered = true;
-            
-            console.log('[Loader] Hero left viewport. Speed:', scrollSpeed.toFixed(2), 'px/sec');
             
             // Show loader
             showLoader();
@@ -862,13 +799,13 @@
       }
       
       /**
-       * Setup IntersectionObserver for hero section
+       * Setup IntersectionObserver for sentinel element
        */
       function setupObserver() {
-        const heroSection = document.querySelector(CONFIG.SECTION_SELECTOR);
+        const sentinel = document.querySelector(CONFIG.SENTINEL_SELECTOR);
         
-        if (!heroSection) {
-          console.warn('[Loader] Hero section not found:', CONFIG.SECTION_SELECTOR);
+        if (!sentinel) {
+          console.warn('[Loader] Sentinel element not found:', CONFIG.SENTINEL_SELECTOR);
           return;
         }
         
@@ -879,26 +816,21 @@
         };
         
         observer = new IntersectionObserver(handleIntersection, options);
-        observer.observe(heroSection);
+        observer.observe(sentinel);
         
-        console.log('[Loader] Observer setup complete for', CONFIG.SECTION_SELECTOR);
-      }
-      
-      /**
-       * Start RAF loop for speed measurement
-       */
-      function startSpeedMeasurement() {
-        function measureLoop() {
-          measureScrollSpeed();
-          rafId = requestAnimationFrame(measureLoop);
-        }
-        rafId = requestAnimationFrame(measureLoop);
+        console.log('[Loader] Observer setup complete for', CONFIG.SENTINEL_SELECTOR);
       }
       
       /**
        * Initialize the loader system
        */
       function init() {
+        // Prevent multiple initializations
+        if (loaderOverlay) {
+          console.warn('[Loader] Already initialized.');
+          return;
+        }
+        
         // Check for reduced motion preference
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
@@ -917,16 +849,16 @@
         // Initialize Lenis
         initLenis();
         
-        // Start speed measurement
-        startSpeedMeasurement();
-        
         // Setup intersection observer
         setupObserver();
         
-        console.log('[Loader] Initialization complete.');
+        console.log('[Loader] init OK');
       }
       
-      // Initialize based on intro state
+      // Expose init globally
+      window.initKetosLoader = init;
+      
+      // Initialize immediately if intro was already seen
       const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
       
       if (hasSeenIntro === 'true') {
@@ -936,9 +868,6 @@
         } else {
           init();
         }
-      } else {
-        // Wait for user to click "Comenzar"
-        window.addEventListener('ketos:contentReady', init, { once: true });
       }
       
     })();
