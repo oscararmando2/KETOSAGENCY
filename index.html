@@ -467,6 +467,32 @@
       transform: translateY(0);
     }
     
+    /* ========================================
+       SCROLL DISSOLVE TRANSITION (Section 1 -> Section 2)
+       ======================================== */
+    
+    /* Section 2: Initial state (before entering viewport) */
+    #section-2 {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(16px);
+      transition: opacity 700ms ease, filter 700ms ease, transform 700ms ease;
+    }
+    
+    /* Section 2: Visible state (when entered viewport) */
+    #section-2.is-in {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+    
+    /* Section 1 (hero): Fade-out state (when leaving viewport) */
+    .hero.is-out {
+      opacity: 0.85;
+      transform: translateY(-10px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+    
     /* Reduced Motion Support */
     @media (prefers-reduced-motion: reduce) {
       .loader-overlay {
@@ -497,6 +523,20 @@
         filter: none !important;
         transform: none !important;
         transition: opacity 150ms ease !important;
+      }
+      
+      /* Disable scroll dissolve transitions for reduced motion */
+      #section-2 {
+        opacity: 1 !important;
+        filter: none !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      
+      .hero.is-out {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
       }
     }
   </style>
@@ -877,6 +917,79 @@
         } else {
           init();
         }
+      }
+      
+    })();
+  </script>
+
+  <script>
+    // ========================================
+    // SCROLL DISSOLVE TRANSITION (Section 1 -> Section 2)
+    // ========================================
+    
+    (function() {
+      'use strict';
+      
+      // Get elements
+      const hero = document.querySelector('.hero');
+      const section2 = document.querySelector('#section-2');
+      
+      // Only initialize if both elements exist
+      if (!hero || !section2) {
+        console.warn('[Scroll Dissolve] Required elements not found.');
+        return;
+      }
+      
+      // Create IntersectionObserver
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            // Section 2 is entering the viewport
+            hero.classList.add('is-out');
+            section2.classList.add('is-in');
+            
+            // Disconnect observer (one-time trigger)
+            observer.disconnect();
+            
+            console.log('[Scroll Dissolve] Transition triggered.');
+          }
+        },
+        {
+          root: null,
+          threshold: 0.1,
+          rootMargin: '0px 0px -25% 0px'
+        }
+      );
+      
+      // Function to initialize the observer
+      function initScrollDissolve() {
+        // Only observe if intro has been seen
+        const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
+        
+        if (hasSeenIntro === 'true') {
+          observer.observe(section2);
+          console.log('[Scroll Dissolve] Observer initialized.');
+        }
+      }
+      
+      // Initialize immediately if intro was already seen
+      const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
+      
+      if (hasSeenIntro === 'true') {
+        // Intro was already seen, initialize immediately
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initScrollDissolve);
+        } else {
+          initScrollDissolve();
+        }
+      } else {
+        // Intro not seen yet, initialize after intro is dismissed
+        // We'll hook into the existing intro dismissal
+        const originalInit = window.initKetosLoader;
+        window.initKetosLoader = function() {
+          if (originalInit) originalInit();
+          initScrollDissolve();
+        };
       }
       
     })();
