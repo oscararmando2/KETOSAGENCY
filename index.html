@@ -116,7 +116,7 @@
     /* Minimalist overlay - bottom right corner */
     .banner-overlay {
       position: absolute;
-      bottom: 60px; /* Extra offset to stay above "Built with Spline" watermark */
+      bottom: 30px; /* Positioned lower on the page */
       right: 40px;
       left: auto;
       display: flex;
@@ -300,7 +300,7 @@
       
       /* Bottom-right overlay on mobile with safe-area support */
       .banner-overlay {
-        bottom: calc(80px + env(safe-area-inset-bottom, 0px)); /* Larger offset on mobile + safe-area */
+        bottom: calc(40px + env(safe-area-inset-bottom, 0px)); /* Positioned lower on mobile + safe-area */
         right: calc(20px + env(safe-area-inset-right, 0px));
         left: auto;
         transform: none;
