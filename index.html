@@ -471,8 +471,8 @@
        SCROLL DISSOLVE TRANSITION (Section 1 -> Section 2)
        ======================================== */
     
-    /* Section 2: Initial state (before entering viewport) */
-    #section-2 {
+    /* Section 2: Initial hidden state (only applied via class) */
+    #section-2.section-pre {
       opacity: 0;
       filter: blur(10px);
       transform: translateY(16px);
@@ -481,7 +481,7 @@
     }
     
     /* Section 2: Visible state (when entered viewport) */
-    #section-2.is-in {
+    #section-2.section-in {
       opacity: 1;
       filter: blur(0);
       transform: translateY(0);
@@ -490,7 +490,7 @@
     }
     
     /* Section 1 (hero): Fade-out state (when leaving viewport) */
-    .hero.is-out {
+    .hero.section-out {
       opacity: 0.85;
       transform: translateY(-10px);
       transition: opacity 700ms ease, transform 700ms ease;
@@ -529,14 +529,21 @@
       }
       
       /* Disable scroll dissolve transitions for reduced motion */
-      #section-2 {
+      #section-2.section-pre {
         opacity: 1 !important;
+        filter: none !important;
+        transform: none !important;
+        visibility: visible !important;
+        transition: none !important;
+      }
+      
+      #section-2.section-in {
         filter: none !important;
         transform: none !important;
         transition: none !important;
       }
       
-      .hero.is-out {
+      .hero.section-out {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
@@ -685,6 +692,9 @@
       
       // Initialize loader after enabling scroll
       window.initKetosLoader?.();
+      
+      // Initialize scroll dissolve transition
+      window.initScrollDissolve?.();
     }
     
     // Click handlers
@@ -764,22 +774,6 @@
         
         // Add visible class
         loaderOverlay.classList.add('is-visible');
-        
-        // Apply premium dissolve to Section 2
-        const section2 = document.querySelector('#section-2');
-        if (section2) {
-          section2.classList.add('section-dissolve');
-          
-          // Next animation frame, add is-clear to transition to clear state
-          requestAnimationFrame(() => {
-            section2.classList.add('is-clear');
-          });
-          
-          // Remove dissolve classes after transition completes
-          setTimeout(() => {
-            section2.classList.remove('section-dissolve', 'is-clear');
-          }, 600); // 500ms transition + 100ms buffer
-        }
         
         // After show duration, start hiding
         setTimeout(() => {
@@ -942,30 +936,64 @@
         return;
       }
       
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      let observer = null;
+      let isInitialized = false;
+      
       // Create IntersectionObserver
       // rootMargin: -25% ensures the transition triggers when Section 2 is 25% into viewport
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            // Section 2 is entering the viewport
-            hero.classList.add('is-out');
-            section2.classList.add('is-in');
-            
-            // Disconnect observer (one-time trigger)
-            observer.disconnect();
+      function createObserver() {
+        return new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              // Section 2 is entering the viewport
+              hero.classList.add('section-out');
+              section2.classList.add('section-in');
+              section2.classList.remove('section-pre');
+              
+              // Disconnect observer (one-time trigger)
+              if (observer) {
+                observer.disconnect();
+                observer = null;
+              }
+            }
+          },
+          {
+            root: null,
+            threshold: 0.1,
+            rootMargin: '0px 0px -25% 0px'
           }
-        },
-        {
-          root: null,
-          threshold: 0.1,
-          rootMargin: '0px 0px -25% 0px'
-        }
-      );
+        );
+      }
       
       // Function to initialize the observer
       function initScrollDissolve() {
+        // Prevent multiple initializations
+        if (isInitialized) {
+          return;
+        }
+        isInitialized = true;
+        
+        // If reduced motion is active, don't apply pre-state
+        if (prefersReducedMotion) {
+          // Ensure section 2 is visible
+          section2.classList.remove('section-pre');
+          section2.classList.add('section-in');
+          return;
+        }
+        
+        // Apply pre-state to section 2
+        section2.classList.add('section-pre');
+        
+        // Create and start observing
+        observer = createObserver();
         observer.observe(section2);
       }
+      
+      // Expose init globally
+      window.initScrollDissolve = initScrollDissolve;
       
       // Initialize immediately if intro was already seen
       const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
