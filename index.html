@@ -261,12 +261,14 @@
       flex-grow: 1;
       height: 24px;
       margin-right: 0.5rem;
-      fill: #e8e8e8;
+      fill: none;
+      stroke: #e8e8e8;
+      stroke-width: 1.5;
       animation: flicker 2s linear infinite;
       animation-delay: 0.5s;
       filter: drop-shadow(0 0 2px #fff9);
       transition:
-        fill var(--transition),
+        stroke var(--transition),
         filter var(--transition),
         opacity var(--transition);
     }
@@ -455,7 +457,7 @@
     }
 
     .btn:hover .btn-svg {
-      fill: #fff;
+      stroke: #fff;
       filter: drop-shadow(0 0 3px hsl(var(--highlight-color-hue), 100%, 70%))
         drop-shadow(0 -4px 6px #0009);
       animation: none;
