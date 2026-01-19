@@ -20,7 +20,12 @@
       --light: #e0e0ff;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
-    html, body {
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    
+    body {
       font-family: 'Protest Guerrilla', sans-serif;
       background: var(--dark);
       color: var(--light);
@@ -496,6 +501,7 @@
     }
     
     .hero {
+      height: 100vh;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -504,6 +510,8 @@
       text-align: center;
       background: linear-gradient(135deg, #0f0f1a 0%, #1e1e2e 100%);
       padding: 100px 5% 60px;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
     }
     .hero h1 {
       font-size: clamp(2.8rem, 8vw, 6rem);
@@ -529,9 +537,15 @@
 
     /* Section 2: Qué hacemos diferente */
     .what-we-do {
+      min-height: 100vh;
       padding: 100px 5% 80px;
       background: var(--gray);
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
     }
     .what-we-do h2 {
       font-size: clamp(2rem, 5vw, 3.5rem);
@@ -823,7 +837,7 @@
       visibility: visible;
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      animation: portalFadeIn 250ms ease-out forwards;
+      animation: portalFadeIn 600ms ease-out forwards;
     }
     
     /* Hiding state */
@@ -832,7 +846,7 @@
       visibility: visible;
       backdrop-filter: blur(0px);
       -webkit-backdrop-filter: blur(0px);
-      animation: portalFadeOut 350ms ease-out forwards;
+      animation: portalFadeOut 800ms ease-out forwards;
     }
     
     @keyframes portalFadeIn {
@@ -902,7 +916,7 @@
     }
     
     .portal-overlay.portal-active .portal-sweep {
-      animation: sweepAnimation 400ms ease-out forwards;
+      animation: sweepAnimation 800ms ease-out forwards;
     }
     
     @keyframes sweepAnimation {
@@ -1347,9 +1361,9 @@
       const PORTAL_CONFIG = {
         SECTION2_SELECTOR: '#section-2',
         PORTAL_OVERLAY_SELECTOR: '.portal-overlay',
-        SHOW_DURATION: 300, // Duration (in ms) within the 250-400ms range
-        FADE_OUT_DURATION: 350, // Duration for fade out animation
-        OBSERVER_THRESHOLD: 0.1, // Trigger when 10% of section-2 is visible
+        SHOW_DURATION: 600, // Duration (in ms) - increased for better visibility
+        FADE_OUT_DURATION: 800, // Duration for fade out animation - increased for smoother transition
+        OBSERVER_THRESHOLD: 0.3, // Trigger when 30% of section-2 is visible
       };
       
       // State
