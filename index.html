@@ -768,21 +768,6 @@
       width: 100%;
     }
     
-    /* Premium Dissolve Effect for Section 2 */
-    #section-2.section-dissolve {
-      opacity: 0.85;
-      filter: blur(8px);
-      transform: translateY(8px);
-      transition: opacity 500ms ease, filter 500ms ease, transform 500ms ease;
-    }
-    
-    #section-2.section-dissolve.is-clear {
-      opacity: 1;
-      filter: blur(0);
-      transform: translateY(0);
-    }
-    
-    
     /* Reduced Motion Support */
     @media (prefers-reduced-motion: reduce) {
       .loader-overlay {
@@ -807,12 +792,6 @@
         animation: none !important;
         transform: scale(1) !important;
         opacity: 1 !important;
-      }
-      
-      #section-2.section-dissolve {
-        filter: none !important;
-        transform: none !important;
-        transition: opacity 150ms ease !important;
       }
     }
   </style>
