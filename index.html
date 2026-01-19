@@ -471,7 +471,7 @@
        SCROLL DISSOLVE TRANSITION (Section 1 -> Section 2)
        ======================================== */
     
-    /* Section 2: Initial hidden state (only applied via class) */
+    /* Section 2: Hidden state (only applied via JS when observer is initialized) */
     #section-2.section-pre {
       opacity: 0;
       filter: blur(10px);
@@ -654,10 +654,11 @@
     const bannerTitle = document.getElementById('bannerTitle');
     const header = document.querySelector('header');
     
-    // Check if user has already seen the intro
-    const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
+    // TEMPORARILY DISABLED: Skip intro functionality (for development)
+    // const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
+    const hasSeenIntro = false; // Always show intro during development
     
-    if (hasSeenIntro === 'true') {
+    if (hasSeenIntro === true) {
       // Skip intro, show content immediately
       introBanner.classList.add('intro-hidden');
       siteContent.classList.add('content-visible');
@@ -674,8 +675,8 @@
     function hideBannerAndShowContent(e) {
       e.preventDefault();
       
-      // Save to sessionStorage
-      sessionStorage.setItem('ketosIntroSeen', 'true');
+      // TEMPORARILY DISABLED: Save to sessionStorage (for development)
+      // sessionStorage.setItem('ketosIntroSeen', 'true');
       
       // Hide banner with transition
       introBanner.classList.add('intro-hidden');
@@ -690,10 +691,7 @@
       // Show header with smooth animation
       header.classList.remove('header-hidden');
       
-      // Initialize loader after enabling scroll
-      window.initKetosLoader?.();
-      
-      // Initialize scroll dissolve transition
+      // Initialize scroll dissolve transition (ONLY after intro closes)
       window.initScrollDissolve?.();
     }
     
@@ -904,17 +902,7 @@
       // Expose init globally
       window.initKetosLoader = init;
       
-      // Initialize immediately if intro was already seen
-      const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
-      
-      if (hasSeenIntro === 'true') {
-        // Intro was already seen, initialize immediately
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', init);
-        } else {
-          init();
-        }
-      }
+      // DO NOT auto-initialize loader - it will be initialized manually after intro closes
       
     })();
   </script>
@@ -976,15 +964,14 @@
         }
         isInitialized = true;
         
-        // If reduced motion is active, don't apply pre-state
+        // If reduced motion is active, don't apply effects
         if (prefersReducedMotion) {
           // Ensure section 2 is visible
           section2.classList.remove('section-pre');
-          section2.classList.add('section-in');
           return;
         }
         
-        // Apply pre-state to section 2
+        // Apply pre-state to section 2 ONLY NOW (not by default in CSS)
         section2.classList.add('section-pre');
         
         // Create and start observing
@@ -995,32 +982,7 @@
       // Expose init globally
       window.initScrollDissolve = initScrollDissolve;
       
-      // Initialize immediately if intro was already seen
-      const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
-      
-      if (hasSeenIntro === 'true') {
-        // Intro was already seen, initialize immediately
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initScrollDissolve);
-        } else {
-          initScrollDissolve();
-        }
-      } else {
-        // Intro not seen yet, listen for when content becomes visible
-        document.addEventListener('DOMContentLoaded', () => {
-          const siteContent = document.getElementById('siteContent');
-          if (siteContent) {
-            // Use MutationObserver to detect when content becomes visible
-            const contentObserver = new MutationObserver(() => {
-              if (siteContent.classList.contains('content-visible')) {
-                initScrollDissolve();
-                contentObserver.disconnect();
-              }
-            });
-            contentObserver.observe(siteContent, { attributes: true, attributeFilter: ['class'] });
-          }
-        });
-      }
+      // DO NOT auto-initialize - this will be called manually after intro closes
       
     })();
   </script>
