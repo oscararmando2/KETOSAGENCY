@@ -7,7 +7,7 @@
   <meta name="description" content="Agencia de marketing digital en México. Estrategias, creatividad y resultados reales para tu marca."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap" rel="stylesheet">
   
   <!-- Lenis Smooth Scroll CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
@@ -21,7 +21,7 @@
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     html, body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Protest Guerrilla', sans-serif;
       background: var(--dark);
       color: var(--light);
       line-height: 1.6;
@@ -165,7 +165,7 @@
       display: flex;
       justify-content: center;
       padding: 0.5em 0.5em 0.5em 1.1em;
-      font-family: "Poppins", "Inter", "Segoe UI", sans-serif;
+      font-family: "Protest Guerrilla", sans-serif;
       font-size: 1em;
       font-weight: 400;
 
@@ -768,49 +768,6 @@
       width: 100%;
     }
     
-    /* Premium Dissolve Effect for Section 2 */
-    #section-2.section-dissolve {
-      opacity: 0.85;
-      filter: blur(8px);
-      transform: translateY(8px);
-      transition: opacity 500ms ease, filter 500ms ease, transform 500ms ease;
-    }
-    
-    #section-2.section-dissolve.is-clear {
-      opacity: 1;
-      filter: blur(0);
-      transform: translateY(0);
-    }
-    
-    /* ========================================
-       SCROLL DISSOLVE TRANSITION (Section 1 -> Section 2)
-       ======================================== */
-    
-    /* Section 2: Hidden state (only applied via JS when observer is initialized) */
-    #section-2.section-pre {
-      opacity: 0;
-      filter: blur(10px);
-      transform: translateY(16px);
-      visibility: hidden;
-      transition: opacity 700ms ease, filter 700ms ease, transform 700ms ease, visibility 0s 700ms;
-    }
-    
-    /* Section 2: Visible state (when entered viewport) */
-    #section-2.section-in {
-      opacity: 1;
-      filter: blur(0);
-      transform: translateY(0);
-      visibility: visible;
-      transition: opacity 700ms ease, filter 700ms ease, transform 700ms ease, visibility 0s;
-    }
-    
-    /* Section 1 (hero): Fade-out state (when leaving viewport) */
-    .hero.section-out {
-      opacity: 0.85;
-      transform: translateY(-10px);
-      transition: opacity 700ms ease, transform 700ms ease;
-    }
-    
     /* Reduced Motion Support */
     @media (prefers-reduced-motion: reduce) {
       .loader-overlay {
@@ -835,33 +792,6 @@
         animation: none !important;
         transform: scale(1) !important;
         opacity: 1 !important;
-      }
-      
-      #section-2.section-dissolve {
-        filter: none !important;
-        transform: none !important;
-        transition: opacity 150ms ease !important;
-      }
-      
-      /* Disable scroll dissolve transitions for reduced motion */
-      #section-2.section-pre {
-        opacity: 1 !important;
-        filter: none !important;
-        transform: none !important;
-        visibility: visible !important;
-        transition: none !important;
-      }
-      
-      #section-2.section-in {
-        filter: none !important;
-        transform: none !important;
-        transition: none !important;
-      }
-      
-      .hero.section-out {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
       }
     }
   </style>
@@ -1032,9 +962,6 @@
       
       // Show header with smooth animation
       header.classList.remove('header-hidden');
-      
-      // Initialize scroll dissolve transition (ONLY after intro closes)
-      window.initScrollDissolve?.();
     }
     
     // Click handlers
@@ -1245,86 +1172,6 @@
       window.initKetosLoader = init;
       
       // DO NOT auto-initialize loader - it will be initialized manually after intro closes
-      
-    })();
-  </script>
-
-  <script>
-    // ========================================
-    // SCROLL DISSOLVE TRANSITION (Section 1 -> Section 2)
-    // ========================================
-    
-    (function() {
-      'use strict';
-      
-      // Get elements
-      const hero = document.querySelector('.hero');
-      const section2 = document.querySelector('#section-2');
-      
-      // Only initialize if both elements exist
-      if (!hero || !section2) {
-        return;
-      }
-      
-      // Check for reduced motion preference
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      
-      let observer = null;
-      let isInitialized = false;
-      
-      // Create IntersectionObserver
-      // rootMargin: -25% ensures the transition triggers when Section 2 is 25% into viewport
-      function createObserver() {
-        return new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              // Section 2 is entering the viewport
-              hero.classList.add('section-out');
-              section2.classList.add('section-in');
-              section2.classList.remove('section-pre');
-              
-              // Disconnect observer (one-time trigger)
-              if (observer) {
-                observer.disconnect();
-                observer = null;
-              }
-            }
-          },
-          {
-            root: null,
-            threshold: 0.1,
-            rootMargin: '0px 0px -25% 0px'
-          }
-        );
-      }
-      
-      // Function to initialize the observer
-      function initScrollDissolve() {
-        // Prevent multiple initializations
-        if (isInitialized) {
-          return;
-        }
-        isInitialized = true;
-        
-        // If reduced motion is active, don't apply effects
-        if (prefersReducedMotion) {
-          // Ensure section 2 is visible
-          section2.classList.remove('section-pre');
-          return;
-        }
-        
-        // Apply pre-state to section 2 ONLY NOW (not by default in CSS)
-        section2.classList.add('section-pre');
-        
-        // Create and start observing
-        observer = createObserver();
-        observer.observe(section2);
-      }
-      
-      // Expose init globally
-      window.initScrollDissolve = initScrollDissolve;
-      
-      // DO NOT auto-initialize - this will be called manually after intro closes
       
     })();
   </script>
