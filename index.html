@@ -461,6 +461,23 @@
       animation: none;
     }
     
+    /* Reduced Motion Support for Button Animations */
+    @media (prefers-reduced-motion: reduce) {
+      .btn-letter {
+        animation: none !important;
+      }
+      
+      .btn-svg {
+        animation: none !important;
+      }
+      
+      .btn:focus .btn-letter {
+        animation: none !important;
+        filter: none !important;
+        transform: none !important;
+      }
+    }
+    
     /* Site Content */
     #siteContent {
       opacity: 0;
@@ -871,7 +888,7 @@
         <a href="#" class="banner-title" id="bannerTitle" aria-label="Ir al contenido principal">KETOS</a>
         <div class="btn-wrapper">
           <button class="btn" id="startButton" aria-label="Comenzar - Ocultar banner y ver contenido">
-            <svg class="btn-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <svg class="btn-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
