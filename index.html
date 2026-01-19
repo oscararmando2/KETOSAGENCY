@@ -1344,7 +1344,6 @@
       
       // Configuration
       const PORTAL_CONFIG = {
-        HERO_SELECTOR: '.hero',
         SECTION2_SELECTOR: '#section-2',
         PORTAL_OVERLAY_SELECTOR: '.portal-overlay',
         SHOW_DURATION: 300, // Duration to show portal (250-400ms range)
@@ -1365,9 +1364,6 @@
         
         hasPortalTriggered = true;
         console.log('[Portal] Cinematic transition triggered');
-        
-        // Check for reduced motion
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
         // Add active class to trigger animation
         portalOverlay.classList.add('portal-active');
