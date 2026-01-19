@@ -943,6 +943,7 @@
       }
       
       // Create IntersectionObserver
+      // rootMargin: -25% ensures the transition triggers when Section 2 is 25% into viewport
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
@@ -982,7 +983,7 @@
           const siteContent = document.getElementById('siteContent');
           if (siteContent) {
             // Use MutationObserver to detect when content becomes visible
-            const contentObserver = new MutationObserver((mutations) => {
+            const contentObserver = new MutationObserver(() => {
               if (siteContent.classList.contains('content-visible')) {
                 initScrollDissolve();
                 contentObserver.disconnect();
