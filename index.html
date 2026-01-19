@@ -963,13 +963,8 @@
       
       // Function to initialize the observer
       function initScrollDissolve() {
-        // Only observe if intro has been seen
-        const hasSeenIntro = sessionStorage.getItem('ketosIntroSeen');
-        
-        if (hasSeenIntro === 'true') {
-          observer.observe(section2);
-          console.log('[Scroll Dissolve] Observer initialized.');
-        }
+        observer.observe(section2);
+        console.log('[Scroll Dissolve] Observer initialized.');
       }
       
       // Initialize immediately if intro was already seen
@@ -983,13 +978,20 @@
           initScrollDissolve();
         }
       } else {
-        // Intro not seen yet, initialize after intro is dismissed
-        // We'll hook into the existing intro dismissal
-        const originalInit = window.initKetosLoader;
-        window.initKetosLoader = function() {
-          if (originalInit) originalInit();
-          initScrollDissolve();
-        };
+        // Intro not seen yet, listen for when content becomes visible
+        document.addEventListener('DOMContentLoaded', () => {
+          const siteContent = document.getElementById('siteContent');
+          if (siteContent) {
+            // Use MutationObserver to detect when content becomes visible
+            const contentObserver = new MutationObserver((mutations) => {
+              if (siteContent.classList.contains('content-visible')) {
+                initScrollDissolve();
+                contentObserver.disconnect();
+              }
+            });
+            contentObserver.observe(siteContent, { attributes: true, attributeFilter: ['class'] });
+          }
+        });
       }
       
     })();
