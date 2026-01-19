@@ -23,6 +23,7 @@
     html {
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
+      scroll-padding-top: 80px; /* Account for fixed header height */
     }
     
     body {
@@ -598,6 +599,10 @@
 
     /* Mobile */
     @media (max-width: 768px) {
+      html {
+        scroll-padding-top: 70px; /* Adjusted for mobile header height */
+      }
+      
       nav { display: none; }
       
       /* Mobile intro must be REAL fullscreen */
