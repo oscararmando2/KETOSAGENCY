@@ -794,6 +794,160 @@
         opacity: 1 !important;
       }
     }
+    
+    /* ========================================
+       CINEMATIC PORTAL TRANSITION
+       ======================================== */
+    
+    /* Portal Overlay - Fixed, non-blocking by default */
+    .portal-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 15, 26, 0.95);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      pointer-events: none;
+      z-index: 9998;
+      
+      /* Initial hidden state */
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    /* Animated state when portal is active */
+    .portal-overlay.portal-active {
+      opacity: 1;
+      visibility: visible;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: portalFadeIn 250ms ease-out forwards;
+    }
+    
+    /* Hiding state */
+    .portal-overlay.portal-hiding {
+      opacity: 0;
+      visibility: visible;
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      animation: portalFadeOut 350ms ease-out forwards;
+    }
+    
+    @keyframes portalFadeIn {
+      from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+      }
+      to {
+        opacity: 1;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+    }
+    
+    @keyframes portalFadeOut {
+      from {
+        opacity: 1;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      to {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+      }
+    }
+    
+    /* Noise texture effect */
+    .portal-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      /* Subtle fractal noise texture for added visual interest */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      opacity: 0;
+      pointer-events: none;
+      animation: noiseFlicker 250ms ease-out forwards;
+    }
+    
+    .portal-overlay.portal-active::before {
+      opacity: 1;
+    }
+    
+    @keyframes noiseFlicker {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    
+    /* Orange light sweep */
+    .portal-sweep {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 107, 53, 0.1) 25%,
+        rgba(255, 107, 53, 0.4) 50%,
+        rgba(255, 107, 53, 0.1) 75%,
+        transparent 100%
+      );
+      pointer-events: none;
+      opacity: 0;
+    }
+    
+    .portal-overlay.portal-active .portal-sweep {
+      animation: sweepAnimation 400ms ease-out forwards;
+    }
+    
+    @keyframes sweepAnimation {
+      0% {
+        left: -100%;
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        left: 100%;
+        opacity: 0;
+      }
+    }
+    
+    /* Reduced Motion Support for Portal */
+    @media (prefers-reduced-motion: reduce) {
+      .portal-overlay {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        animation: none !important;
+        transition: opacity 150ms ease !important;
+      }
+      
+      .portal-overlay.portal-active {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        animation: none !important;
+      }
+      
+      .portal-overlay.portal-hiding {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        animation: none !important;
+      }
+      
+      .portal-overlay::before,
+      .portal-sweep {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -909,6 +1063,11 @@
       <div class="loaders"></div>
       <div class="loaders"></div>
     </div>
+  </div>
+
+  <!-- Cinematic Portal Transition Overlay -->
+  <div class="portal-overlay" aria-hidden="true">
+    <div class="portal-sweep"></div>
   </div>
 
   <script>
@@ -1172,6 +1331,141 @@
       window.initKetosLoader = init;
       
       // DO NOT auto-initialize loader - it will be initialized manually after intro closes
+      
+    })();
+  </script>
+
+  <script>
+    // ========================================
+    // CINEMATIC PORTAL TRANSITION
+    // ========================================
+    
+    (function() {
+      'use strict';
+      
+      // Configuration
+      const PORTAL_CONFIG = {
+        SECTION2_SELECTOR: '#section-2',
+        PORTAL_OVERLAY_SELECTOR: '.portal-overlay',
+        SHOW_DURATION: 300, // Duration (in ms) within the 250-400ms range
+        FADE_OUT_DURATION: 350, // Duration for fade out animation
+        OBSERVER_THRESHOLD: 0.1, // Trigger when 10% of section-2 is visible
+      };
+      
+      // State
+      let hasPortalTriggered = false;
+      let portalObserver = null;
+      let portalOverlay = null;
+      
+      /**
+       * Show the portal transition
+       */
+      function showPortal() {
+        if (!portalOverlay || hasPortalTriggered) return;
+        
+        hasPortalTriggered = true;
+        console.log('[Portal] Cinematic transition triggered');
+        
+        // Add active class to trigger animation
+        portalOverlay.classList.add('portal-active');
+        
+        // After show duration, start hiding
+        setTimeout(() => {
+          hidePortal();
+        }, PORTAL_CONFIG.SHOW_DURATION);
+      }
+      
+      /**
+       * Hide the portal transition
+       */
+      function hidePortal() {
+        if (!portalOverlay) return;
+        
+        // Remove active class and add hiding class
+        portalOverlay.classList.remove('portal-active');
+        portalOverlay.classList.add('portal-hiding');
+        
+        // After fade out, clean up classes
+        setTimeout(() => {
+          if (portalOverlay) {
+            portalOverlay.classList.remove('portal-hiding');
+            console.log('[Portal] Transition complete');
+          }
+        }, PORTAL_CONFIG.FADE_OUT_DURATION);
+      }
+      
+      /**
+       * Handle section-2 intersection
+       */
+      function handlePortalIntersection(entries) {
+        entries.forEach(entry => {
+          // Trigger when section-2 starts to come into view
+          if (entry.isIntersecting && !hasPortalTriggered) {
+            showPortal();
+            
+            // Disconnect observer after first trigger
+            if (portalObserver) {
+              portalObserver.disconnect();
+              portalObserver = null;
+            }
+          }
+        });
+      }
+      
+      /**
+       * Setup IntersectionObserver for section-2
+       */
+      function setupPortalObserver() {
+        const section2 = document.querySelector(PORTAL_CONFIG.SECTION2_SELECTOR);
+        
+        if (!section2) {
+          console.warn('[Portal] Section-2 element not found');
+          return;
+        }
+        
+        const options = {
+          root: null,
+          threshold: PORTAL_CONFIG.OBSERVER_THRESHOLD,
+          rootMargin: '0px 0px 0px 0px',
+        };
+        
+        portalObserver = new IntersectionObserver(handlePortalIntersection, options);
+        portalObserver.observe(section2);
+        
+        console.log('[Portal] Observer setup complete');
+      }
+      
+      /**
+       * Initialize the portal transition system
+       */
+      function initPortal() {
+        // Check for reduced motion preference
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (prefersReducedMotion) {
+          console.log('[Portal] Reduced motion detected. Portal effects will be simplified.');
+        }
+        
+        // Get portal overlay element
+        portalOverlay = document.querySelector(PORTAL_CONFIG.PORTAL_OVERLAY_SELECTOR);
+        
+        if (!portalOverlay) {
+          console.warn('[Portal] Portal overlay element not found');
+          return;
+        }
+        
+        // Setup intersection observer
+        setupPortalObserver();
+        
+        console.log('[Portal] Init complete');
+      }
+      
+      // Initialize when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPortal);
+      } else {
+        initPortal();
+      }
       
     })();
   </script>
