@@ -476,7 +476,8 @@
       opacity: 0;
       filter: blur(10px);
       transform: translateY(16px);
-      transition: opacity 700ms ease, filter 700ms ease, transform 700ms ease;
+      visibility: hidden;
+      transition: opacity 700ms ease, filter 700ms ease, transform 700ms ease, visibility 0s 700ms;
     }
     
     /* Section 2: Visible state (when entered viewport) */
@@ -484,6 +485,8 @@
       opacity: 1;
       filter: blur(0);
       transform: translateY(0);
+      visibility: visible;
+      transition: opacity 700ms ease, filter 700ms ease, transform 700ms ease, visibility 0s;
     }
     
     /* Section 1 (hero): Fade-out state (when leaving viewport) */
@@ -936,7 +939,6 @@
       
       // Only initialize if both elements exist
       if (!hero || !section2) {
-        console.warn('[Scroll Dissolve] Required elements not found.');
         return;
       }
       
@@ -950,8 +952,6 @@
             
             // Disconnect observer (one-time trigger)
             observer.disconnect();
-            
-            console.log('[Scroll Dissolve] Transition triggered.');
           }
         },
         {
@@ -964,7 +964,6 @@
       // Function to initialize the observer
       function initScrollDissolve() {
         observer.observe(section2);
-        console.log('[Scroll Dissolve] Observer initialized.');
       }
       
       // Initialize immediately if intro was already seen
