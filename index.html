@@ -1642,8 +1642,6 @@
         entries.forEach(entry => {
           // Trigger animation only once when cards container becomes visible
           if (entry.isIntersecting && !cardsAnimationTriggered) {
-            console.log('[CardsAnimation] Cards entering viewport - triggering animation');
-            
             const cardsContainer = entry.target;
             cardsContainer.classList.add(CARDS_CONFIG.ANIMATED_CLASS);
             
@@ -1653,7 +1651,6 @@
             // Disconnect observer after animation is triggered
             if (cardsObserver) {
               cardsObserver.disconnect();
-              console.log('[CardsAnimation] Observer disconnected after animation trigger');
             }
           }
         });
@@ -1665,13 +1662,11 @@
       function setupCardsObserver() {
         const section2 = document.querySelector(CARDS_CONFIG.SECTION2_SELECTOR);
         if (!section2) {
-          console.warn('[CardsAnimation] Section-2 not found');
           return;
         }
         
         const cardsContainer = section2.querySelector(CARDS_CONFIG.CARDS_CONTAINER_SELECTOR);
         if (!cardsContainer) {
-          console.warn('[CardsAnimation] Cards container not found');
           return;
         }
         
@@ -1683,8 +1678,6 @@
         
         cardsObserver = new IntersectionObserver(handleCardsIntersection, options);
         cardsObserver.observe(cardsContainer);
-        
-        console.log('[CardsAnimation] Observer setup complete');
       }
       
       /**
@@ -1695,7 +1688,6 @@
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
         if (prefersReducedMotion) {
-          console.log('[CardsAnimation] Reduced motion detected. Animation will be simplified.');
           // For reduced motion, immediately show cards without animation
           const section2 = document.querySelector(CARDS_CONFIG.SECTION2_SELECTOR);
           if (section2) {
@@ -1709,8 +1701,6 @@
         
         // Setup intersection observer
         setupCardsObserver();
-        
-        console.log('[CardsAnimation] Init complete');
       }
       
       // Initialize when DOM is ready
