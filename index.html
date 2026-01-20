@@ -981,6 +981,28 @@
       filter: none;
     }
     
+    /* Transition overlay for depth push effect */
+    #depthTransitionOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 500;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--depth-transition-duration) var(--depth-transition-easing),
+                  visibility var(--depth-transition-duration) var(--depth-transition-easing);
+    }
+    
+    /* Overlay visible during transition with low opacity */
+    #depthTransitionOverlay.overlay-active {
+      opacity: 0.15;
+      visibility: visible;
+    }
+    
     /* Reduced Motion Support */
     @media (prefers-reduced-motion: reduce) {
       .hero,
@@ -1011,6 +1033,11 @@
       .section2-bg::before,
       .section2-bg::after {
         animation: none !important;
+      }
+      
+      /* Disable transition overlay for reduced motion */
+      #depthTransitionOverlay {
+        display: none !important;
       }
     }
   </style>
@@ -1075,6 +1102,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Depth Transition Overlay -->
+  <div id="depthTransitionOverlay"></div>
 
   <!-- Site Content -->
   <main id="siteContent">
@@ -1203,6 +1233,7 @@
       let hasDepthTriggered = false;
       let section2 = null;
       let heroSection = null;
+      let transitionOverlay = null;
       let lastScrollY = 0;
       let isScrollingDown = true;
       let heroObserver = null;
@@ -1217,6 +1248,11 @@
         hasDepthTriggered = true;
         console.log('[DepthPush] Transition triggered (scroll down from hero)');
         
+        // Show overlay with low opacity at the start of transition
+        if (transitionOverlay) {
+          transitionOverlay.classList.add('overlay-active');
+        }
+        
         // Phase 1: Push hero away with depth effect
         heroSection.classList.add('depth-out');
         
@@ -1230,6 +1266,14 @@
           section2.classList.add('section-visible');
           
           console.log('[DepthPush] Transition complete - Section 2 visible');
+          
+          // Phase 3: After section-2 animation completes, hide overlay
+          setTimeout(() => {
+            if (transitionOverlay) {
+              transitionOverlay.classList.remove('overlay-active');
+            }
+            console.log('[DepthPush] Overlay hidden - transition fully complete');
+          }, DEPTH_CONFIG.PUSH_DURATION);
         }, DEPTH_CONFIG.PUSH_DURATION);
       }
       
@@ -1240,6 +1284,11 @@
         if (!heroSection || !section2) return;
         
         console.log('[DepthPush] Resetting - scrolling back up');
+        
+        // Hide overlay immediately
+        if (transitionOverlay) {
+          transitionOverlay.classList.remove('overlay-active');
+        }
         
         // Hide section-2 naturally
         section2.classList.remove('section-visible');
@@ -1353,6 +1402,7 @@
         // Get elements
         section2 = document.querySelector(DEPTH_CONFIG.SECTION2_SELECTOR);
         heroSection = document.querySelector(DEPTH_CONFIG.HERO_SELECTOR);
+        transitionOverlay = document.getElementById('depthTransitionOverlay');
         
         if (!section2) {
           console.warn('[DepthPush] Section-2 element not found');
@@ -1362,6 +1412,10 @@
         if (!heroSection) {
           console.warn('[DepthPush] Hero section element not found');
           return;
+        }
+        
+        if (!transitionOverlay) {
+          console.warn('[DepthPush] Transition overlay element not found');
         }
         
         // Track scroll direction
