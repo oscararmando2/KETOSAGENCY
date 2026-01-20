@@ -998,7 +998,7 @@
     
     .wipe-overlay.wipe-on::before,
     .wipe-overlay.wipe-on::after {
-      animation: wipe-sweep 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      animation: wipe-sweep 1000ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
     
     @keyframes wipe-sweep {
@@ -1235,8 +1235,8 @@
       const WIPE_CONFIG = {
         HERO_SELECTOR: '.hero',
         SECTION2_SELECTOR: '#section-2',
-        WIPE_DURATION: 400, // Total wipe duration in ms
-        SECTION_SWAP_TIME: 200, // Midpoint for section swap
+        WIPE_DURATION: 1000, // Total wipe duration in ms
+        SECTION_SWAP_TIME: 500, // Midpoint for section swap
       };
       
       // State
