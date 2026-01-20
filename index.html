@@ -767,7 +767,8 @@
       transform: translateY(-150px) rotateX(45deg) rotateY(-15deg);
       transform-style: preserve-3d;
     }
-    .card:hover {
+    /* Only apply hover after animation completes */
+    .cards-container.cards-animated .card:hover {
       transform: translateY(-4px);
       background: rgba(42, 42, 42, 0.7);
       border-color: rgba(242, 242, 242, 0.1);
@@ -807,11 +808,6 @@
         opacity: 1;
         transform: translateY(0) rotateX(0deg) rotateY(0deg);
       }
-    }
-    
-    /* After animation completes, ensure cards stay static */
-    .cards-container.cards-animated .card {
-      animation-fill-mode: forwards;
     }
     .card-icon {
       font-size: 3rem;
@@ -898,8 +894,8 @@
         padding: 2rem 1.5rem;
       }
       
-      /* Lighter 3D effects on mobile */
-      @keyframes card-fall-in {
+      /* Lighter 3D effects on mobile - use separate animation name */
+      @keyframes card-fall-in-mobile {
         0% {
           opacity: 0;
           transform: translateY(-100px) rotateX(30deg) rotateY(-10deg);
@@ -915,6 +911,11 @@
           opacity: 1;
           transform: translateY(0) rotateX(0deg) rotateY(0deg);
         }
+      }
+      
+      /* Apply mobile animation on mobile devices */
+      .cards-container.cards-animated .card {
+        animation-name: card-fall-in-mobile;
       }
       
       /* Reduce animation intensity on mobile for better performance */
