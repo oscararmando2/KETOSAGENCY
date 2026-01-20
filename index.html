@@ -1743,7 +1743,8 @@
         
         const section2Rect = section2.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        const scrollProgress = -section2Rect.top / (section2.scrollHeight - viewportHeight);
+        const sectionHeight = section2Rect.height;
+        const scrollProgress = -section2Rect.top / (sectionHeight - viewportHeight);
         
         // Define thresholds for each step
         // Step 1: Main title appears when section enters viewport
