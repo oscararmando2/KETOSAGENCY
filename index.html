@@ -927,156 +927,83 @@
     }
 
     /* ========================================
-       CINEMATIC PORTAL TRANSITION
+       DEPTH PUSH TRANSITION
        ======================================== */
     
-    /* Portal Overlay - Fixed, non-blocking by default */
-    .portal-overlay {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(15, 15, 26, 0.95);
-      backdrop-filter: blur(0px);
-      -webkit-backdrop-filter: blur(0px);
-      pointer-events: none;
-      z-index: 9998;
-      
-      /* Initial hidden state */
+    :root {
+      --depth-transition-duration: 400ms;
+      --depth-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Hero section with depth push transition */
+    .hero {
+      transition: transform var(--depth-transition-duration) var(--depth-transition-easing), 
+                  filter var(--depth-transition-duration) var(--depth-transition-easing),
+                  opacity var(--depth-transition-duration) var(--depth-transition-easing);
+      transform-origin: center center;
+      will-change: transform, filter, opacity;
+    }
+    
+    /* Hero pushing away - depth effect */
+    .hero.depth-push-away {
+      transform: scale(0.85);
+      filter: blur(8px);
+      opacity: 0.3;
+    }
+    
+    /* Hero hidden after transition */
+    .hero.depth-hidden {
       opacity: 0;
       visibility: hidden;
+      transform: scale(0.85);
+      filter: blur(8px);
     }
     
-    /* Animated state when portal is active */
-    .portal-overlay.portal-active {
-      opacity: 1;
-      visibility: visible;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      animation: portalFadeIn 600ms ease-out forwards;
+    /* Section 2 emerging from depth */
+    .what-we-do {
+      transition: transform var(--depth-transition-duration) var(--depth-transition-easing),
+                  filter var(--depth-transition-duration) var(--depth-transition-easing),
+                  opacity var(--depth-transition-duration) var(--depth-transition-easing),
+                  visibility var(--depth-transition-duration) var(--depth-transition-easing);
+      transform-origin: center center;
+      will-change: transform, filter, opacity;
     }
     
-    /* Hiding state */
-    .portal-overlay.portal-hiding {
-      opacity: 0;
-      visibility: visible;
-      backdrop-filter: blur(0px);
-      -webkit-backdrop-filter: blur(0px);
-      animation: portalFadeOut 800ms ease-out forwards;
+    /* Section 2 initial state - hidden in depth */
+    .what-we-do:not(.section-visible) {
+      transform: scale(1.2);
+      filter: blur(10px);
     }
     
-    @keyframes portalFadeIn {
-      from {
-        opacity: 0;
-        backdrop-filter: blur(0px);
-        -webkit-backdrop-filter: blur(0px);
-      }
-      to {
-        opacity: 1;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-      }
+    /* Section 2 visible state - emerged from depth */
+    .what-we-do.section-visible {
+      transform: scale(1);
+      filter: none;
     }
     
-    @keyframes portalFadeOut {
-      from {
-        opacity: 1;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-      }
-      to {
-        opacity: 0;
-        backdrop-filter: blur(0px);
-        -webkit-backdrop-filter: blur(0px);
-      }
-    }
-    
-    /* Noise texture effect */
-    .portal-overlay::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      /* Subtle fractal noise texture for added visual interest */
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-      opacity: 0;
-      pointer-events: none;
-      animation: noiseFlicker 250ms ease-out forwards;
-    }
-    
-    .portal-overlay.portal-active::before {
-      opacity: 1;
-    }
-    
-    @keyframes noiseFlicker {
-      0%, 100% { opacity: 0; }
-      50% { opacity: 1; }
-    }
-    
-    /* Orange light sweep */
-    .portal-sweep {
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 107, 53, 0.1) 25%,
-        rgba(255, 107, 53, 0.4) 50%,
-        rgba(255, 107, 53, 0.1) 75%,
-        transparent 100%
-      );
-      pointer-events: none;
-      opacity: 0;
-    }
-    
-    .portal-overlay.portal-active .portal-sweep {
-      animation: sweepAnimation 800ms ease-out forwards;
-    }
-    
-    @keyframes sweepAnimation {
-      0% {
-        left: -100%;
-        opacity: 0;
-      }
-      20% {
-        opacity: 1;
-      }
-      80% {
-        opacity: 1;
-      }
-      100% {
-        left: 100%;
-        opacity: 0;
-      }
-    }
-    
-    /* Reduced Motion Support for Portal */
+    /* Reduced Motion Support */
     @media (prefers-reduced-motion: reduce) {
-      .portal-overlay {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        animation: none !important;
-        transition: opacity 150ms ease !important;
+      .hero,
+      .what-we-do {
+        transition: opacity 200ms ease !important;
+        transform: none !important;
+        filter: none !important;
       }
       
-      .portal-overlay.portal-active {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        animation: none !important;
+      .hero.depth-push-away,
+      .hero.depth-hidden {
+        transform: none !important;
+        filter: none !important;
       }
       
-      .portal-overlay.portal-hiding {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        animation: none !important;
+      .what-we-do:not(.section-visible) {
+        transform: none !important;
+        filter: none !important;
       }
       
-      .portal-overlay::before,
-      .portal-sweep {
-        display: none !important;
+      .what-we-do.section-visible {
+        transform: none !important;
+        filter: none !important;
       }
       
       /* Disable section-2 background animations for reduced motion */
@@ -1192,11 +1119,6 @@
     <!-- Aquí irán después las secciones de servicios, about, etc. -->
   </main>
 
-  <!-- Cinematic Portal Transition Overlay -->
-  <div class="portal-overlay" aria-hidden="true">
-    <div class="portal-sweep"></div>
-  </div>
-
   <script>
     // Cache-busting for Spline iframe
     const splineUrl = 'https://my.spline.design/nexbotrobotcharacterconcept-Zb5s4qJ7pgx5xVCSjat7oEDO/';
@@ -1264,24 +1186,21 @@
 
   <script>
     // ========================================
-    // CINEMATIC PORTAL TRANSITION
+    // DEPTH PUSH TRANSITION
     // ========================================
     
     (function() {
       'use strict';
       
       // Configuration
-      const PORTAL_CONFIG = {
+      const DEPTH_CONFIG = {
         HERO_SELECTOR: '.hero',
         SECTION2_SELECTOR: '#section-2',
-        PORTAL_OVERLAY_SELECTOR: '.portal-overlay',
-        SHOW_DURATION: 400, // Duration (in ms) for portal effect
-        FADE_OUT_DURATION: 300, // Duration for fade out animation
+        PUSH_DURATION: 400, // Duration (in ms) for depth push effect
       };
       
       // State
-      let hasPortalTriggered = false;
-      let portalOverlay = null;
+      let hasDepthTriggered = false;
       let section2 = null;
       let heroSection = null;
       let lastScrollY = 0;
@@ -1290,46 +1209,49 @@
       let section2Observer = null;
       
       /**
-       * Show the portal transition and then reveal section-2
+       * Execute depth push transition: Hero moves away, then Section 2 appears
        */
-      function showPortalAndSection2() {
-        if (!portalOverlay || !section2 || hasPortalTriggered) return;
+      function executeDepthPush() {
+        if (!heroSection || !section2 || hasDepthTriggered) return;
         
-        hasPortalTriggered = true;
-        console.log('[Portal] Cinematic transition triggered (scroll down from hero)');
+        hasDepthTriggered = true;
+        console.log('[DepthPush] Transition triggered (scroll down from hero)');
         
-        // Add active class to trigger portal animation
-        portalOverlay.classList.add('portal-active');
+        // Phase 1: Push hero away with depth effect
+        heroSection.classList.add('depth-push-away');
         
-        // After portal effect completes, hide portal and show section-2
+        // Phase 2: After hero push completes, hide it and show section-2
         setTimeout(() => {
-          hidePortal();
+          // Hide hero completely
+          heroSection.classList.add('depth-hidden');
+          heroSection.classList.remove('depth-push-away');
           
-          // Show section-2 after portal effect
-          setTimeout(() => {
-            section2.classList.add('section-visible');
-            console.log('[Portal] Section-2 now visible');
-          }, 100);
-        }, PORTAL_CONFIG.SHOW_DURATION);
+          // Show section-2 emerging from depth
+          section2.classList.add('section-visible');
+          
+          console.log('[DepthPush] Transition complete - Section 2 visible');
+        }, DEPTH_CONFIG.PUSH_DURATION);
       }
       
       /**
-       * Hide the portal transition
+       * Reset transition state for scroll up
        */
-      function hidePortal() {
-        if (!portalOverlay) return;
+      function resetDepthTransition() {
+        if (!heroSection || !section2) return;
         
-        // Remove active class and add hiding class
-        portalOverlay.classList.remove('portal-active');
-        portalOverlay.classList.add('portal-hiding');
+        console.log('[DepthPush] Resetting - scrolling back up');
         
-        // After fade out, clean up classes
-        setTimeout(() => {
-          if (portalOverlay) {
-            portalOverlay.classList.remove('portal-hiding');
-            console.log('[Portal] Transition complete');
-          }
-        }, PORTAL_CONFIG.FADE_OUT_DURATION);
+        // Hide section-2 naturally
+        section2.classList.remove('section-visible');
+        
+        // Show hero naturally (remove all depth classes)
+        heroSection.classList.remove('depth-push-away', 'depth-hidden');
+        
+        // Reset trigger state
+        hasDepthTriggered = false;
+        
+        // Re-setup hero observer
+        setupHeroObserver();
       }
       
       /**
@@ -1346,10 +1268,10 @@
        */
       function handleHeroIntersection(entries) {
         entries.forEach(entry => {
-          // When hero is leaving viewport downwards, trigger portal
-          if (!entry.isIntersecting && isScrollingDown && !hasPortalTriggered) {
-            console.log('[Portal] Hero section leaving viewport (scrolling down)');
-            showPortalAndSection2();
+          // When hero is leaving viewport downwards, trigger depth push
+          if (!entry.isIntersecting && isScrollingDown && !hasDepthTriggered) {
+            console.log('[DepthPush] Hero section leaving viewport (scrolling down)');
+            executeDepthPush();
             
             // Disconnect hero observer after trigger
             if (heroObserver) {
@@ -1365,18 +1287,11 @@
        */
       function handleSection2Intersection(entries) {
         entries.forEach(entry => {
-          if (!entry.isIntersecting && !isScrollingDown && hasPortalTriggered) {
+          if (!entry.isIntersecting && !isScrollingDown && hasDepthTriggered) {
             // When scrolling up from section-2 and it's leaving viewport
-            // Hide section-2 without portal effect
-            console.log('[Portal] Scrolling up from section-2, hiding it');
-            section2.classList.remove('section-visible');
-            
-            // Reset the trigger state to allow future transitions
-            hasPortalTriggered = false;
-            
-            // Re-setup hero observer
-            setupHeroObserver();
-          } else if (entry.isIntersecting && isScrollingDown && hasPortalTriggered) {
+            // Reset transition naturally without effect
+            resetDepthTransition();
+          } else if (entry.isIntersecting && isScrollingDown && hasDepthTriggered) {
             // If section-2 is visible and we're scrolling down, ensure it stays visible
             section2.classList.add('section-visible');
           }
@@ -1389,6 +1304,11 @@
       function setupHeroObserver() {
         if (!heroSection) return;
         
+        // Clear existing observer if any
+        if (heroObserver) {
+          heroObserver.disconnect();
+        }
+        
         const options = {
           root: null,
           threshold: 0.1,
@@ -1398,7 +1318,7 @@
         heroObserver = new IntersectionObserver(handleHeroIntersection, options);
         heroObserver.observe(heroSection);
         
-        console.log('[Portal] Hero observer setup');
+        console.log('[DepthPush] Hero observer setup');
       }
       
       /**
@@ -1416,37 +1336,31 @@
         section2Observer = new IntersectionObserver(handleSection2Intersection, options);
         section2Observer.observe(section2);
         
-        console.log('[Portal] Section-2 observer setup');
+        console.log('[DepthPush] Section-2 observer setup');
       }
       
       /**
-       * Initialize the portal transition system
+       * Initialize the depth push transition system
        */
-      function initPortal() {
+      function initDepthPush() {
         // Check for reduced motion preference
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
         if (prefersReducedMotion) {
-          console.log('[Portal] Reduced motion detected. Portal effects will be simplified.');
+          console.log('[DepthPush] Reduced motion detected. Transition effects will be simplified.');
         }
         
         // Get elements
-        portalOverlay = document.querySelector(PORTAL_CONFIG.PORTAL_OVERLAY_SELECTOR);
-        section2 = document.querySelector(PORTAL_CONFIG.SECTION2_SELECTOR);
-        heroSection = document.querySelector(PORTAL_CONFIG.HERO_SELECTOR);
-        
-        if (!portalOverlay) {
-          console.warn('[Portal] Portal overlay element not found');
-          return;
-        }
+        section2 = document.querySelector(DEPTH_CONFIG.SECTION2_SELECTOR);
+        heroSection = document.querySelector(DEPTH_CONFIG.HERO_SELECTOR);
         
         if (!section2) {
-          console.warn('[Portal] Section-2 element not found');
+          console.warn('[DepthPush] Section-2 element not found');
           return;
         }
         
         if (!heroSection) {
-          console.warn('[Portal] Hero section element not found');
+          console.warn('[DepthPush] Hero section element not found');
           return;
         }
         
@@ -1457,14 +1371,14 @@
         setupHeroObserver();
         setupSection2Observer();
         
-        console.log('[Portal] Init complete');
+        console.log('[DepthPush] Init complete');
       }
       
       // Initialize when DOM is ready
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPortal);
+        document.addEventListener('DOMContentLoaded', initDepthPush);
       } else {
-        initPortal();
+        initDepthPush();
       }
       
     })();
