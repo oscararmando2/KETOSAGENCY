@@ -594,7 +594,13 @@
           #3a86ff 60deg 90deg,
           #06ffa5 90deg 120deg,
           #ffbe0b 120deg 150deg,
-          #fb5607 150deg 180deg
+          #fb5607 150deg 180deg,
+          #ff006e 180deg 210deg,
+          #8338ec 210deg 240deg,
+          #3a86ff 240deg 270deg,
+          #06ffa5 270deg 300deg,
+          #ffbe0b 300deg 330deg,
+          #fb5607 330deg 360deg
         ),
         repeating-linear-gradient(
           45deg,
@@ -636,10 +642,7 @@
     .section2-bg::before {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       /* Dark overlay to improve text readability with animated patterns */
       background: 
         linear-gradient(135deg, rgba(15, 15, 26, 0.7) 0%, rgba(30, 30, 46, 0.7) 100%),
@@ -661,10 +664,7 @@
     .section2-bg::after {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: repeating-conic-gradient(
           from 90deg at 20% 80%,
           transparent 0deg,
