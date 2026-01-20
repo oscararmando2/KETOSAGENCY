@@ -1073,7 +1073,6 @@
       ></iframe>
       
       <div class="banner-overlay">
-        <a href="#" class="banner-title" id="bannerTitle" aria-label="Ir al contenido principal">KETOS</a>
         <div class="btn-wrapper">
           <button class="btn" id="startButton" aria-label="Comenzar - Ocultar banner y ver contenido">
             <svg class="btn-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
@@ -1170,7 +1169,6 @@
     const introBanner = document.getElementById('introBanner');
     const siteContent = document.getElementById('siteContent');
     const startButton = document.getElementById('startButton');
-    const bannerTitle = document.getElementById('bannerTitle');
     const header = document.querySelector('header');
     
     // TEMPORARILY DISABLED: Skip intro functionality (for development)
@@ -1213,14 +1211,6 @@
     
     // Click handlers
     startButton.addEventListener('click', hideBannerAndShowContent);
-    bannerTitle.addEventListener('click', hideBannerAndShowContent);
-    
-    // Keyboard support for Enter and Space keys on title (anchor element)
-    bannerTitle.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        hideBannerAndShowContent(e);
-      }
-    });
   </script>
 
   <script>
