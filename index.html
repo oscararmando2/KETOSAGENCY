@@ -150,9 +150,9 @@
       user-select: none;
       display: flex;
       justify-content: center;
-      padding: 0.5em 0.5em 0.5em 1.1em;
+      padding: 0.7em 0.7em 0.7em 1.3em;
       font-family: "Protest Guerrilla", sans-serif;
-      font-size: 1.2em;
+      font-size: 1.4em;
       font-weight: 400;
 
       background-color: var(--button-color);
@@ -224,6 +224,17 @@
         text-shadow var(--transition),
         opacity var(--transition);
     }
+    
+    /* Make space characters more visible */
+    .btn-letter {
+      margin-right: 0.05em;
+    }
+    
+    /* Extra space for actual space characters */
+    .txt-1 .btn-letter:nth-child(7),
+    .txt-1 .btn-letter:nth-child(14) {
+      margin-right: 0.4em;
+    }
 
     @keyframes letter-anim {
       50% {
@@ -280,22 +291,7 @@
         opacity: 1;
       }
     }
-    .btn:focus .txt-1 {
-      animation: opacity-anim 0.3s ease-in-out forwards;
-      animation-delay: 1s;
-    }
-    .btn:focus .txt-2 {
-      animation: opacity-anim 0.3s ease-in-out reverse forwards;
-      animation-delay: 1s;
-    }
-    @keyframes opacity-anim {
-      0% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-      }
-    }
+
 
     .btn:focus .btn-letter {
       animation:
@@ -1333,23 +1329,16 @@
               <span class="btn-letter">r</span>
               <span class="btn-letter">o</span>
               <span class="btn-letter"> </span>
-              <span class="btn-letter">c</span>
-              <span class="btn-letter">r</span>
-              <span class="btn-letter">e</span>
-              <span class="btn-letter">c</span>
-              <span class="btn-letter">e</span>
-              <span class="btn-letter">r</span>
-            </div>
-            <div class="txt-2">
               <span class="btn-letter">C</span>
               <span class="btn-letter">r</span>
               <span class="btn-letter">e</span>
               <span class="btn-letter">c</span>
-              <span class="btn-letter">i</span>
               <span class="btn-letter">e</span>
-              <span class="btn-letter">n</span>
-              <span class="btn-letter">d</span>
-              <span class="btn-letter">o</span>
+              <span class="btn-letter">r</span>
+              <span class="btn-letter"> </span>
+              <span class="btn-letter">-</span>
+              <span class="btn-letter">-</span>
+              <span class="btn-letter">></span>
             </div>
           </div>
         </button>
