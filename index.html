@@ -964,10 +964,10 @@
       transition: none;
       position: relative;
       z-index: 1;
-      /* Start hidden and rotated */
+      /* Start hidden and rotated - ready to flip in */
       opacity: 0;
       visibility: hidden;
-      transform: rotateX(90deg);
+      transform: rotateX(60deg);
       filter: blur(10px);
     }
     
@@ -1357,6 +1357,7 @@
         SECTION2_SELECTOR: '#section-2',
         FLIP_DURATION: 1000, // Total flip duration in ms
         FLIP_DELAY: 200, // Delay for section 2 flip in
+        CLEANUP_BUFFER: 100, // Extra time buffer for animation cleanup
       };
       
       // State
@@ -1389,7 +1390,7 @@
           section2.classList.add('section-visible');
           isTransitioning = false;
           console.log('[3DFlip] Transition complete');
-        }, FLIP_CONFIG.FLIP_DURATION + FLIP_CONFIG.FLIP_DELAY + 100);
+        }, FLIP_CONFIG.FLIP_DURATION + FLIP_CONFIG.FLIP_DELAY + FLIP_CONFIG.CLEANUP_BUFFER);
       }
       
       /**
