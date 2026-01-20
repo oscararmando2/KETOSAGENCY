@@ -927,12 +927,12 @@
     
     /* Hero flipping away state */
     .hero.hero-flipping {
-      animation: hero-flip-out 1000ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+      animation: hero-flip-out 1000ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
     }
     
     /* Hero back to normal (scroll up) */
     .hero.hero-flip-back {
-      animation: hero-flip-in 800ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+      animation: hero-flip-in 1000ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
     }
     
     /* Section 2 - back panel */
@@ -952,8 +952,7 @@
     
     /* Section 2 flipping in state */
     .what-we-do.section-flipping {
-      animation: section2-flip-in 1000ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-      animation-delay: 200ms;
+      animation: section2-flip-in 1000ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
     }
     
     /* Section 2 visible state */
@@ -967,7 +966,7 @@
     
     /* Section 2 flipping away (scroll up) */
     .what-we-do.section-flip-back {
-      animation: section2-flip-out 800ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+      animation: section2-flip-out 1000ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
     }
     
     /* Keyframes for Hero flip out */
@@ -976,17 +975,22 @@
         transform: rotateX(0deg) translateZ(0);
         opacity: 1;
         filter: blur(0);
+        visibility: visible;
       }
       50% {
-        transform: rotateX(-45deg) translateZ(-200px);
-        opacity: 0.5;
-        filter: blur(8px);
+        transform: rotateX(-90deg) translateZ(-400px);
+        opacity: 0;
+        filter: blur(12px);
+        visibility: visible;
+      }
+      51% {
+        visibility: hidden;
       }
       100% {
         transform: rotateX(-90deg) translateZ(-400px);
         opacity: 0;
         visibility: hidden;
-        filter: blur(15px);
+        filter: blur(12px);
       }
     }
     
@@ -995,18 +999,23 @@
       0% {
         transform: rotateX(-90deg) translateZ(-400px);
         opacity: 0;
-        filter: blur(15px);
-        visibility: visible;
+        filter: blur(12px);
+        visibility: hidden;
+      }
+      49% {
+        visibility: hidden;
       }
       50% {
-        transform: rotateX(-45deg) translateZ(-200px);
-        opacity: 0.5;
-        filter: blur(8px);
+        transform: rotateX(-90deg) translateZ(-400px);
+        opacity: 0;
+        filter: blur(12px);
+        visibility: visible;
       }
       100% {
         transform: rotateX(0deg) translateZ(0);
         opacity: 1;
         filter: blur(0);
+        visibility: visible;
       }
     }
     
@@ -1015,18 +1024,23 @@
       0% {
         transform: rotateX(90deg) translateZ(-400px);
         opacity: 0;
-        visibility: visible;
-        filter: blur(15px);
+        visibility: hidden;
+        filter: blur(12px);
+      }
+      49% {
+        visibility: hidden;
       }
       50% {
-        transform: rotateX(45deg) translateZ(-200px);
-        opacity: 0.5;
-        filter: blur(8px);
+        transform: rotateX(90deg) translateZ(-400px);
+        opacity: 0;
+        visibility: visible;
+        filter: blur(12px);
       }
       100% {
         transform: rotateX(0deg) translateZ(0);
         opacity: 1;
         filter: blur(0);
+        visibility: visible;
       }
     }
     
@@ -1036,17 +1050,22 @@
         transform: rotateX(0deg) translateZ(0);
         opacity: 1;
         filter: blur(0);
+        visibility: visible;
       }
       50% {
-        transform: rotateX(45deg) translateZ(-200px);
-        opacity: 0.5;
-        filter: blur(8px);
+        transform: rotateX(90deg) translateZ(-400px);
+        opacity: 0;
+        filter: blur(12px);
+        visibility: visible;
+      }
+      51% {
+        visibility: hidden;
       }
       100% {
         transform: rotateX(90deg) translateZ(-400px);
         opacity: 0;
         visibility: hidden;
-        filter: blur(15px);
+        filter: blur(12px);
       }
     }
     
@@ -1061,17 +1080,22 @@
           transform: rotateX(0deg) translateZ(0);
           opacity: 1;
           filter: blur(0);
+          visibility: visible;
         }
         50% {
-          transform: rotateX(-30deg) translateZ(-100px);
-          opacity: 0.6;
-          filter: blur(4px);
+          transform: rotateX(-60deg) translateZ(-200px);
+          opacity: 0;
+          filter: blur(6px);
+          visibility: visible;
+        }
+        51% {
+          visibility: hidden;
         }
         100% {
           transform: rotateX(-60deg) translateZ(-200px);
           opacity: 0;
           visibility: hidden;
-          filter: blur(8px);
+          filter: blur(6px);
         }
       }
       
@@ -1079,18 +1103,23 @@
         0% {
           transform: rotateX(-60deg) translateZ(-200px);
           opacity: 0;
-          filter: blur(8px);
-          visibility: visible;
+          filter: blur(6px);
+          visibility: hidden;
+        }
+        49% {
+          visibility: hidden;
         }
         50% {
-          transform: rotateX(-30deg) translateZ(-100px);
-          opacity: 0.6;
-          filter: blur(4px);
+          transform: rotateX(-60deg) translateZ(-200px);
+          opacity: 0;
+          filter: blur(6px);
+          visibility: visible;
         }
         100% {
           transform: rotateX(0deg) translateZ(0);
           opacity: 1;
           filter: blur(0);
+          visibility: visible;
         }
       }
       
@@ -1098,18 +1127,23 @@
         0% {
           transform: rotateX(60deg) translateZ(-200px);
           opacity: 0;
-          visibility: visible;
-          filter: blur(8px);
+          visibility: hidden;
+          filter: blur(6px);
+        }
+        49% {
+          visibility: hidden;
         }
         50% {
-          transform: rotateX(30deg) translateZ(-100px);
-          opacity: 0.6;
-          filter: blur(4px);
+          transform: rotateX(60deg) translateZ(-200px);
+          opacity: 0;
+          visibility: visible;
+          filter: blur(6px);
         }
         100% {
           transform: rotateX(0deg) translateZ(0);
           opacity: 1;
           filter: blur(0);
+          visibility: visible;
         }
       }
       
@@ -1118,17 +1152,22 @@
           transform: rotateX(0deg) translateZ(0);
           opacity: 1;
           filter: blur(0);
+          visibility: visible;
         }
         50% {
-          transform: rotateX(30deg) translateZ(-100px);
-          opacity: 0.6;
-          filter: blur(4px);
+          transform: rotateX(60deg) translateZ(-200px);
+          opacity: 0;
+          filter: blur(6px);
+          visibility: visible;
+        }
+        51% {
+          visibility: hidden;
         }
         100% {
           transform: rotateX(60deg) translateZ(-200px);
           opacity: 0;
           visibility: hidden;
-          filter: blur(8px);
+          filter: blur(6px);
         }
       }
     }
@@ -1335,8 +1374,7 @@
         HERO_SELECTOR: '.hero',
         SECTION2_SELECTOR: '#section-2',
         FLIP_DURATION: 1000, // Total flip duration in ms
-        FLIP_DELAY: 200, // Delay for section 2 flip in
-        REVERSE_FLIP_DURATION: 800, // Duration for reverse flip (scroll up)
+        REVERSE_FLIP_DURATION: 1000, // Duration for reverse flip (scroll up) - same as forward
         CLEANUP_BUFFER: 100, // Extra time buffer for animation cleanup
       };
       
@@ -1370,7 +1408,7 @@
           section2.classList.add('section-visible');
           isTransitioning = false;
           console.log('[3DFlip] Transition complete');
-        }, FLIP_CONFIG.FLIP_DURATION + FLIP_CONFIG.FLIP_DELAY + FLIP_CONFIG.CLEANUP_BUFFER);
+        }, FLIP_CONFIG.FLIP_DURATION + FLIP_CONFIG.CLEANUP_BUFFER);
       }
       
       /**
@@ -1397,7 +1435,7 @@
           hasTriggered = false;
           isTransitioning = false;
           console.log('[3DFlip] Reset complete');
-        }, FLIP_CONFIG.REVERSE_FLIP_DURATION);
+        }, FLIP_CONFIG.REVERSE_FLIP_DURATION + FLIP_CONFIG.CLEANUP_BUFFER);
       }
       
       /**
