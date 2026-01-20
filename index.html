@@ -927,105 +927,119 @@
     }
 
     /* ========================================
-       DEPTH PUSH TRANSITION
+       AGGRESSIVE CINEMATIC WIPE TRANSITION
        ======================================== */
     
-    :root {
-      --depth-transition-duration: 400ms;
-      --depth-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    /* Hero section with depth push transition */
-    .hero {
-      transition: transform var(--depth-transition-duration) var(--depth-transition-easing), 
-                  filter var(--depth-transition-duration) var(--depth-transition-easing),
-                  opacity var(--depth-transition-duration) var(--depth-transition-easing);
-      transform-origin: center center;
-      will-change: transform, filter, opacity;
-    }
-    
-    /* Hero pushing away - depth effect */
-    .hero.depth-out {
-      transform: scale(0.92);
-      filter: blur(8px);
-      opacity: 0;
-    }
-    
-    /* Hero hidden after transition */
-    .hero.depth-hidden {
-      opacity: 0;
-      visibility: hidden;
-      transform: scale(0.92);
-      filter: blur(8px);
-    }
-    
-    /* Section 2 emerging from depth */
-    .what-we-do {
-      transition: transform var(--depth-transition-duration) var(--depth-transition-easing),
-                  filter var(--depth-transition-duration) var(--depth-transition-easing),
-                  opacity var(--depth-transition-duration) var(--depth-transition-easing),
-                  visibility var(--depth-transition-duration) var(--depth-transition-easing);
-      transform-origin: center center;
-      will-change: transform, filter, opacity;
-    }
-    
-    /* Section 2 initial state - hidden in depth */
-    .what-we-do:not(.section-visible) {
-      transform: scale(1.05);
-      filter: blur(8px);
-    }
-    
-    /* Section 2 visible state - emerged from depth */
-    .what-we-do.section-visible {
-      transform: scale(1);
-      filter: none;
-    }
-    
-    /* Transition overlay for depth push effect */
-    #depthTransitionOverlay {
+    /* Wipe overlay - fixed full screen container */
+    .wipe-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      z-index: 500;
+      inset: 0;
+      z-index: 9999;
       pointer-events: none;
       opacity: 0;
       visibility: hidden;
-      transition: opacity var(--depth-transition-duration) var(--depth-transition-easing),
-                  visibility var(--depth-transition-duration) var(--depth-transition-easing);
+      overflow: hidden;
     }
     
-    /* Overlay visible during transition with low opacity */
-    #depthTransitionOverlay.overlay-active {
-      opacity: 0.15;
+    /* Diagonal wipe effect with aggressive orange */
+    .wipe-overlay::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -120%;
+      width: 150%;
+      height: 140%;
+      background: linear-gradient(
+        110deg,
+        rgba(0, 0, 0, 0.95) 0%,
+        rgba(0, 0, 0, 0.98) 15%,
+        rgba(255, 60, 20, 0.4) 30%,
+        #ff6b35 48%,
+        #ff8c5e 50%,
+        #ff6b35 52%,
+        rgba(255, 60, 20, 0.4) 70%,
+        rgba(0, 0, 0, 0.98) 85%,
+        rgba(0, 0, 0, 0.95) 100%
+      );
+      filter: blur(3px);
+      box-shadow: 
+        0 0 80px 40px rgba(255, 107, 53, 0.6),
+        inset 0 0 120px 60px rgba(255, 107, 53, 0.3);
+      transform: translateX(0) skewX(-15deg);
+    }
+    
+    /* Bright highlight line effect */
+    .wipe-overlay::after {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -120%;
+      width: 150%;
+      height: 140%;
+      background: linear-gradient(
+        110deg,
+        transparent 0%,
+        transparent 48%,
+        rgba(255, 200, 150, 0.9) 49.5%,
+        rgba(255, 255, 255, 1) 50%,
+        rgba(255, 200, 150, 0.9) 50.5%,
+        transparent 52%,
+        transparent 100%
+      );
+      transform: translateX(0) skewX(-15deg);
+      mix-blend-mode: screen;
+    }
+    
+    /* Active state - wipe animation */
+    .wipe-overlay.wipe-on {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .wipe-overlay.wipe-on::before,
+    .wipe-overlay.wipe-on::after {
+      animation: wipe-sweep 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    @keyframes wipe-sweep {
+      0% {
+        transform: translateX(0) skewX(-15deg);
+      }
+      100% {
+        transform: translateX(240%) skewX(-15deg);
+      }
+    }
+    
+    /* Hero section states */
+    .hero {
+      transition: opacity 0.1s ease, visibility 0.1s ease;
+    }
+    
+    .hero.hero-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    /* Section 2 states */
+    .what-we-do {
+      transition: opacity 0.1s ease, visibility 0.1s ease;
+    }
+    
+    .what-we-do.section-visible {
+      opacity: 1;
       visibility: visible;
     }
     
     /* Reduced Motion Support */
     @media (prefers-reduced-motion: reduce) {
-      .hero,
-      .what-we-do {
-        transition: opacity 200ms ease !important;
-        transform: none !important;
-        filter: none !important;
+      .wipe-overlay,
+      .wipe-overlay::before,
+      .wipe-overlay::after {
+        animation: none !important;
       }
       
-      .hero.depth-out,
-      .hero.depth-hidden {
-        transform: none !important;
-        filter: none !important;
-      }
-      
-      .what-we-do:not(.section-visible) {
-        transform: none !important;
-        filter: none !important;
-      }
-      
-      .what-we-do.section-visible {
-        transform: none !important;
-        filter: none !important;
+      .wipe-overlay.wipe-on {
+        display: none !important;
       }
       
       /* Disable section-2 background animations for reduced motion */
@@ -1033,11 +1047,6 @@
       .section2-bg::before,
       .section2-bg::after {
         animation: none !important;
-      }
-      
-      /* Disable transition overlay for reduced motion */
-      #depthTransitionOverlay {
-        display: none !important;
       }
     }
   </style>
@@ -1103,8 +1112,8 @@
     </div>
   </div>
 
-  <!-- Depth Transition Overlay -->
-  <div id="depthTransitionOverlay"></div>
+  <!-- Cinematic Wipe Overlay -->
+  <div class="wipe-overlay"></div>
 
   <!-- Site Content -->
   <main id="siteContent">
@@ -1216,91 +1225,88 @@
 
   <script>
     // ========================================
-    // DEPTH PUSH TRANSITION
+    // AGGRESSIVE CINEMATIC WIPE TRANSITION
     // ========================================
     
     (function() {
       'use strict';
       
       // Configuration
-      const DEPTH_CONFIG = {
+      const WIPE_CONFIG = {
         HERO_SELECTOR: '.hero',
         SECTION2_SELECTOR: '#section-2',
-        PUSH_DURATION: 400, // Duration (in ms) for depth push effect
+        WIPE_DURATION: 400, // Total wipe duration in ms
+        SECTION_SWAP_TIME: 200, // Midpoint for section swap
       };
       
       // State
-      let hasDepthTriggered = false;
+      let hasTriggered = false;
+      let isTransitioning = false;
       let section2 = null;
       let heroSection = null;
-      let transitionOverlay = null;
+      let wipeOverlay = null;
       let lastScrollY = 0;
-      let isScrollingDown = true;
-      let heroObserver = null;
       let section2Observer = null;
+      let heroObserver = null;
       
       /**
-       * Execute depth push transition: Hero moves away, then Section 2 appears
+       * Execute aggressive cinematic wipe transition
        */
-      function executeDepthPush() {
-        if (!heroSection || !section2 || hasDepthTriggered) return;
+      function executeCinematicWipe() {
+        if (!heroSection || !section2 || hasTriggered || isTransitioning) return;
         
-        hasDepthTriggered = true;
-        console.log('[DepthPush] Transition triggered (scroll down from hero)');
+        hasTriggered = true;
+        isTransitioning = true;
+        console.log('[CinematicWipe] Transition triggered (scroll down)');
         
-        // Show overlay with low opacity at the start of transition
-        if (transitionOverlay) {
-          transitionOverlay.classList.add('overlay-active');
+        // Start wipe animation
+        if (wipeOverlay) {
+          wipeOverlay.classList.add('wipe-on');
         }
         
-        // Phase 1: Push hero away with depth effect
-        heroSection.classList.add('depth-out');
-        
-        // Phase 2: After hero push completes, hide it and show section-2
+        // At midpoint: swap sections
         setTimeout(() => {
           // Hide hero completely
-          heroSection.classList.add('depth-hidden');
-          heroSection.classList.remove('depth-out');
+          heroSection.classList.add('hero-hidden');
           
-          // Show section-2 emerging from depth
+          // Show section-2
           section2.classList.add('section-visible');
           
-          console.log('[DepthPush] Transition complete - Section 2 visible');
-          
-          // Phase 3: After section-2 animation completes, hide overlay
-          setTimeout(() => {
-            if (transitionOverlay) {
-              transitionOverlay.classList.remove('overlay-active');
-            }
-            console.log('[DepthPush] Overlay hidden - transition fully complete');
-          }, DEPTH_CONFIG.PUSH_DURATION);
-        }, DEPTH_CONFIG.PUSH_DURATION);
+          console.log('[CinematicWipe] Section swap complete (midpoint)');
+        }, WIPE_CONFIG.SECTION_SWAP_TIME);
+        
+        // After wipe completes: cleanup
+        setTimeout(() => {
+          if (wipeOverlay) {
+            wipeOverlay.classList.remove('wipe-on');
+          }
+          isTransitioning = false;
+          console.log('[CinematicWipe] Transition complete');
+        }, WIPE_CONFIG.WIPE_DURATION);
       }
       
       /**
-       * Reset transition state for scroll up
+       * Reset transition state for scroll up (natural, no effect)
        */
-      function resetDepthTransition() {
+      function resetTransition() {
         if (!heroSection || !section2) return;
         
-        console.log('[DepthPush] Resetting - scrolling back up');
+        console.log('[CinematicWipe] Resetting - scrolling back up (natural)');
         
-        // Hide overlay immediately
-        if (transitionOverlay) {
-          transitionOverlay.classList.remove('overlay-active');
+        // Remove wipe overlay immediately if active
+        if (wipeOverlay) {
+          wipeOverlay.classList.remove('wipe-on');
         }
         
         // Hide section-2 naturally
         section2.classList.remove('section-visible');
         
-        // Show hero naturally (remove all depth classes)
-        heroSection.classList.remove('depth-out', 'depth-hidden');
+        // Show hero naturally
+        heroSection.classList.remove('hero-hidden');
         
         // Reset trigger state
-        hasDepthTriggered = false;
-        
-        // Re-setup hero observer
-        setupHeroObserver();
+        hasTriggered = false;
+        isTransitioning = false;
       }
       
       /**
@@ -1308,41 +1314,37 @@
        */
       function updateScrollDirection() {
         const currentScrollY = window.scrollY || window.pageYOffset;
-        isScrollingDown = currentScrollY > lastScrollY;
+        const isScrollingDown = currentScrollY > lastScrollY;
         lastScrollY = currentScrollY;
+        return isScrollingDown;
       }
       
       /**
-       * Handle hero section intersection
+       * Handle hero section intersection for scroll up behavior
        */
       function handleHeroIntersection(entries) {
         entries.forEach(entry => {
-          // When hero is leaving viewport downwards, trigger depth push
-          if (!entry.isIntersecting && isScrollingDown && !hasDepthTriggered) {
-            console.log('[DepthPush] Hero section leaving viewport (scrolling down)');
-            executeDepthPush();
-            
-            // Disconnect hero observer after trigger
-            if (heroObserver) {
-              heroObserver.disconnect();
-              heroObserver = null;
-            }
+          const isScrollingDown = updateScrollDirection();
+          
+          // When hero becomes visible while scrolling up and transition has been triggered
+          if (entry.isIntersecting && !isScrollingDown && hasTriggered && !isTransitioning) {
+            console.log('[CinematicWipe] Hero entering viewport (scrolling up)');
+            resetTransition();
           }
         });
       }
       
       /**
-       * Handle section-2 intersection for scroll up behavior
+       * Handle section-2 intersection
        */
       function handleSection2Intersection(entries) {
         entries.forEach(entry => {
-          if (!entry.isIntersecting && !isScrollingDown && hasDepthTriggered) {
-            // When scrolling up from section-2 and it's leaving viewport
-            // Reset transition naturally without effect
-            resetDepthTransition();
-          } else if (entry.isIntersecting && isScrollingDown && hasDepthTriggered) {
-            // If section-2 is visible and we're scrolling down, ensure it stays visible
-            section2.classList.add('section-visible');
+          const isScrollingDown = updateScrollDirection();
+          
+          // Trigger wipe when section-2 starts entering viewport on scroll down
+          if (entry.isIntersecting && isScrollingDown && !hasTriggered && !isTransitioning) {
+            console.log('[CinematicWipe] Section-2 entering viewport (scrolling down)');
+            executeCinematicWipe();
           }
         });
       }
@@ -1360,14 +1362,14 @@
         
         const options = {
           root: null,
-          threshold: 0.1,
+          threshold: 0.2, // Trigger when 20% of hero is visible
           rootMargin: '0px',
         };
         
         heroObserver = new IntersectionObserver(handleHeroIntersection, options);
         heroObserver.observe(heroSection);
         
-        console.log('[DepthPush] Hero observer setup');
+        console.log('[CinematicWipe] Hero observer setup');
       }
       
       /**
@@ -1376,63 +1378,69 @@
       function setupSection2Observer() {
         if (!section2) return;
         
+        // Clear existing observer if any
+        if (section2Observer) {
+          section2Observer.disconnect();
+        }
+        
         const options = {
           root: null,
-          threshold: 0.3,
+          threshold: 0.1, // Trigger when 10% of section-2 is visible
           rootMargin: '0px',
         };
         
         section2Observer = new IntersectionObserver(handleSection2Intersection, options);
         section2Observer.observe(section2);
         
-        console.log('[DepthPush] Section-2 observer setup');
+        console.log('[CinematicWipe] Section-2 observer setup');
       }
       
       /**
-       * Initialize the depth push transition system
+       * Initialize the cinematic wipe transition system
        */
-      function initDepthPush() {
+      function initCinematicWipe() {
         // Check for reduced motion preference
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
         if (prefersReducedMotion) {
-          console.log('[DepthPush] Reduced motion detected. Transition effects will be simplified.');
+          console.log('[CinematicWipe] Reduced motion detected. Transition will be simplified.');
         }
         
         // Get elements
-        section2 = document.querySelector(DEPTH_CONFIG.SECTION2_SELECTOR);
-        heroSection = document.querySelector(DEPTH_CONFIG.HERO_SELECTOR);
-        transitionOverlay = document.getElementById('depthTransitionOverlay');
+        section2 = document.querySelector(WIPE_CONFIG.SECTION2_SELECTOR);
+        heroSection = document.querySelector(WIPE_CONFIG.HERO_SELECTOR);
+        wipeOverlay = document.querySelector('.wipe-overlay');
         
         if (!section2) {
-          console.warn('[DepthPush] Section-2 element not found');
+          console.warn('[CinematicWipe] Section-2 element not found');
           return;
         }
         
         if (!heroSection) {
-          console.warn('[DepthPush] Hero section element not found');
+          console.warn('[CinematicWipe] Hero section element not found');
           return;
         }
         
-        if (!transitionOverlay) {
-          console.warn('[DepthPush] Transition overlay element not found');
+        if (!wipeOverlay) {
+          console.warn('[CinematicWipe] Wipe overlay element not found');
+          return;
         }
         
-        // Track scroll direction
-        window.addEventListener('scroll', updateScrollDirection, { passive: true });
+        // Initialize scroll tracking
+        lastScrollY = window.scrollY || window.pageYOffset;
         
         // Setup intersection observers
         setupHeroObserver();
         setupSection2Observer();
         
-        console.log('[DepthPush] Init complete');
+        console.log('[CinematicWipe] Init complete');
       }
       
       // Initialize when DOM is ready
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initDepthPush);
+        document.addEventListener('DOMContentLoaded', initCinematicWipe);
       } else {
-        initDepthPush();
+        initCinematicWipe();
       }
       
     })();
