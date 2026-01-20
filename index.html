@@ -809,23 +809,6 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
     
-    /* DEPRECATED: Old cards animation system - replaced with individual reveals */
-    /* Keeping for backwards compatibility but not used */
-    .cards-container.cards-animated .card {
-      /* No longer used - individual .revealed class used instead */
-    }
-    
-    /* Staggered delays for each card - NOT USED with new system */
-    .cards-container.cards-animated .card:nth-child(1) {
-      /* Removed - individual reveals handle timing */
-    }
-    .cards-container.cards-animated .card:nth-child(2) {
-      /* Removed - individual reveals handle timing */
-    }
-    .cards-container.cards-animated .card:nth-child(3) {
-      /* Removed - individual reveals handle timing */
-    }
-    
     /* 3D falling entrance keyframes */
     @keyframes card-fall-in {
       0% {
@@ -1404,24 +1387,24 @@
       
       <!-- Content wrapper -->
       <div class="section2-content">
-        <h2 class="main-title" data-reveal-step="1">No hacemos marketing.</h2>
-        <h2 class="subtitle" data-reveal-step="2">Creamos máquinas de crecimiento.</h2>
-        <p class="description" data-reveal-step="2">Estrategia, IA y creatividad enfocadas en resultados medibles.</p>
+        <h2 class="main-title">No hacemos marketing.</h2>
+        <h2 class="subtitle">Creamos máquinas de crecimiento.</h2>
+        <p class="description">Estrategia, IA y creatividad enfocadas en resultados medibles.</p>
         
         <div class="cards-container">
-          <div class="card" data-reveal-step="3">
+          <div class="card">
             <span class="card-icon">📈</span>
             <h3>Estrategia</h3>
             <p>Decisiones que generan dinero, no presentaciones.</p>
           </div>
           
-          <div class="card" data-reveal-step="4">
+          <div class="card">
             <span class="card-icon">🧠</span>
             <h3>IA & Automatización</h3>
             <p>Escala más rápido con menos fricción.</p>
           </div>
           
-          <div class="card" data-reveal-step="5">
+          <div class="card">
             <span class="card-icon">🎨</span>
             <h3>Creatividad</h3>
             <p>Diseño que impacta y convierte.</p>
@@ -1730,7 +1713,6 @@
       function revealElement(element, step) {
         if (!element || revealedSteps.has(step)) return;
         
-        console.log(`[ProgressiveReveal] Revealing step ${step}`);
         element.classList.add('revealed');
         revealedSteps.add(step);
       }
@@ -1779,7 +1761,9 @@
        */
       let scrollTimeout = null;
       function handleScroll() {
-        if (scrollTimeout) return;
+        if (scrollTimeout) {
+          clearTimeout(scrollTimeout);
+        }
         
         scrollTimeout = setTimeout(() => {
           updateRevealSteps();
@@ -1796,10 +1780,7 @@
         
         // Get elements
         section2 = document.querySelector(REVEAL_CONFIG.SECTION2_SELECTOR);
-        if (!section2) {
-          console.warn('[ProgressiveReveal] Section-2 element not found');
-          return;
-        }
+        if (!section2) return;
         
         mainTitle = section2.querySelector(REVEAL_CONFIG.MAIN_TITLE_SELECTOR);
         subtitle = section2.querySelector(REVEAL_CONFIG.SUBTITLE_SELECTOR);
@@ -1808,7 +1789,6 @@
         
         if (prefersReducedMotion) {
           // For reduced motion, immediately show all elements
-          console.log('[ProgressiveReveal] Reduced motion detected. Showing all elements.');
           [mainTitle, subtitle, description, ...cards].forEach(el => {
             if (el) el.classList.add('revealed');
           });
@@ -1820,8 +1800,6 @@
         
         // Initial check in case section is already in view
         updateRevealSteps();
-        
-        console.log('[ProgressiveReveal] Init complete');
       }
       
       // Initialize when DOM is ready
