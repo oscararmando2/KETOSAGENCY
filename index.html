@@ -930,11 +930,16 @@
        DEPTH PUSH TRANSITION
        ======================================== */
     
+    :root {
+      --depth-transition-duration: 400ms;
+      --depth-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
     /* Hero section with depth push transition */
     .hero {
-      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1), 
-                  filter 400ms cubic-bezier(0.4, 0, 0.2, 1),
-                  opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform var(--depth-transition-duration) var(--depth-transition-easing), 
+                  filter var(--depth-transition-duration) var(--depth-transition-easing),
+                  opacity var(--depth-transition-duration) var(--depth-transition-easing);
       transform-origin: center center;
       will-change: transform, filter, opacity;
     }
@@ -956,10 +961,10 @@
     
     /* Section 2 emerging from depth */
     .what-we-do {
-      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
-                  filter 400ms cubic-bezier(0.4, 0, 0.2, 1),
-                  opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
-                  visibility 400ms;
+      transition: transform var(--depth-transition-duration) var(--depth-transition-easing),
+                  filter var(--depth-transition-duration) var(--depth-transition-easing),
+                  opacity var(--depth-transition-duration) var(--depth-transition-easing),
+                  visibility var(--depth-transition-duration) var(--depth-transition-easing);
       transform-origin: center center;
       will-change: transform, filter, opacity;
     }
@@ -973,7 +978,7 @@
     /* Section 2 visible state - emerged from depth */
     .what-we-do.section-visible {
       transform: scale(1);
-      filter: blur(0px);
+      filter: none;
     }
     
     /* Reduced Motion Support */
