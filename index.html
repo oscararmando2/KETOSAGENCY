@@ -1734,23 +1734,23 @@
           revealElement(mainTitle, 1);
         }
         
-        // Step 2: Subtitle and description appear after scrolling ~20%
+        // Step 2: Subtitle and description appear after scrolling 15%
         if (scrollProgress >= 0.15 && !revealedSteps.has(2)) {
           revealElement(subtitle, 2);
           revealElement(description, 2);
         }
         
-        // Step 3: Card 1 appears after scrolling ~35%
+        // Step 3: Card 1 appears after scrolling 30%
         if (scrollProgress >= 0.30 && !revealedSteps.has(3)) {
           if (cards[0]) revealElement(cards[0], 3);
         }
         
-        // Step 4: Card 2 appears after scrolling ~50%
+        // Step 4: Card 2 appears after scrolling 45%
         if (scrollProgress >= 0.45 && !revealedSteps.has(4)) {
           if (cards[1]) revealElement(cards[1], 4);
         }
         
-        // Step 5: Card 3 appears after scrolling ~65%
+        // Step 5: Card 3 appears after scrolling 60%
         if (scrollProgress >= 0.60 && !revealedSteps.has(5)) {
           if (cards[2]) revealElement(cards[2], 5);
         }
