@@ -135,23 +135,6 @@
       pointer-events: auto;
     }
     
-    .banner-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: white;
-      cursor: pointer;
-      background: linear-gradient(90deg, #ff6b35, #ff8c5e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-decoration: none;
-      display: inline-block;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-    }
-    
-    .banner-title:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
-    }
     
     /* New Animated Button Styles */
     .btn-wrapper {
@@ -171,7 +154,7 @@
       justify-content: center;
       padding: 0.5em 0.5em 0.5em 1.1em;
       font-family: "Protest Guerrilla", sans-serif;
-      font-size: 1em;
+      font-size: 1.2em;
       font-weight: 400;
 
       background-color: var(--button-color);
@@ -873,10 +856,6 @@
         gap: 0.75rem;
       }
       
-      .banner-title {
-        font-size: 1.5rem;
-      }
-      
       .btn-wrapper {
         transform: scale(0.9);
       }
@@ -927,119 +906,252 @@
     }
 
     /* ========================================
-       AGGRESSIVE CINEMATIC WIPE TRANSITION
+       3D FLIP CINEMATIC TRANSITION
        ======================================== */
     
-    /* Wipe overlay - fixed full screen container */
-    .wipe-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0;
-      visibility: hidden;
-      overflow: hidden;
+    /* 3D perspective container for flip effect */
+    #siteContent {
+      perspective: 2000px;
+      perspective-origin: 50% 50%;
     }
     
-    /* Diagonal wipe effect with aggressive orange */
-    .wipe-overlay::before {
-      content: '';
-      position: absolute;
-      top: -20%;
-      left: -120%;
-      width: 150%;
-      height: 140%;
-      background: linear-gradient(
-        110deg,
-        rgba(0, 0, 0, 0.95) 0%,
-        rgba(0, 0, 0, 0.98) 15%,
-        rgba(255, 60, 20, 0.4) 30%,
-        #ff6b35 48%,
-        #ff8c5e 50%,
-        #ff6b35 52%,
-        rgba(255, 60, 20, 0.4) 70%,
-        rgba(0, 0, 0, 0.98) 85%,
-        rgba(0, 0, 0, 0.95) 100%
-      );
-      filter: blur(3px);
-      box-shadow: 
-        0 0 80px 40px rgba(255, 107, 53, 0.6),
-        inset 0 0 120px 60px rgba(255, 107, 53, 0.3);
-      transform: translateX(0) skewX(-15deg);
-    }
-    
-    /* Bright highlight line effect */
-    .wipe-overlay::after {
-      content: '';
-      position: absolute;
-      top: -20%;
-      left: -120%;
-      width: 150%;
-      height: 140%;
-      background: linear-gradient(
-        110deg,
-        transparent 0%,
-        transparent 48%,
-        rgba(255, 200, 150, 0.9) 49.5%,
-        rgba(255, 255, 255, 1) 50%,
-        rgba(255, 200, 150, 0.9) 50.5%,
-        transparent 52%,
-        transparent 100%
-      );
-      transform: translateX(0) skewX(-15deg);
-      mix-blend-mode: screen;
-    }
-    
-    /* Active state - wipe animation */
-    .wipe-overlay.wipe-on {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    .wipe-overlay.wipe-on::before,
-    .wipe-overlay.wipe-on::after {
-      animation: wipe-sweep 1000ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-    
-    @keyframes wipe-sweep {
-      0% {
-        transform: translateX(0) skewX(-15deg);
-      }
-      100% {
-        transform: translateX(240%) skewX(-15deg);
-      }
-    }
-    
-    /* Hero section states */
+    /* Hero section - front panel */
     .hero {
-      transition: opacity 0.1s ease, visibility 0.1s ease;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      transform-origin: center center;
+      transition: none;
+      position: relative;
+      z-index: 2;
     }
     
-    .hero.hero-hidden {
+    /* Hero flipping away state */
+    .hero.hero-flipping {
+      animation: hero-flip-out 1000ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+    
+    /* Hero back to normal (scroll up) */
+    .hero.hero-flip-back {
+      animation: hero-flip-in 800ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+    
+    /* Section 2 - back panel */
+    .what-we-do {
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      transform-origin: center center;
+      transition: none;
+      position: relative;
+      z-index: 1;
+      /* Start hidden and rotated - ready to flip in */
       opacity: 0;
       visibility: hidden;
+      transform: rotateX(60deg);
+      filter: blur(10px);
     }
     
-    /* Section 2 states */
-    .what-we-do {
-      transition: opacity 0.1s ease, visibility 0.1s ease;
+    /* Section 2 flipping in state */
+    .what-we-do.section-flipping {
+      animation: section2-flip-in 1000ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+      animation-delay: 200ms;
     }
     
+    /* Section 2 visible state */
     .what-we-do.section-visible {
       opacity: 1;
       visibility: visible;
+      transform: rotateX(0deg);
+      filter: blur(0);
+      z-index: 2;
+    }
+    
+    /* Section 2 flipping away (scroll up) */
+    .what-we-do.section-flip-back {
+      animation: section2-flip-out 800ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+    
+    /* Keyframes for Hero flip out */
+    @keyframes hero-flip-out {
+      0% {
+        transform: rotateX(0deg) translateZ(0);
+        opacity: 1;
+        filter: blur(0);
+      }
+      50% {
+        transform: rotateX(-45deg) translateZ(-200px);
+        opacity: 0.5;
+        filter: blur(8px);
+      }
+      100% {
+        transform: rotateX(-90deg) translateZ(-400px);
+        opacity: 0;
+        visibility: hidden;
+        filter: blur(15px);
+      }
+    }
+    
+    /* Keyframes for Hero flip back in */
+    @keyframes hero-flip-in {
+      0% {
+        transform: rotateX(-90deg) translateZ(-400px);
+        opacity: 0;
+        filter: blur(15px);
+        visibility: visible;
+      }
+      50% {
+        transform: rotateX(-45deg) translateZ(-200px);
+        opacity: 0.5;
+        filter: blur(8px);
+      }
+      100% {
+        transform: rotateX(0deg) translateZ(0);
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+    
+    /* Keyframes for Section 2 flip in */
+    @keyframes section2-flip-in {
+      0% {
+        transform: rotateX(90deg) translateZ(-400px);
+        opacity: 0;
+        visibility: visible;
+        filter: blur(15px);
+      }
+      50% {
+        transform: rotateX(45deg) translateZ(-200px);
+        opacity: 0.5;
+        filter: blur(8px);
+      }
+      100% {
+        transform: rotateX(0deg) translateZ(0);
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+    
+    /* Keyframes for Section 2 flip out */
+    @keyframes section2-flip-out {
+      0% {
+        transform: rotateX(0deg) translateZ(0);
+        opacity: 1;
+        filter: blur(0);
+      }
+      50% {
+        transform: rotateX(45deg) translateZ(-200px);
+        opacity: 0.5;
+        filter: blur(8px);
+      }
+      100% {
+        transform: rotateX(90deg) translateZ(-400px);
+        opacity: 0;
+        visibility: hidden;
+        filter: blur(15px);
+      }
+    }
+    
+    /* Mobile responsive - lighter effects */
+    @media (max-width: 768px) {
+      #siteContent {
+        perspective: 1200px;
+      }
+      
+      @keyframes hero-flip-out {
+        0% {
+          transform: rotateX(0deg) translateZ(0);
+          opacity: 1;
+          filter: blur(0);
+        }
+        50% {
+          transform: rotateX(-30deg) translateZ(-100px);
+          opacity: 0.6;
+          filter: blur(4px);
+        }
+        100% {
+          transform: rotateX(-60deg) translateZ(-200px);
+          opacity: 0;
+          visibility: hidden;
+          filter: blur(8px);
+        }
+      }
+      
+      @keyframes hero-flip-in {
+        0% {
+          transform: rotateX(-60deg) translateZ(-200px);
+          opacity: 0;
+          filter: blur(8px);
+          visibility: visible;
+        }
+        50% {
+          transform: rotateX(-30deg) translateZ(-100px);
+          opacity: 0.6;
+          filter: blur(4px);
+        }
+        100% {
+          transform: rotateX(0deg) translateZ(0);
+          opacity: 1;
+          filter: blur(0);
+        }
+      }
+      
+      @keyframes section2-flip-in {
+        0% {
+          transform: rotateX(60deg) translateZ(-200px);
+          opacity: 0;
+          visibility: visible;
+          filter: blur(8px);
+        }
+        50% {
+          transform: rotateX(30deg) translateZ(-100px);
+          opacity: 0.6;
+          filter: blur(4px);
+        }
+        100% {
+          transform: rotateX(0deg) translateZ(0);
+          opacity: 1;
+          filter: blur(0);
+        }
+      }
+      
+      @keyframes section2-flip-out {
+        0% {
+          transform: rotateX(0deg) translateZ(0);
+          opacity: 1;
+          filter: blur(0);
+        }
+        50% {
+          transform: rotateX(30deg) translateZ(-100px);
+          opacity: 0.6;
+          filter: blur(4px);
+        }
+        100% {
+          transform: rotateX(60deg) translateZ(-200px);
+          opacity: 0;
+          visibility: hidden;
+          filter: blur(8px);
+        }
+      }
     }
     
     /* Reduced Motion Support */
     @media (prefers-reduced-motion: reduce) {
-      .wipe-overlay,
-      .wipe-overlay::before,
-      .wipe-overlay::after {
+      .hero,
+      .what-we-do {
         animation: none !important;
+        transition: opacity 0.3s ease, visibility 0.3s ease !important;
       }
       
-      .wipe-overlay.wipe-on {
-        display: none !important;
+      .hero.hero-flipping {
+        opacity: 0;
+        visibility: hidden;
+      }
+      
+      .what-we-do.section-flipping,
+      .what-we-do.section-visible {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        filter: none;
       }
       
       /* Disable section-2 background animations for reduced motion */
@@ -1073,7 +1185,6 @@
       ></iframe>
       
       <div class="banner-overlay">
-        <a href="#" class="banner-title" id="bannerTitle" aria-label="Ir al contenido principal">KETOS</a>
         <div class="btn-wrapper">
           <button class="btn" id="startButton" aria-label="Comenzar - Ocultar banner y ver contenido">
             <svg class="btn-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
@@ -1111,9 +1222,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Cinematic Wipe Overlay -->
-  <div class="wipe-overlay"></div>
 
   <!-- Site Content -->
   <main id="siteContent">
@@ -1170,7 +1278,6 @@
     const introBanner = document.getElementById('introBanner');
     const siteContent = document.getElementById('siteContent');
     const startButton = document.getElementById('startButton');
-    const bannerTitle = document.getElementById('bannerTitle');
     const header = document.querySelector('header');
     
     // TEMPORARILY DISABLED: Skip intro functionality (for development)
@@ -1213,30 +1320,24 @@
     
     // Click handlers
     startButton.addEventListener('click', hideBannerAndShowContent);
-    bannerTitle.addEventListener('click', hideBannerAndShowContent);
-    
-    // Keyboard support for Enter and Space keys on title (anchor element)
-    bannerTitle.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        hideBannerAndShowContent(e);
-      }
-    });
   </script>
 
   <script>
     // ========================================
-    // AGGRESSIVE CINEMATIC WIPE TRANSITION
+    // 3D FLIP CINEMATIC TRANSITION
     // ========================================
     
     (function() {
       'use strict';
       
       // Configuration
-      const WIPE_CONFIG = {
+      const FLIP_CONFIG = {
         HERO_SELECTOR: '.hero',
         SECTION2_SELECTOR: '#section-2',
-        WIPE_DURATION: 1000, // Total wipe duration in ms
-        SECTION_SWAP_TIME: 500, // Midpoint for section swap
+        FLIP_DURATION: 1000, // Total flip duration in ms
+        FLIP_DELAY: 200, // Delay for section 2 flip in
+        REVERSE_FLIP_DURATION: 800, // Duration for reverse flip (scroll up)
+        CLEANUP_BUFFER: 100, // Extra time buffer for animation cleanup
       };
       
       // State
@@ -1244,69 +1345,59 @@
       let isTransitioning = false;
       let section2 = null;
       let heroSection = null;
-      let wipeOverlay = null;
       let lastScrollY = 0;
       let section2Observer = null;
       let heroObserver = null;
       
       /**
-       * Execute aggressive cinematic wipe transition
+       * Execute 3D flip transition
        */
-      function executeCinematicWipe() {
+      function execute3DFlip() {
         if (!heroSection || !section2 || hasTriggered || isTransitioning) return;
         
         hasTriggered = true;
         isTransitioning = true;
-        console.log('[CinematicWipe] Transition triggered (scroll down)');
+        console.log('[3DFlip] Transition triggered (scroll down)');
         
-        // Start wipe animation
-        if (wipeOverlay) {
-          wipeOverlay.classList.add('wipe-on');
-        }
+        // Start flip animation
+        heroSection.classList.add('hero-flipping');
+        section2.classList.add('section-flipping');
         
-        // At midpoint: swap sections
+        // After flip completes: cleanup and set final states
         setTimeout(() => {
-          // Hide hero completely
-          heroSection.classList.add('hero-hidden');
-          
-          // Show section-2
+          heroSection.classList.remove('hero-flipping');
+          section2.classList.remove('section-flipping');
           section2.classList.add('section-visible');
-          
-          console.log('[CinematicWipe] Section swap complete (midpoint)');
-        }, WIPE_CONFIG.SECTION_SWAP_TIME);
-        
-        // After wipe completes: cleanup
-        setTimeout(() => {
-          if (wipeOverlay) {
-            wipeOverlay.classList.remove('wipe-on');
-          }
           isTransitioning = false;
-          console.log('[CinematicWipe] Transition complete');
-        }, WIPE_CONFIG.WIPE_DURATION);
+          console.log('[3DFlip] Transition complete');
+        }, FLIP_CONFIG.FLIP_DURATION + FLIP_CONFIG.FLIP_DELAY + FLIP_CONFIG.CLEANUP_BUFFER);
       }
       
       /**
-       * Reset transition state for scroll up (natural, no effect)
+       * Reset transition state for scroll up with reverse flip
        */
       function resetTransition() {
         if (!heroSection || !section2) return;
         
-        console.log('[CinematicWipe] Resetting - scrolling back up (natural)');
+        console.log('[3DFlip] Resetting - scrolling back up with reverse flip');
         
-        // Remove wipe overlay immediately if active
-        if (wipeOverlay) {
-          wipeOverlay.classList.remove('wipe-on');
-        }
+        isTransitioning = true;
         
-        // Hide section-2 naturally
-        section2.classList.remove('section-visible');
+        // Start reverse flip animation
+        section2.classList.add('section-flip-back');
+        heroSection.classList.add('hero-flip-back');
         
-        // Show hero naturally
-        heroSection.classList.remove('hero-hidden');
-        
-        // Reset trigger state
-        hasTriggered = false;
-        isTransitioning = false;
+        // After reverse flip completes: cleanup
+        setTimeout(() => {
+          section2.classList.remove('section-flip-back');
+          section2.classList.remove('section-visible');
+          heroSection.classList.remove('hero-flip-back');
+          
+          // Reset trigger state
+          hasTriggered = false;
+          isTransitioning = false;
+          console.log('[3DFlip] Reset complete');
+        }, FLIP_CONFIG.REVERSE_FLIP_DURATION);
       }
       
       /**
@@ -1328,7 +1419,7 @@
           
           // When hero becomes visible while scrolling up and transition has been triggered
           if (entry.isIntersecting && !isScrollingDown && hasTriggered && !isTransitioning) {
-            console.log('[CinematicWipe] Hero entering viewport (scrolling up)');
+            console.log('[3DFlip] Hero entering viewport (scrolling up)');
             resetTransition();
           }
         });
@@ -1341,10 +1432,10 @@
         entries.forEach(entry => {
           const isScrollingDown = updateScrollDirection();
           
-          // Trigger wipe when section-2 starts entering viewport on scroll down
+          // Trigger flip when section-2 starts entering viewport on scroll down
           if (entry.isIntersecting && isScrollingDown && !hasTriggered && !isTransitioning) {
-            console.log('[CinematicWipe] Section-2 entering viewport (scrolling down)');
-            executeCinematicWipe();
+            console.log('[3DFlip] Section-2 entering viewport (scrolling down)');
+            execute3DFlip();
           }
         });
       }
@@ -1369,7 +1460,7 @@
         heroObserver = new IntersectionObserver(handleHeroIntersection, options);
         heroObserver.observe(heroSection);
         
-        console.log('[CinematicWipe] Hero observer setup');
+        console.log('[3DFlip] Hero observer setup');
       }
       
       /**
@@ -1392,37 +1483,31 @@
         section2Observer = new IntersectionObserver(handleSection2Intersection, options);
         section2Observer.observe(section2);
         
-        console.log('[CinematicWipe] Section-2 observer setup');
+        console.log('[3DFlip] Section-2 observer setup');
       }
       
       /**
-       * Initialize the cinematic wipe transition system
+       * Initialize the 3D flip transition system
        */
-      function initCinematicWipe() {
+      function init3DFlip() {
         // Check for reduced motion preference
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
         if (prefersReducedMotion) {
-          console.log('[CinematicWipe] Reduced motion detected. Transition will be simplified.');
+          console.log('[3DFlip] Reduced motion detected. Transition will be simplified.');
         }
         
         // Get elements
-        section2 = document.querySelector(WIPE_CONFIG.SECTION2_SELECTOR);
-        heroSection = document.querySelector(WIPE_CONFIG.HERO_SELECTOR);
-        wipeOverlay = document.querySelector('.wipe-overlay');
+        section2 = document.querySelector(FLIP_CONFIG.SECTION2_SELECTOR);
+        heroSection = document.querySelector(FLIP_CONFIG.HERO_SELECTOR);
         
         if (!section2) {
-          console.warn('[CinematicWipe] Section-2 element not found');
+          console.warn('[3DFlip] Section-2 element not found');
           return;
         }
         
         if (!heroSection) {
-          console.warn('[CinematicWipe] Hero section element not found');
-          return;
-        }
-        
-        if (!wipeOverlay) {
-          console.warn('[CinematicWipe] Wipe overlay element not found');
+          console.warn('[3DFlip] Hero section element not found');
           return;
         }
         
@@ -1433,14 +1518,14 @@
         setupHeroObserver();
         setupSection2Observer();
         
-        console.log('[CinematicWipe] Init complete');
+        console.log('[3DFlip] Init complete');
       }
       
       // Initialize when DOM is ready
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initCinematicWipe);
+        document.addEventListener('DOMContentLoaded', init3DFlip);
       } else {
-        initCinematicWipe();
+        init3DFlip();
       }
       
     })();
