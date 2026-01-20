@@ -135,23 +135,6 @@
       pointer-events: auto;
     }
     
-    .banner-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: white;
-      cursor: pointer;
-      background: linear-gradient(90deg, #ff6b35, #ff8c5e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-decoration: none;
-      display: inline-block;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-    }
-    
-    .banner-title:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
-    }
     
     /* New Animated Button Styles */
     .btn-wrapper {
@@ -873,10 +856,6 @@
         gap: 0.75rem;
       }
       
-      .banner-title {
-        font-size: 1.5rem;
-      }
-      
       .btn-wrapper {
         transform: scale(0.9);
       }
@@ -1357,6 +1336,7 @@
         SECTION2_SELECTOR: '#section-2',
         FLIP_DURATION: 1000, // Total flip duration in ms
         FLIP_DELAY: 200, // Delay for section 2 flip in
+        REVERSE_FLIP_DURATION: 800, // Duration for reverse flip (scroll up)
         CLEANUP_BUFFER: 100, // Extra time buffer for animation cleanup
       };
       
@@ -1417,7 +1397,7 @@
           hasTriggered = false;
           isTransitioning = false;
           console.log('[3DFlip] Reset complete');
-        }, 800);
+        }, FLIP_CONFIG.REVERSE_FLIP_DURATION);
       }
       
       /**
