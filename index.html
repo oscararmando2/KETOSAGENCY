@@ -945,17 +945,17 @@
     }
     
     /* Hero pushing away - depth effect */
-    .hero.depth-push-away {
-      transform: scale(0.85);
+    .hero.depth-out {
+      transform: scale(0.92);
       filter: blur(8px);
-      opacity: 0.3;
+      opacity: 0;
     }
     
     /* Hero hidden after transition */
     .hero.depth-hidden {
       opacity: 0;
       visibility: hidden;
-      transform: scale(0.85);
+      transform: scale(0.92);
       filter: blur(8px);
     }
     
@@ -971,8 +971,8 @@
     
     /* Section 2 initial state - hidden in depth */
     .what-we-do:not(.section-visible) {
-      transform: scale(1.2);
-      filter: blur(10px);
+      transform: scale(1.05);
+      filter: blur(8px);
     }
     
     /* Section 2 visible state - emerged from depth */
@@ -990,7 +990,7 @@
         filter: none !important;
       }
       
-      .hero.depth-push-away,
+      .hero.depth-out,
       .hero.depth-hidden {
         transform: none !important;
         filter: none !important;
@@ -1218,13 +1218,13 @@
         console.log('[DepthPush] Transition triggered (scroll down from hero)');
         
         // Phase 1: Push hero away with depth effect
-        heroSection.classList.add('depth-push-away');
+        heroSection.classList.add('depth-out');
         
         // Phase 2: After hero push completes, hide it and show section-2
         setTimeout(() => {
           // Hide hero completely
           heroSection.classList.add('depth-hidden');
-          heroSection.classList.remove('depth-push-away');
+          heroSection.classList.remove('depth-out');
           
           // Show section-2 emerging from depth
           section2.classList.add('section-visible');
@@ -1245,7 +1245,7 @@
         section2.classList.remove('section-visible');
         
         // Show hero naturally (remove all depth classes)
-        heroSection.classList.remove('depth-push-away', 'depth-hidden');
+        heroSection.classList.remove('depth-out', 'depth-hidden');
         
         // Reset trigger state
         hasDepthTriggered = false;
