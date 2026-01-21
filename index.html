@@ -469,6 +469,7 @@
       border: 1px solid rgba(255, 255, 255, 0.1); /* Same as Cyber Core */
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
+      perspective: 1000px; /* Add perspective for 3D transforms */
     }
 
     /* Cyber grid background effect - Same as Cyber Core card */
@@ -687,7 +688,6 @@
         width: 33.333%;
         height: 33.333%;
         z-index: 10;
-        cursor: pointer;
       }
 
       .tr-1 {
@@ -727,77 +727,77 @@
         left: 66.666%;
       }
 
-      /* Hover effects for each zone */
+      /* Hover effects for each zone - More specific selectors instead of !important */
+      .mouse-position-tracker.tr-1:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(-20%, -20%);
+      }
       .tr-1:hover ~ .hero-inner {
         transform: rotateX(20deg) rotateY(-20deg);
       }
-      .tr-1:hover ~ .hero::after {
-        opacity: 1 !important;
-        transform: translate(-20%, -20%);
-      }
 
+      .mouse-position-tracker.tr-2:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(0%, -20%);
+      }
       .tr-2:hover ~ .hero-inner {
         transform: rotateX(20deg) rotateY(0deg);
       }
-      .tr-2:hover ~ .hero::after {
-        opacity: 1 !important;
-        transform: translate(0%, -20%);
-      }
 
+      .mouse-position-tracker.tr-3:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(20%, -20%);
+      }
       .tr-3:hover ~ .hero-inner {
         transform: rotateX(20deg) rotateY(20deg);
       }
-      .tr-3:hover ~ .hero::after {
-        opacity: 1 !important;
-        transform: translate(20%, -20%);
-      }
 
+      .mouse-position-tracker.tr-4:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(-20%, 0%);
+      }
       .tr-4:hover ~ .hero-inner {
         transform: rotateX(0deg) rotateY(-20deg);
       }
-      .tr-4:hover ~ .hero::after {
-        opacity: 1 !important;
-        transform: translate(-20%, 0%);
-      }
 
+      .mouse-position-tracker.tr-5:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(0%, 0%);
+      }
       .tr-5:hover ~ .hero-inner {
         transform: rotateX(0deg) rotateY(0deg) scale(1.05);
       }
-      .tr-5:hover ~ .hero::after {
-        opacity: 1 !important;
-        transform: translate(0%, 0%);
-      }
 
+      .mouse-position-tracker.tr-6:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(20%, 0%);
+      }
       .tr-6:hover ~ .hero-inner {
         transform: rotateX(0deg) rotateY(20deg);
       }
-      .tr-6:hover ~ .hero::after {
-        opacity: 1 !important;
-        transform: translate(20%, 0%);
-      }
 
+      .mouse-position-tracker.tr-7:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(-20%, 20%);
+      }
       .tr-7:hover ~ .hero-inner {
         transform: rotateX(-20deg) rotateY(-20deg);
       }
-      .tr-7:hover ~ .hero::after {
-        opacity: 1 !important;
-        transform: translate(-20%, 20%);
-      }
 
+      .mouse-position-tracker.tr-8:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(0%, 20%);
+      }
       .tr-8:hover ~ .hero-inner {
         transform: rotateX(-20deg) rotateY(0deg);
       }
-      .tr-8:hover ~ .hero::after {
-        opacity: 1 !important;
-        transform: translate(0%, 20%);
-      }
 
+      .mouse-position-tracker.tr-9:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(20%, 20%);
+      }
       .tr-9:hover ~ .hero-inner {
         transform: rotateX(-20deg) rotateY(20deg);
-      }
-      .tr-9:hover ~ .hero::after {
-        opacity: 1 !important;
-        transform: translate(20%, 20%);
       }
 
       /* HUD corners glow on hover */
