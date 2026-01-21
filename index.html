@@ -1104,6 +1104,7 @@
       transform-style: preserve-3d;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
       overflow: hidden;
+      -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
     }
 
@@ -1115,6 +1116,7 @@
         linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
       background-size: 30px 30px;
       opacity: 0.5;
+      -webkit-mask-image: radial-gradient(circle at center, white, transparent 80%);
       mask-image: radial-gradient(circle at center, white, transparent 80%);
       z-index: 1;
       pointer-events: none;
