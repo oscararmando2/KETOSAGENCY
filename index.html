@@ -488,13 +488,14 @@
 
     /* Section 2: Qué hacemos diferente */
     .what-we-do {
-      min-height: 100vh;
+      min-height: 300vh; /* Increased height for scroll-based reveals */
       padding: 100px 5% 80px;
       background: var(--gray);
       text-align: center;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
+      padding-top: 20vh;
       /* Initially hidden */
       opacity: 0;
       visibility: hidden;
@@ -738,12 +739,43 @@
       color: white;
       font-weight: 700;
     }
-    .what-we-do > p {
+    
+    /* Progressive reveal - Split titles */
+    .what-we-do .main-title,
+    .what-we-do .subtitle {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 1.5rem;
+      color: white;
+      font-weight: 700;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    
+    .what-we-do .subtitle {
+      margin-top: 0;
+    }
+    
+    .what-we-do .main-title.revealed,
+    .what-we-do .subtitle.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .what-we-do > p,
+    .what-we-do .description {
       font-size: 1.2rem;
       max-width: 800px;
       margin: 0 auto 4rem;
-      opacity: 0.9;
+      opacity: 0;
       line-height: 1.8;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    
+    .what-we-do .description.revealed {
+      opacity: 0.9;
+      transform: translateY(0);
     }
     .cards-container {
       display: grid;
@@ -763,28 +795,18 @@
       transform: translateY(-150px) rotateX(45deg) rotateY(-15deg);
       transform-style: preserve-3d;
     }
-    /* Only apply hover after animation completes */
-    .cards-container.cards-animated .card:hover {
+    
+    /* Individual card reveal animation */
+    .card.revealed {
+      animation: card-fall-in 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    
+    /* Only apply hover after card is revealed */
+    .card.revealed:hover {
       transform: translateY(-4px);
       background: rgba(42, 42, 42, 0.7);
       border-color: rgba(242, 242, 242, 0.1);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Cards entrance animation - triggered once */
-    .cards-container.cards-animated .card {
-      animation: card-fall-in 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-    
-    /* Staggered delays for each card */
-    .cards-container.cards-animated .card:nth-child(1) {
-      animation-delay: 0s;
-    }
-    .cards-container.cards-animated .card:nth-child(2) {
-      animation-delay: 0.15s;
-    }
-    .cards-container.cards-animated .card:nth-child(3) {
-      animation-delay: 0.3s;
     }
     
     /* 3D falling entrance keyframes */
@@ -872,13 +894,17 @@
       
       /* Section 2 mobile adjustments */
       .what-we-do {
+        min-height: 250vh; /* Adjusted for mobile */
         padding: 60px 5% 50px;
       }
-      .what-we-do h2 {
+      .what-we-do h2,
+      .what-we-do .main-title,
+      .what-we-do .subtitle {
         font-size: 1.8rem;
         margin-bottom: 1rem;
       }
-      .what-we-do > p {
+      .what-we-do > p,
+      .what-we-do .description {
         font-size: 1rem;
         margin-bottom: 3rem;
       }
@@ -910,7 +936,7 @@
       }
       
       /* Apply mobile animation on mobile devices */
-      .cards-container.cards-animated .card {
+      .card.revealed {
         animation-name: card-fall-in-mobile;
       }
       
@@ -1231,10 +1257,19 @@
       }
       
       /* Disable card entrance animations for reduced motion */
-      .card {
+      .card,
+      .card.revealed {
         opacity: 1 !important;
         transform: none !important;
         animation: none !important;
+      }
+      
+      /* Show all progressive reveal elements immediately */
+      .what-we-do .main-title,
+      .what-we-do .subtitle,
+      .what-we-do .description {
+        opacity: 1 !important;
+        transform: none !important;
       }
       
       .cards-container.cards-animated .card {
@@ -1352,8 +1387,9 @@
       
       <!-- Content wrapper -->
       <div class="section2-content">
-        <h2>No hacemos marketing.<br>Creamos máquinas de crecimiento.</h2>
-        <p>Estrategia, IA y creatividad enfocadas en resultados medibles.</p>
+        <h2 class="main-title">No hacemos marketing.</h2>
+        <h2 class="subtitle">Creamos máquinas de crecimiento.</h2>
+        <p class="description">Estrategia, IA y creatividad enfocadas en resultados medibles.</p>
         
         <div class="cards-container">
           <div class="card">
@@ -1646,100 +1682,131 @@
 
   <script>
     // ========================================
-    // CARDS ENTRANCE ANIMATION (SECTION 2)
+    // PROGRESSIVE REVEAL ANIMATION (SECTION 2)
     // ========================================
     
     (function() {
       'use strict';
       
       // Configuration
-      const CARDS_CONFIG = {
+      const REVEAL_CONFIG = {
         SECTION2_SELECTOR: '#section-2',
-        CARDS_CONTAINER_SELECTOR: '.cards-container',
-        ANIMATED_CLASS: 'cards-animated',
+        MAIN_TITLE_SELECTOR: '.main-title',
+        SUBTITLE_SELECTOR: '.subtitle',
+        DESCRIPTION_SELECTOR: '.description',
+        CARD_SELECTOR: '.card',
       };
       
-      // State
-      let cardsAnimationTriggered = false;
-      let cardsObserver = null;
+      // State to track which steps have been revealed
+      const revealedSteps = new Set();
+      
+      // Elements to observe
+      let section2 = null;
+      let mainTitle = null;
+      let subtitle = null;
+      let description = null;
+      let cards = [];
       
       /**
-       * Handle cards container intersection
+       * Reveal an element with the "revealed" class
        */
-      function handleCardsIntersection(entries) {
-        entries.forEach(entry => {
-          // Trigger animation only once when cards container becomes visible
-          if (entry.isIntersecting && !cardsAnimationTriggered) {
-            const cardsContainer = entry.target;
-            
-            // Mark as triggered to prevent re-animation
-            cardsAnimationTriggered = true;
-            
-            // Disconnect observer after animation is triggered
-            if (cardsObserver) {
-              cardsObserver.disconnect();
-            }
-            
-            // Wait ~1.2s before adding animation class
-            setTimeout(() => {
-              cardsContainer.classList.add(CARDS_CONFIG.ANIMATED_CLASS);
-            }, 1200);
-          }
-        });
+      function revealElement(element, step) {
+        if (!element || revealedSteps.has(step)) return;
+        
+        element.classList.add('revealed');
+        revealedSteps.add(step);
       }
       
       /**
-       * Setup IntersectionObserver for cards container
+       * Calculate which step should be revealed based on scroll position
        */
-      function setupCardsObserver() {
-        const section2 = document.querySelector(CARDS_CONFIG.SECTION2_SELECTOR);
-        if (!section2) {
-          return;
+      function updateRevealSteps() {
+        if (!section2) return;
+        
+        const section2Rect = section2.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const sectionHeight = section2Rect.height;
+        const scrollProgress = -section2Rect.top / (sectionHeight - viewportHeight);
+        
+        // Define thresholds for each step
+        // Step 1: Main title appears when section enters viewport
+        if (scrollProgress >= 0 && !revealedSteps.has(1)) {
+          revealElement(mainTitle, 1);
         }
         
-        const cardsContainer = section2.querySelector(CARDS_CONFIG.CARDS_CONTAINER_SELECTOR);
-        if (!cardsContainer) {
-          return;
+        // Step 2: Subtitle and description appear after scrolling 15%
+        if (scrollProgress >= 0.15 && !revealedSteps.has(2)) {
+          revealElement(subtitle, 2);
+          revealElement(description, 2);
         }
         
-        const options = {
-          root: null,
-          threshold: 0.2, // Trigger when 20% of cards container is visible
-          rootMargin: '0px',
-        };
+        // Step 3: Card 1 appears after scrolling 30%
+        if (scrollProgress >= 0.30 && !revealedSteps.has(3)) {
+          if (cards[0]) revealElement(cards[0], 3);
+        }
         
-        cardsObserver = new IntersectionObserver(handleCardsIntersection, options);
-        cardsObserver.observe(cardsContainer);
+        // Step 4: Card 2 appears after scrolling 45%
+        if (scrollProgress >= 0.45 && !revealedSteps.has(4)) {
+          if (cards[1]) revealElement(cards[1], 4);
+        }
+        
+        // Step 5: Card 3 appears after scrolling 60%
+        if (scrollProgress >= 0.60 && !revealedSteps.has(5)) {
+          if (cards[2]) revealElement(cards[2], 5);
+        }
       }
       
       /**
-       * Initialize the cards entrance animation system
+       * Handle scroll events with throttling
        */
-      function initCardsAnimation() {
+      let scrollTimeout = null;
+      function handleScroll() {
+        if (scrollTimeout) {
+          clearTimeout(scrollTimeout);
+        }
+        
+        scrollTimeout = setTimeout(() => {
+          updateRevealSteps();
+          scrollTimeout = null;
+        }, 50);
+      }
+      
+      /**
+       * Initialize the progressive reveal system
+       */
+      function initProgressiveReveal() {
         // Check for reduced motion preference
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
+        // Get elements
+        section2 = document.querySelector(REVEAL_CONFIG.SECTION2_SELECTOR);
+        if (!section2) return;
+        
+        mainTitle = section2.querySelector(REVEAL_CONFIG.MAIN_TITLE_SELECTOR);
+        subtitle = section2.querySelector(REVEAL_CONFIG.SUBTITLE_SELECTOR);
+        description = section2.querySelector(REVEAL_CONFIG.DESCRIPTION_SELECTOR);
+        cards = Array.from(section2.querySelectorAll(REVEAL_CONFIG.CARD_SELECTOR));
+        
         if (prefersReducedMotion) {
-          // For reduced motion, immediately show cards without animation
-          const section2 = document.querySelector(CARDS_CONFIG.SECTION2_SELECTOR);
-          if (section2) {
-            const cardsContainer = section2.querySelector(CARDS_CONFIG.CARDS_CONTAINER_SELECTOR);
-            if (cardsContainer) {
-              cardsContainer.classList.add(CARDS_CONFIG.ANIMATED_CLASS);
-            }
-          }
+          // For reduced motion, immediately show all elements
+          [mainTitle, subtitle, description, ...cards].forEach(el => {
+            if (el) el.classList.add('revealed');
+          });
           return;
         }
         
-        // Setup intersection observer
-        setupCardsObserver();
+        // Add scroll listener
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Initial check in case section is already in view
+        updateRevealSteps();
       }
       
       // Initialize when DOM is ready
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initCardsAnimation);
+        document.addEventListener('DOMContentLoaded', initProgressiveReveal);
       } else {
-        initCardsAnimation();
+        initProgressiveReveal();
       }
       
     })();
