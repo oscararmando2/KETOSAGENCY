@@ -231,7 +231,6 @@
     }
     
     /* Extra space for actual space characters */
-    .txt-1 .btn-letter:nth-child(7),
     .txt-1 .btn-letter:nth-child(14) {
       margin-right: 0.4em;
     }
@@ -639,6 +638,7 @@
     /* Subtle movement for hero title - Mobile orientation-controlled or auto-animation */
     @media (max-width: 767px) {
       .hero h1 {
+        font-size: clamp(3.5rem, 10vw, 7rem); /* Larger on mobile */
         transform: translateZ(40px) rotateX(var(--hero-title-rotate-x, 0deg)) rotateY(var(--hero-title-rotate-y, 0deg));
       }
       
@@ -995,6 +995,16 @@
     @media (max-width: 767px) {
       .hero-visual {
         margin-top: 28px;
+      }
+      
+      .hero-inner {
+        justify-content: center; /* Center vertically on mobile */
+        min-height: 100vh; /* Ensure full viewport height */
+        padding: 20px; /* Add some padding */
+      }
+      
+      .hero-content {
+        justify-content: center; /* Center content vertically */
       }
     }
 
@@ -1480,10 +1490,6 @@
                   <span class="btn-letter">c</span>
                   <span class="btn-letter">e</span>
                   <span class="btn-letter">r</span>
-                  <span class="btn-letter"> </span>
-                  <span class="btn-letter">-</span>
-                  <span class="btn-letter">-</span>
-                  <span class="btn-letter">></span>
                 </div>
               </div>
             </button>
