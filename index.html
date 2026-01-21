@@ -1859,11 +1859,13 @@
     (function() {
       'use strict';
       
+      // Configuration
+      const TRIGGER_THRESHOLD = 0.5; // Trigger when hero is 50% out of viewport
+      
       // Check for reduced motion preference
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReducedMotion) {
-        // Disable carousel effect, show section-2 normally
-        document.querySelector('.what-we-do').style.transform = 'translateX(0)';
+        // Carousel effect disabled via CSS for reduced motion
         return;
       }
       
@@ -1905,7 +1907,7 @@
           document.body.style.overflow = '';
           
           // Scroll to section 2 to maintain position after restoring normal flow
-          section2.scrollIntoView({ behavior: 'instant' });
+          section2.scrollIntoView({ behavior: 'auto' });
         }, 900); // Match CSS transition duration + delay
       }
       
@@ -1922,7 +1924,7 @@
         // Trigger when scrolling down and hero is mostly out of view
         const heroRect = hero.getBoundingClientRect();
         const heroBottom = heroRect.bottom;
-        const triggerPoint = window.innerHeight * 0.5; // Trigger when 50% of viewport height
+        const triggerPoint = window.innerHeight * TRIGGER_THRESHOLD;
         
         if (scrollingDown && heroBottom < triggerPoint) {
           triggerCarousel();
