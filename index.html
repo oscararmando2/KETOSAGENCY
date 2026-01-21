@@ -533,7 +533,6 @@
           rgba(0, 255, 255, 0.15) 3px
         );
       opacity: 0;
-      animation: glitch-continuous 0.3s linear infinite;
     }
 
     .hero-glitch-effect::before {
@@ -751,6 +750,28 @@
       }
       93%, 100% {
         transform: translateX(100%);
+      }
+    }
+
+    /* Reduce animation complexity on mobile devices for better performance */
+    @media (max-width: 767px) {
+      .hero-glitch-effect::before,
+      .hero-glitch-effect::after {
+        animation-duration: 4s, 0.3s; /* Slower, less frequent */
+      }
+      
+      .hero-noise {
+        animation-duration: 0.5s; /* Slower noise animation */
+        opacity: 0.15; /* Reduced opacity */
+      }
+      
+      .hero-glitch-pulse {
+        animation-duration: 3.5s; /* Slower pulse */
+      }
+      
+      .hero-glitch-pulse::before,
+      .hero-glitch-pulse::after {
+        animation-duration: 3.5s;
       }
     }
 
