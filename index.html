@@ -1753,6 +1753,355 @@
         transform: none !important;
       }
     }
+
+    /* ========================================
+       SECTION 2 - CYBER CORE STYLE
+       ======================================== */
+    .section-2 {
+      --cyber-neon-color: #00f3ff;
+      position: relative;
+      min-height: 100vh;
+      padding: 100px 5% 120px;
+      background: var(--dark);
+      overflow: hidden;
+    }
+
+    /* Dark background with subtle grid texture */
+    .section-2::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(color-mix(in srgb, var(--cyber-neon-color) 8%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--cyber-neon-color) 8%, transparent) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.3;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Noise/scanlines overlay */
+    .section-2::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.5"/></svg>');
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+      animation: noise-animation 0.4s steps(4) infinite;
+    }
+
+    .section-2-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header Section */
+    .section-2-header {
+      text-align: center;
+      margin-bottom: 80px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .section-2-header.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-2-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      color: var(--light);
+      margin-bottom: 1rem;
+      line-height: 1.1;
+      position: relative;
+    }
+
+    /* Light glitch effect on main title */
+    .section-2-title-glitch {
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-2-title-glitch::before,
+    .section-2-title-glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    .section-2-title-glitch::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00c1;
+      clip: rect(44px, 9999px, 56px, 0);
+      animation: section-2-glitch-anim 7s infinite linear alternate-reverse;
+    }
+
+    .section-2-title-glitch::after {
+      left: -2px;
+      text-shadow: -1px 0 var(--cyber-neon-color);
+      clip: rect(44px, 9999px, 56px, 0);
+      animation: section-2-glitch-anim2 7s infinite linear alternate-reverse;
+    }
+
+    @keyframes section-2-glitch-anim {
+      0%, 95% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+      96% {
+        opacity: 1;
+        clip: rect(20px, 9999px, 80px, 0);
+      }
+      97% {
+        opacity: 1;
+        clip: rect(60px, 9999px, 30px, 0);
+      }
+      98%, 100% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+    }
+
+    @keyframes section-2-glitch-anim2 {
+      0%, 94% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+      95% {
+        opacity: 1;
+        clip: rect(40px, 9999px, 90px, 0);
+      }
+      96% {
+        opacity: 1;
+        clip: rect(10px, 9999px, 50px, 0);
+      }
+      97%, 100% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+    }
+
+    .section-2-subtitle {
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      color: rgba(242, 242, 242, 0.8);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    /* Modules Container */
+    .section-2-modules {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* Individual HUD Panel Module */
+    .cyber-module {
+      position: relative;
+      background: rgba(10, 10, 10, 0.7);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      padding: 40px;
+      clip-path: polygon(
+        0 0,
+        calc(100% - 30px) 0,
+        100% 30px,
+        100% 100%,
+        30px 100%,
+        0 calc(100% - 30px)
+      );
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s ease;
+    }
+
+    .cyber-module.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger animation delays */
+    .cyber-module:nth-child(1) {
+      transition-delay: 0.1s;
+    }
+
+    .cyber-module:nth-child(2) {
+      transition-delay: 0.3s;
+    }
+
+    .cyber-module:nth-child(3) {
+      transition-delay: 0.5s;
+    }
+
+    /* Corner markers/ticks */
+    .cyber-module::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 15px;
+      height: 15px;
+      border-left: 2px solid var(--cyber-neon-color);
+      border-top: 2px solid var(--cyber-neon-color);
+      opacity: 0.5;
+    }
+
+    .cyber-module::after {
+      content: "";
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      width: 15px;
+      height: 15px;
+      border-right: 2px solid var(--cyber-neon-color);
+      border-bottom: 2px solid var(--cyber-neon-color);
+      opacity: 0.5;
+    }
+
+    /* Module hover effect */
+    .cyber-module:hover {
+      border-color: rgba(0, 243, 255, 0.4);
+    }
+
+    /* Module Label */
+    .module-label {
+      font-size: 0.85rem;
+      color: var(--cyber-neon-color);
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    /* Module Title */
+    .module-title {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 900;
+      color: var(--light);
+      margin-bottom: 16px;
+      line-height: 1.2;
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Very subtle glitch on module title entry */
+    .cyber-module.visible .module-title {
+      animation: micro-glitch 0.15s ease-in-out;
+    }
+
+    @keyframes micro-glitch {
+      0% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      25% {
+        transform: translateX(-2px);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translateX(2px);
+        opacity: 1;
+      }
+      75% {
+        transform: translateX(-1px);
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Module Text */
+    .module-text {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      color: rgba(242, 242, 242, 0.75);
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    /* Technical details: separator line */
+    .module-separator {
+      position: absolute;
+      bottom: 0;
+      left: 40px;
+      right: 40px;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 243, 255, 0.3) 50%,
+        transparent
+      );
+      opacity: 0.5;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 767px) {
+      .section-2 {
+        padding: 80px 5% 100px;
+      }
+
+      .section-2-header {
+        margin-bottom: 60px;
+      }
+
+      .cyber-module {
+        padding: 30px 25px;
+        clip-path: polygon(
+          0 0,
+          calc(100% - 20px) 0,
+          100% 20px,
+          100% 100%,
+          20px 100%,
+          0 calc(100% - 20px)
+        );
+      }
+
+      .module-label {
+        font-size: 0.75rem;
+      }
+
+      .section-2-modules {
+        gap: 30px;
+      }
+    }
+
+    /* Reduced motion accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      .section-2::after,
+      .section-2-title-glitch::before,
+      .section-2-title-glitch::after {
+        animation: none !important;
+      }
+
+      .section-2-header,
+      .cyber-module {
+        transition: none !important;
+      }
+
+      .cyber-module.visible .module-title {
+        animation: none !important;
+      }
+
+      .section-2-header,
+      .cyber-module {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1886,6 +2235,46 @@
                 </div>
               </div>
             </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: CYBER CORE MODULES -->
+    <section class="section-2" id="section-2">
+      <div class="section-2-container">
+        <!-- Header -->
+        <div class="section-2-header">
+          <h2 class="section-2-title">
+            <span class="section-2-title-glitch" data-text="Hacemos que vendas.">Hacemos que vendas.</span>
+          </h2>
+          <p class="section-2-subtitle">Marketing que impacta en caja, no en likes.</p>
+        </div>
+
+        <!-- Modules -->
+        <div class="section-2-modules">
+          <!-- Module 01 -->
+          <div class="cyber-module" data-module="1">
+            <div class="module-label">CORE / 01</div>
+            <h3 class="module-title">Te encuentran</h3>
+            <p class="module-text">Apareces donde tus clientes ya están buscando. No te escondes, destacas.</p>
+            <div class="module-separator"></div>
+          </div>
+
+          <!-- Module 02 -->
+          <div class="cyber-module" data-module="2">
+            <div class="module-label">CORE / 02</div>
+            <h3 class="module-title">Te eligen</h3>
+            <p class="module-text">Tu marca se ve sólida, confiable y profesional. Genera confianza inmediata.</p>
+            <div class="module-separator"></div>
+          </div>
+
+          <!-- Module 03 -->
+          <div class="cyber-module" data-module="3">
+            <div class="module-label">CORE / 03</div>
+            <h3 class="module-title">Te compran</h3>
+            <p class="module-text">Todo está diseñado para convertir atención en ventas reales.</p>
+            <div class="module-separator"></div>
           </div>
         </div>
       </div>
@@ -2146,6 +2535,50 @@
         if (permissionGranted) {
           window.removeEventListener('deviceorientation', handleDeviceOrientation);
         }
+      });
+    })();
+  </script>
+
+  <!-- Section 2 Scroll Animation -->
+  <script>
+    (function() {
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        // Make all elements visible immediately
+        document.querySelector('.section-2-header')?.classList.add('visible');
+        document.querySelectorAll('.cyber-module').forEach(module => {
+          module.classList.add('visible');
+        });
+        return;
+      }
+
+      // Intersection Observer for scroll-triggered animations
+      const observerOptions = {
+        threshold: 0.15, // Trigger when 15% of the element is visible
+        rootMargin: '0px 0px -100px 0px' // Trigger slightly before element enters viewport
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            // Stop observing after animation is triggered
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      // Observe section header
+      const header = document.querySelector('.section-2-header');
+      if (header) {
+        observer.observe(header);
+      }
+
+      // Observe each module
+      const modules = document.querySelectorAll('.cyber-module');
+      modules.forEach(module => {
+        observer.observe(module);
       });
     })();
   </script>
