@@ -457,6 +457,8 @@
     
     .hero {
       --cyber-neon-color: #00f3ff; /* Neon cyan color for effects */
+      --hero-bg-x: 0px;
+      --hero-bg-y: 0px;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -485,6 +487,37 @@
       mask-image: radial-gradient(circle at center, white, transparent 75%);
       z-index: 1;
       pointer-events: none;
+      transition: transform 0.3s ease-out;
+      will-change: transform;
+    }
+
+    /* Desktop: Mouse-controlled movement */
+    @media (min-width: 768px) {
+      .hero::before {
+        transform: translate(var(--hero-bg-x), var(--hero-bg-y));
+      }
+    }
+
+    /* Mobile: Auto-animate grid background */
+    @media (max-width: 767px) {
+      .hero::before {
+        animation: hero-bg-mobile-move 20s ease-in-out infinite;
+      }
+    }
+
+    @keyframes hero-bg-mobile-move {
+      0%, 100% {
+        transform: translate(0, 0);
+      }
+      25% {
+        transform: translate(10px, -10px);
+      }
+      50% {
+        transform: translate(-5px, 10px);
+      }
+      75% {
+        transform: translate(10px, 5px);
+      }
     }
 
     /* Radial glow effect */
@@ -504,6 +537,34 @@
       z-index: 0;
       pointer-events: none;
       animation: hero-glow-pulse 4s ease-in-out infinite;
+      transition: transform 0.3s ease-out;
+      will-change: transform;
+    }
+
+    /* Desktop: Mouse-controlled movement */
+    @media (min-width: 768px) {
+      .hero::after {
+        transform: translate(calc(var(--hero-bg-x) * 0.5), calc(var(--hero-bg-y) * 0.5));
+      }
+    }
+
+    /* Mobile: Auto-animate glow */
+    @media (max-width: 767px) {
+      .hero::after {
+        animation: hero-glow-pulse 4s ease-in-out infinite, hero-glow-mobile-move 25s ease-in-out infinite;
+      }
+    }
+
+    @keyframes hero-glow-mobile-move {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      33% {
+        transform: translate(-15px, 15px) scale(1.02);
+      }
+      66% {
+        transform: translate(15px, -10px) scale(0.98);
+      }
     }
 
     @keyframes hero-glow-pulse {
@@ -527,6 +588,25 @@
       line-height: 1.2;
       mix-blend-mode: lighten;
     }
+
+    /* Hero letter animation effect */
+    .hero-letter {
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .hero-letter:hover {
+      color: var(--cyber-neon-color);
+      text-shadow: 0 0 20px var(--cyber-neon-color), 0 0 40px var(--cyber-neon-color);
+      transform: translateY(-5px) scale(1.1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-letter:hover {
+        transform: none;
+      }
+    }
+
     .hero p { 
       font-size: 1.4rem; 
       max-width: 700px; 
@@ -1437,6 +1517,12 @@
 
     /* Reduced motion: disable animations */
     @media (prefers-reduced-motion: reduce) {
+      .hero::before,
+      .hero::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
       .cyber-card {
         transition: none;
       }
@@ -1529,7 +1615,7 @@
     <section class="hero">
       <div class="hero-inner">
         <div class="hero-content">
-          <h1 class="cyber-glitch" data-text="Hacemos que las marcas crezcan. Punto.">Hacemos que las marcas crezcan. Punto.</h1>
+          <h1 class="cyber-glitch" data-text="Hacemos que las marcas crezcan. Punto.">Hacemos que las marcas <span class="hero-letter">c</span><span class="hero-letter">r</span><span class="hero-letter">e</span><span class="hero-letter">z</span><span class="hero-letter">c</span><span class="hero-letter">a</span><span class="hero-letter">n</span><span class="hero-letter">.</span> <span class="hero-letter">P</span><span class="hero-letter">u</span><span class="hero-letter">n</span><span class="hero-letter">t</span><span class="hero-letter">o</span><span class="hero-letter">.</span></h1>
           <p>Sistemas digitales diseñados para vender, escalar y dominar su mercado.</p>
           <div class="btn-wrapper">
             <button class="btn" id="growButton">
@@ -1834,6 +1920,72 @@
           });
         }
       }
+    })();
+  </script>
+
+  <!-- Hero Background Mouse Movement -->
+  <script>
+    (function() {
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      // Check if desktop (min-width: 768px)
+      const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+      if (!isDesktop) return;
+
+      const hero = document.querySelector('.hero');
+      if (!hero) return;
+
+      let ticking = false;
+      let mouseX = 0;
+      let mouseY = 0;
+
+      /**
+       * Update hero background position based on mouse
+       */
+      function updateBackgroundPosition() {
+        const heroRect = hero.getBoundingClientRect();
+        
+        // Calculate relative position (0 to 1)
+        const relativeX = (mouseX - heroRect.left) / heroRect.width;
+        const relativeY = (mouseY - heroRect.top) / heroRect.height;
+        
+        // Center around 0.5 (-0.5 to 0.5 range) and scale for subtle movement
+        // When relativeX/Y = 0, we get -0.5 * 20 = -10px (left/top edge)
+        // When relativeX/Y = 1, we get 0.5 * 20 = 10px (right/bottom edge)
+        const MAX_MOVEMENT = 10; // Maximum pixels to move in any direction
+        const moveX = (relativeX - 0.5) * (MAX_MOVEMENT * 2);
+        const moveY = (relativeY - 0.5) * (MAX_MOVEMENT * 2);
+        
+        // Apply transform to ::before and ::after via CSS custom properties
+        hero.style.setProperty('--hero-bg-x', `${moveX}px`);
+        hero.style.setProperty('--hero-bg-y', `${moveY}px`);
+        
+        ticking = false;
+      }
+
+      /**
+       * Handle mouse move with requestAnimationFrame
+       */
+      function handleMouseMove(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        if (!ticking) {
+          window.requestAnimationFrame(updateBackgroundPosition);
+          ticking = true;
+        }
+      }
+
+      // Add event listener
+      hero.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+      // Reset on mouse leave
+      hero.addEventListener('mouseleave', function() {
+        hero.style.setProperty('--hero-bg-x', '0px');
+        hero.style.setProperty('--hero-bg-y', '0px');
+      }, { passive: true });
     })();
   </script>
 
