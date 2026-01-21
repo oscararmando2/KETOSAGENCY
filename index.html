@@ -495,27 +495,53 @@
       pointer-events: none;
     }
 
-    /* Powered by KETOS text overlay */
+    /* Powered by KETOS button overlay */
     .powered-by-ketos {
       position: absolute;
-      bottom: 16px;
-      right: 16px;
+      bottom: 80px;
+      right: 20px;
       font-size: 11px;
-      font-weight: 500;
-      color: rgba(242, 242, 242, 0.6);
-      z-index: 2;
-      pointer-events: none;
+      font-weight: 600;
+      color: rgba(242, 242, 242, 0.85);
+      background: rgba(0, 243, 255, 0.1);
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      border-radius: 6px;
+      padding: 8px 16px;
+      z-index: 100;
+      pointer-events: auto;
+      cursor: pointer;
       letter-spacing: 0.5px;
       text-transform: uppercase;
       font-family: 'Space Grotesk', sans-serif;
       text-shadow: 
         0 0 8px rgba(0, 243, 255, 0.3),
         0 0 12px rgba(0, 243, 255, 0.15);
+      box-shadow: 
+        0 0 10px rgba(0, 243, 255, 0.2),
+        inset 0 0 10px rgba(0, 243, 255, 0.05);
       transition: all 0.3s ease;
       animation: ketos-glow 4s ease-in-out infinite;
+      backdrop-filter: blur(10px);
     }
 
-    /* Subtle animation for the powered by text */
+    .powered-by-ketos:hover {
+      background: rgba(0, 243, 255, 0.2);
+      border-color: rgba(0, 243, 255, 0.6);
+      color: rgba(242, 242, 242, 1);
+      transform: translateY(-2px);
+      box-shadow: 
+        0 0 20px rgba(0, 243, 255, 0.4),
+        inset 0 0 15px rgba(0, 243, 255, 0.1);
+    }
+
+    .powered-by-ketos:active {
+      transform: translateY(0);
+      box-shadow: 
+        0 0 15px rgba(0, 243, 255, 0.3),
+        inset 0 0 10px rgba(0, 243, 255, 0.08);
+    }
+
+    /* Subtle animation for the powered by button */
     @keyframes ketos-glow {
       0%, 100% {
         text-shadow: 
@@ -529,12 +555,13 @@
       }
     }
 
-    /* Mobile: Smaller text and adjusted position */
+    /* Mobile: Smaller button and adjusted position */
     @media (max-width: 767px) {
       .powered-by-ketos {
         font-size: 10px;
-        bottom: 12px;
-        right: 12px;
+        bottom: 60px;
+        right: 16px;
+        padding: 6px 12px;
       }
     }
 
@@ -1802,8 +1829,8 @@
       <!-- Dark overlay for text readability -->
       <div class="hero-overlay"></div>
       
-      <!-- Powered by KETOS text -->
-      <div class="powered-by-ketos">Powered by KETOS</div>
+      <!-- Powered by KETOS button -->
+      <button class="powered-by-ketos" onclick="window.open('https://ketosagency.com', '_blank')">Powered by KETOS</button>
       
       <!-- Intense Glitch Effects -->
       <div class="hero-glitch-effect"></div>
