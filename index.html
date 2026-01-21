@@ -1154,15 +1154,44 @@
     }
 
     /* Carousel Transition Between Sections */
-    .hero,
+    /* Wrapper to enable carousel effect */
+    main {
+      position: relative;
+      width: 100%;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
     .what-we-do {
+      position: relative;
+      width: 100%;
+      z-index: 1;
+    }
+
+    /* Carousel active states - both sections slide together */
+    body.carousel-transitioning .hero {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
       transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       will-change: transform;
     }
 
-    /* Carousel transition active states */
-    body.carousel-transitioning {
-      overflow: hidden;
+    body.carousel-transitioning .what-we-do {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9;
+      transform: translateX(100%);
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
     }
 
     body.carousel-active .hero {
@@ -1173,22 +1202,26 @@
       transform: translateX(0);
     }
 
-    /* Initial state: section-2 is off-screen to the right */
-    .what-we-do {
-      transform: translateX(100%);
+    /* After transition completes, restore normal positioning */
+    body.carousel-complete .hero {
+      position: relative;
+      transform: none;
+    }
+
+    body.carousel-complete .what-we-do {
+      position: relative;
+      transform: none;
     }
 
     /* Disable carousel transition for reduced motion */
     @media (prefers-reduced-motion: reduce) {
-      .hero,
-      .what-we-do {
-        transition: none !important;
-        transform: none !important;
-      }
-
+      body.carousel-transitioning .hero,
+      body.carousel-transitioning .what-we-do,
       body.carousel-active .hero,
       body.carousel-active .what-we-do {
+        position: relative !important;
         transform: none !important;
+        transition: none !important;
       }
     }
 
@@ -1852,17 +1885,28 @@
         carouselTriggered = true;
         isTransitioning = true;
         
-        // Add transitioning class to body
+        // Prevent scrolling during transition
+        document.body.style.overflow = 'hidden';
+        
+        // Add transitioning class to body (applies fixed positioning)
         document.body.classList.add('carousel-transitioning');
         
-        // Trigger carousel animation
-        document.body.classList.add('carousel-active');
+        // Small delay to ensure fixed positioning is applied before animation starts
+        setTimeout(() => {
+          // Trigger carousel animation
+          document.body.classList.add('carousel-active');
+        }, 50);
         
-        // Remove transitioning class after animation completes
+        // After animation completes, restore normal flow
         setTimeout(() => {
           isTransitioning = false;
           document.body.classList.remove('carousel-transitioning');
-        }, 800); // Match CSS transition duration
+          document.body.classList.add('carousel-complete');
+          document.body.style.overflow = '';
+          
+          // Scroll to section 2 to maintain position after restoring normal flow
+          section2.scrollIntoView({ behavior: 'instant' });
+        }, 900); // Match CSS transition duration + delay
       }
       
       /**
