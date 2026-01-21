@@ -469,6 +469,7 @@
       border: 1px solid rgba(255, 255, 255, 0.1); /* Same as Cyber Core */
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
+      perspective: 1000px; /* Add perspective for 3D transforms */
     }
 
     /* Cyber grid background effect - Same as Cyber Core card */
@@ -678,6 +679,200 @@
       .hero-glitch::after {
         animation: none !important;
       }
+    }
+
+    /* 3x3 Grid Mouse Position Trackers - Desktop only */
+    @media (min-width: 768px) {
+      .mouse-position-tracker {
+        position: absolute;
+        width: 33.333%;
+        height: 33.333%;
+        z-index: 10;
+      }
+
+      .tr-1 {
+        top: 0;
+        left: 0;
+      }
+      .tr-2 {
+        top: 0;
+        left: 33.333%;
+      }
+      .tr-3 {
+        top: 0;
+        left: 66.666%;
+      }
+      .tr-4 {
+        top: 33.333%;
+        left: 0;
+      }
+      .tr-5 {
+        top: 33.333%;
+        left: 33.333%;
+      }
+      .tr-6 {
+        top: 33.333%;
+        left: 66.666%;
+      }
+      .tr-7 {
+        top: 66.666%;
+        left: 0;
+      }
+      .tr-8 {
+        top: 66.666%;
+        left: 33.333%;
+      }
+      .tr-9 {
+        top: 66.666%;
+        left: 66.666%;
+      }
+
+      /* Hover effects for each zone - More specific selectors instead of !important */
+      .mouse-position-tracker.tr-1:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(-20%, -20%);
+      }
+      .tr-1:hover ~ .hero-inner {
+        transform: rotateX(20deg) rotateY(-20deg);
+      }
+
+      .mouse-position-tracker.tr-2:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(0%, -20%);
+      }
+      .tr-2:hover ~ .hero-inner {
+        transform: rotateX(20deg) rotateY(0deg);
+      }
+
+      .mouse-position-tracker.tr-3:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(20%, -20%);
+      }
+      .tr-3:hover ~ .hero-inner {
+        transform: rotateX(20deg) rotateY(20deg);
+      }
+
+      .mouse-position-tracker.tr-4:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(-20%, 0%);
+      }
+      .tr-4:hover ~ .hero-inner {
+        transform: rotateX(0deg) rotateY(-20deg);
+      }
+
+      .mouse-position-tracker.tr-5:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(0%, 0%);
+      }
+      .tr-5:hover ~ .hero-inner {
+        transform: rotateX(0deg) rotateY(0deg) scale(1.05);
+      }
+
+      .mouse-position-tracker.tr-6:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(20%, 0%);
+      }
+      .tr-6:hover ~ .hero-inner {
+        transform: rotateX(0deg) rotateY(20deg);
+      }
+
+      .mouse-position-tracker.tr-7:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(-20%, 20%);
+      }
+      .tr-7:hover ~ .hero-inner {
+        transform: rotateX(-20deg) rotateY(-20deg);
+      }
+
+      .mouse-position-tracker.tr-8:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(0%, 20%);
+      }
+      .tr-8:hover ~ .hero-inner {
+        transform: rotateX(-20deg) rotateY(0deg);
+      }
+
+      .mouse-position-tracker.tr-9:hover ~ .hero::after {
+        opacity: 1;
+        transform: translate(20%, 20%);
+      }
+      .tr-9:hover ~ .hero-inner {
+        transform: rotateX(-20deg) rotateY(20deg);
+      }
+
+      /* HUD corners glow on hover */
+      .mouse-position-tracker:hover ~ .hud-corner {
+        box-shadow: 0 0 10px var(--cyber-neon-color);
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    /* Hide mouse trackers on mobile */
+    @media (max-width: 767px) {
+      .mouse-position-tracker {
+        display: none;
+      }
+    }
+
+    /* HUD Corners - Cyber style corner decorations */
+    .hud-corner {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--cyber-neon-color);
+      transition: all 0.3s ease;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .tl {
+      top: 20px;
+      left: 20px;
+      border-right: none;
+      border-bottom: none;
+    }
+    .tr-corner {
+      top: 20px;
+      right: 20px;
+      border-left: none;
+      border-bottom: none;
+    }
+    .bl {
+      bottom: 20px;
+      left: 20px;
+      border-right: none;
+      border-top: none;
+    }
+    .br {
+      bottom: 20px;
+      right: 20px;
+      border-left: none;
+      border-top: none;
+    }
+
+    /* Hero inner container for 3D transforms */
+    .hero-inner {
+      position: relative;
+      z-index: 5;
+      transition: transform 0.2s ease-out;
+      transform-style: preserve-3d;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-content {
+      transform: translateZ(40px);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    /* Allow button to be clickable */
+    .hero-content .btn-wrapper {
+      pointer-events: auto;
     }
 
     .hero p { 
@@ -1239,6 +1434,23 @@
   <!-- Site Content -->
   <main id="siteContent">
     <section class="hero">
+      <!-- 3x3 Grid Mouse Position Trackers for Desktop -->
+      <div class="mouse-position-tracker tr-1"></div>
+      <div class="mouse-position-tracker tr-2"></div>
+      <div class="mouse-position-tracker tr-3"></div>
+      <div class="mouse-position-tracker tr-4"></div>
+      <div class="mouse-position-tracker tr-5"></div>
+      <div class="mouse-position-tracker tr-6"></div>
+      <div class="mouse-position-tracker tr-7"></div>
+      <div class="mouse-position-tracker tr-8"></div>
+      <div class="mouse-position-tracker tr-9"></div>
+
+      <!-- HUD Corners -->
+      <div class="hud-corner tl"></div>
+      <div class="hud-corner tr-corner"></div>
+      <div class="hud-corner bl"></div>
+      <div class="hud-corner br"></div>
+
       <div class="hero-inner">
         <div class="hero-content">
           <h1><span class="hero-glitch" data-text="CYBER CORE.">CYBER CORE.</span></h1>
