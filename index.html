@@ -456,7 +456,8 @@
     }
     
     .hero {
-      --cyber-neon-color: #00f3ff; /* Neon cyan color for effects */
+      --cyber-neon-color: #00f3ff; /* Neon cyan color for effects - same as Cyber Core */
+      --neon-blue: #00f3ff; /* Same color as Cyber Core reference */
       --hero-bg-x: 0px;
       --hero-bg-y: 0px;
       height: 100vh;
@@ -465,31 +466,30 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      background: rgba(10, 10, 10, 0.95);
+      background: rgba(10, 10, 10, 0.8); /* Same as Cyber Core card background */
       padding: 100px 5% 60px;
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1); /* Same as Cyber Core */
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
     }
 
-    /* Cyber grid background effect */
+    /* Cyber grid background effect - Same as Cyber Core card */
     .hero::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(color-mix(in srgb, var(--cyber-neon-color) 15%, transparent) 1px, transparent 1px),
-        linear-gradient(90deg, color-mix(in srgb, var(--cyber-neon-color) 15%, transparent) 1px, transparent 1px);
+      background: linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
       background-size: 30px 30px;
-      opacity: 0.6;
-      -webkit-mask-image: radial-gradient(circle at center, white, transparent 75%);
-      mask-image: radial-gradient(circle at center, white, transparent 75%);
+      opacity: 0.5; /* Same as Cyber Core */
+      -webkit-mask-image: radial-gradient(circle at center, white, transparent 80%);
+      mask-image: radial-gradient(circle at center, white, transparent 80%);
       z-index: 1;
       pointer-events: none;
       transition: transform 0.3s ease-out;
       will-change: transform;
-      animation: cyber-glitch-anim 5s infinite linear alternate-reverse;
     }
 
     /* Desktop: Mouse-controlled movement */
@@ -527,7 +527,7 @@
       }
     }
 
-    /* Radial glow effect */
+    /* Radial glow effect - Same as Cyber Core card */
     .hero::after {
       content: "";
       position: absolute;
@@ -535,23 +535,28 @@
       height: 200%;
       background: radial-gradient(
         circle at center,
-        color-mix(in srgb, var(--cyber-neon-color) 25%, transparent),
+        rgba(0, 243, 255, 0.2), /* Same as Cyber Core */
         transparent 50%
       );
       top: -50%;
       left: -50%;
-      opacity: 0.4;
+      opacity: 0; /* Start at 0, will be revealed on hover/movement */
       z-index: 0;
       pointer-events: none;
-      animation: hero-glow-pulse 4s ease-in-out infinite, cyber-glitch-anim2 5s infinite linear alternate-reverse;
-      transition: transform 0.3s ease-out;
-      will-change: transform;
+      transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+      will-change: transform, opacity;
     }
 
     /* Desktop: Mouse-controlled movement */
     @media (min-width: 768px) {
       .hero::after {
         transform: translate(calc(var(--hero-bg-x) * 0.5), calc(var(--hero-bg-y) * 0.5));
+        opacity: 0.3; /* Show glow on desktop */
+      }
+      
+      /* Show more glow when mouse is over hero */
+      .hero:hover::after {
+        opacity: 0.5;
       }
     }
 
@@ -560,34 +565,25 @@
       .hero::after {
         /* Will be overridden by transform from CSS variables when device orientation is active */
         transform: translate(calc(var(--hero-bg-x, 0px) * 0.5), calc(var(--hero-bg-y, 0px) * 0.5));
+        opacity: 0.3; /* Show glow on mobile */
       }
       
       /* Fallback animation when device orientation is not active */
       .hero.use-fallback-animation::after {
-        animation: hero-glow-pulse 4s ease-in-out infinite, hero-glow-mobile-move 25s ease-in-out infinite;
+        animation: hero-glow-mobile-move 25s ease-in-out infinite;
+        opacity: 0.3;
       }
     }
 
     @keyframes hero-glow-mobile-move {
       0%, 100% {
-        transform: translate(0, 0) scale(1);
+        transform: translate(0, 0);
       }
       33% {
-        transform: translate(-25px, 25px) scale(1.02);
+        transform: translate(-25px, 25px);
       }
       66% {
-        transform: translate(25px, -20px) scale(0.98);
-      }
-    }
-
-    @keyframes hero-glow-pulse {
-      0%, 100% {
-        opacity: 0.4;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.6;
-        transform: scale(1.05);
+        transform: translate(25px, -20px);
       }
     }
     .hero h1 {
@@ -600,23 +596,128 @@
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
       line-height: 1.2;
       mix-blend-mode: lighten;
+      --hero-title-x: 0px;
+      --hero-title-y: 0px;
+      transition: transform 0.2s ease-out;
+      transform-style: preserve-3d;
     }
 
-    /* Hero letter animation effect */
-    .hero-letter {
-      display: inline-block;
-      transition: all 0.3s ease;
+    /* Glitch effect for hero title - Same as Cyber Core */
+    .hero-glitch {
+      position: relative;
+    }
+    
+    .hero-glitch::before,
+    .hero-glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 10, 0.8);
+    }
+    
+    .hero-glitch::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00c1;
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim 5s infinite linear alternate-reverse;
+    }
+    
+    .hero-glitch::after {
+      left: -2px;
+      text-shadow: -1px 0 #00fff9;
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim2 5s infinite linear alternate-reverse;
     }
 
-    .hero-letter:hover {
-      color: var(--cyber-neon-color);
-      text-shadow: 0 0 20px var(--cyber-neon-color), 0 0 40px var(--cyber-neon-color);
-      transform: translateY(-5px) scale(1.1);
+    /* Glitch animations - Same as Cyber Core */
+    @keyframes glitch-anim {
+      0% {
+        clip: rect(15px, 9999px, 81px, 0);
+      }
+      5% {
+        clip: rect(72px, 9999px, 24px, 0);
+      }
+      10% {
+        clip: rect(4px, 9999px, 88px, 0);
+      }
+      15% {
+        clip: rect(66px, 9999px, 14px, 0);
+      }
+      20% {
+        clip: rect(25px, 9999px, 96px, 0);
+      }
+      100% {
+        clip: rect(50px, 9999px, 50px, 0);
+      }
+    }
+    
+    @keyframes glitch-anim2 {
+      0% {
+        clip: rect(80px, 9999px, 4px, 0);
+      }
+      5% {
+        clip: rect(30px, 9999px, 100px, 0);
+      }
+      10% {
+        clip: rect(10px, 9999px, 20px, 0);
+      }
+      100% {
+        clip: rect(90px, 9999px, 90px, 0);
+      }
     }
 
+    /* Subtle movement for hero title - Desktop mouse-controlled */
+    @media (min-width: 768px) {
+      .hero h1 {
+        transform: translateZ(40px) rotateX(var(--hero-title-rotate-x, 0deg)) rotateY(var(--hero-title-rotate-y, 0deg));
+      }
+    }
+
+    /* Subtle movement for hero title - Mobile orientation-controlled or auto-animation */
+    @media (max-width: 767px) {
+      .hero h1 {
+        transform: translateZ(40px) rotateX(var(--hero-title-rotate-x, 0deg)) rotateY(var(--hero-title-rotate-y, 0deg));
+      }
+      
+      .hero.use-fallback-animation h1 {
+        animation: hero-title-mobile-move 15s ease-in-out infinite;
+      }
+    }
+
+    @keyframes hero-title-mobile-move {
+      0%, 100% {
+        transform: translateZ(40px) rotateX(0deg) rotateY(0deg);
+      }
+      25% {
+        transform: translateZ(40px) rotateX(3deg) rotateY(-3deg);
+      }
+      50% {
+        transform: translateZ(40px) rotateX(-3deg) rotateY(3deg);
+      }
+      75% {
+        transform: translateZ(40px) rotateX(3deg) rotateY(2deg);
+      }
+    }
+
+    /* Disable all movement and animations when prefers-reduced-motion */
     @media (prefers-reduced-motion: reduce) {
-      .hero-letter:hover {
-        transform: none;
+      .hero::before,
+      .hero::after,
+      .hero h1,
+      .hero.use-fallback-animation::before,
+      .hero.use-fallback-animation::after,
+      .hero.use-fallback-animation h1 {
+        animation: none !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      
+      .hero-glitch::before,
+      .hero-glitch::after {
+        animation: none !important;
       }
     }
 
@@ -1628,7 +1729,7 @@
     <section class="hero">
       <div class="hero-inner">
         <div class="hero-content">
-          <h1><span class="hero-letter">H</span><span class="hero-letter">a</span><span class="hero-letter">c</span><span class="hero-letter">e</span><span class="hero-letter">m</span><span class="hero-letter">o</span><span class="hero-letter">s</span> <span class="hero-letter">q</span><span class="hero-letter">u</span><span class="hero-letter">e</span> <span class="hero-letter">l</span><span class="hero-letter">a</span><span class="hero-letter">s</span> <span class="hero-letter">m</span><span class="hero-letter">a</span><span class="hero-letter">r</span><span class="hero-letter">c</span><span class="hero-letter">a</span><span class="hero-letter">s</span> <span class="hero-letter">c</span><span class="hero-letter">r</span><span class="hero-letter">e</span><span class="hero-letter">z</span><span class="hero-letter">c</span><span class="hero-letter">a</span><span class="hero-letter">n</span><span class="hero-letter">.</span> <span class="hero-letter">P</span><span class="hero-letter">u</span><span class="hero-letter">n</span><span class="hero-letter">t</span><span class="hero-letter">o</span><span class="hero-letter">.</span></h1>
+          <h1><span class="hero-glitch" data-text="Hacemos que las marcas crezcan. Punto.">Hacemos que las marcas crezcan. Punto.</span></h1>
           <p>Sistemas digitales diseñados para vender, escalar y dominar su mercado.</p>
           <div class="btn-wrapper">
             <button class="btn" id="growButton">
@@ -1964,16 +2065,22 @@
         const relativeX = (mouseX - heroRect.left) / heroRect.width;
         const relativeY = (mouseY - heroRect.top) / heroRect.height;
         
-        // Center around 0.5 (-0.5 to 0.5 range) and scale for premium movement
-        // When relativeX/Y = 0, we get -0.5 * 50 = -25px (left/top edge)
-        // When relativeX/Y = 1, we get 0.5 * 50 = 25px (right/bottom edge)
-        const MAX_MOVEMENT = 25; // Maximum pixels to move in any direction
-        const moveX = (relativeX - 0.5) * (MAX_MOVEMENT * 2);
-        const moveY = (relativeY - 0.5) * (MAX_MOVEMENT * 2);
+        // Background movement
+        const MAX_BG_MOVEMENT = 25; // Maximum pixels to move in any direction
+        const moveX = (relativeX - 0.5) * (MAX_BG_MOVEMENT * 2);
+        const moveY = (relativeY - 0.5) * (MAX_BG_MOVEMENT * 2);
         
         // Apply transform to ::before and ::after via CSS custom properties
         hero.style.setProperty('--hero-bg-x', `${moveX}px`);
         hero.style.setProperty('--hero-bg-y', `${moveY}px`);
+        
+        // Title subtle rotation (Cyber Core style)
+        const MAX_ROTATION = 5; // Maximum degrees to rotate
+        const rotateY = (relativeX - 0.5) * (MAX_ROTATION * 2);
+        const rotateX = -(relativeY - 0.5) * (MAX_ROTATION * 2);
+        
+        hero.style.setProperty('--hero-title-rotate-x', `${rotateX}deg`);
+        hero.style.setProperty('--hero-title-rotate-y', `${rotateY}deg`);
         
         ticking = false;
       }
@@ -1998,6 +2105,8 @@
       hero.addEventListener('mouseleave', function() {
         hero.style.setProperty('--hero-bg-x', '0px');
         hero.style.setProperty('--hero-bg-y', '0px');
+        hero.style.setProperty('--hero-title-rotate-x', '0deg');
+        hero.style.setProperty('--hero-title-rotate-y', '0deg');
       }, { passive: true });
     })();
 
@@ -2017,49 +2126,41 @@
       if (!hero) return;
 
       let permissionGranted = false;
-      let permissionDenied = false;
       let deviceOrientationSupported = false;
-      let motionButton = null;
 
       /**
-       * Update hero background position based on device orientation
+       * Update hero background and title position based on device orientation
        */
       function handleDeviceOrientation(event) {
         if (!permissionGranted) return;
 
         // Get beta (tilt forward/backward) and gamma (tilt left/right)
-        // beta: -180 to 180 (negative = tilt back, positive = tilt forward)
-        // gamma: -90 to 90 (negative = tilt left, positive = tilt right)
         const beta = event.beta || 0;
         const gamma = event.gamma || 0;
 
-        // Normalize and scale for premium movement
-        // For gamma: -90 to 90 becomes -40px to 40px
-        // For beta: -90 to 90 becomes -40px to 40px (we'll limit beta range)
+        // Background movement
         const MAX_TILT = 30; // Max tilt angle to consider
         const MAX_MOVEMENT = 40; // Maximum pixels to move in any direction
         
-        // Clamp beta to reasonable range (we don't want extreme forward/back tilts)
+        // Clamp beta to reasonable range
         const clampedBeta = clamp(beta, -MAX_TILT, MAX_TILT);
         const clampedGamma = clamp(gamma, -MAX_TILT, MAX_TILT);
         
-        // Calculate movement (inverted for natural feel)
+        // Calculate background movement (inverted for natural feel)
         const moveX = -(clampedGamma / MAX_TILT) * MAX_MOVEMENT;
         const moveY = (clampedBeta / MAX_TILT) * MAX_MOVEMENT;
 
-        // Apply transform
+        // Apply background transform
         hero.style.setProperty('--hero-bg-x', `${moveX}px`);
         hero.style.setProperty('--hero-bg-y', `${moveY}px`);
-      }
-
-      /**
-       * Remove the motion activation button
-       */
-      function removeMotionButton() {
-        if (motionButton) {
-          motionButton.remove();
-          motionButton = null;
-        }
+        
+        // Title subtle rotation (Cyber Core style)
+        const MAX_ROTATION = 5; // Maximum degrees to rotate
+        const rotateY = -(clampedGamma / MAX_TILT) * MAX_ROTATION;
+        const rotateX = (clampedBeta / MAX_TILT) * MAX_ROTATION;
+        
+        hero.style.setProperty('--hero-title-rotate-x', `${rotateX}deg`);
+        hero.style.setProperty('--hero-title-rotate-y', `${rotateY}deg`);
       }
 
       /**
@@ -2070,76 +2171,7 @@
       }
 
       /**
-       * Request permission for device motion (iOS 13+)
-       */
-      function requestPermission() {
-        if (typeof DeviceOrientationEvent !== 'undefined' && 
-            typeof DeviceOrientationEvent.requestPermission === 'function') {
-          DeviceOrientationEvent.requestPermission()
-            .then(permissionState => {
-              if (permissionState === 'granted') {
-                permissionGranted = true;
-                deviceOrientationSupported = true;
-                hero.classList.remove('use-fallback-animation');
-                window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
-                removeMotionButton();
-              } else {
-                permissionDenied = true;
-                hero.classList.add('use-fallback-animation');
-                removeMotionButton();
-              }
-            })
-            .catch(error => {
-              console.error('Device orientation permission error:', error);
-              permissionDenied = true;
-              hero.classList.add('use-fallback-animation');
-              removeMotionButton();
-            });
-        }
-      }
-
-      /**
-       * Create motion activation button
-       */
-      function createMotionButton() {
-        motionButton = document.createElement('button');
-        motionButton.textContent = 'Activar movimiento';
-        motionButton.style.cssText = `
-          position: fixed;
-          bottom: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 1000;
-          padding: 12px 24px;
-          background: var(--cyber-neon-color, #00f3ff);
-          color: #0a0a0a;
-          border: none;
-          border-radius: 8px;
-          font-family: 'Inter', system-ui, -apple-system, sans-serif;
-          font-size: 14px;
-          font-weight: 600;
-          cursor: pointer;
-          box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
-          transition: all 0.3s ease;
-        `;
-        
-        motionButton.addEventListener('mouseenter', function() {
-          this.style.transform = 'translateX(-50%) scale(1.05)';
-          this.style.boxShadow = '0 0 30px rgba(0, 243, 255, 0.7)';
-        });
-        
-        motionButton.addEventListener('mouseleave', function() {
-          this.style.transform = 'translateX(-50%) scale(1)';
-          this.style.boxShadow = '0 0 20px rgba(0, 243, 255, 0.5)';
-        });
-        
-        motionButton.addEventListener('click', requestPermission);
-        
-        document.body.appendChild(motionButton);
-      }
-
-      /**
-       * Initialize device orientation
+       * Initialize device orientation (without button, as per requirements)
        */
       function initDeviceOrientation() {
         // Check if DeviceOrientationEvent is supported
@@ -2149,10 +2181,11 @@
           return;
         }
 
-        // iOS 13+ requires permission
+        // iOS 13+ requires permission, but per requirements we don't show button
+        // Instead, we use fallback animation
         if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-          // Show button to request permission
-          createMotionButton();
+          // Use fallback animation instead of requesting permission
+          hero.classList.add('use-fallback-animation');
         } else {
           // Android and older iOS - no permission needed
           deviceOrientationSupported = true;
