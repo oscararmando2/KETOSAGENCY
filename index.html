@@ -499,7 +499,6 @@
       /* Always visible by default */
       opacity: 1;
       visibility: visible;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
       /* Position for absolute background */
       position: relative;
       overflow: hidden;
@@ -1458,8 +1457,11 @@
       header.classList.remove('header-hidden');
       
       // Safety fallback: ensure section2 is visible
-      document.querySelector('#section-2')?.style.setProperty('visibility', 'visible');
-      document.querySelector('#section-2')?.style.setProperty('opacity', '1');
+      const section2 = document.querySelector('#section-2');
+      if (section2) {
+        section2.style.setProperty('visibility', 'visible');
+        section2.style.setProperty('opacity', '1');
+      }
     }
     
     // Click handlers
