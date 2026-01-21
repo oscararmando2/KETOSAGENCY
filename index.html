@@ -20,6 +20,7 @@
       --light: #F2F2F2;      /* blanco suave para textos */
       --header-height: 90px; /* Fixed header height */
       --header-height-mobile: 70px; /* Mobile header height */
+      --neon-blue: #00f3ff;  /* neon blue for cyber card */
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     html {
@@ -982,6 +983,417 @@
         transform: none !important;
       }
     }
+
+    /* Hero Layout with Cyber Card */
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      width: 100%;
+    }
+
+    .hero-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Desktop: 2 columns */
+    @media (min-width: 768px) {
+      .hero-inner {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .hero-content {
+        align-items: flex-start;
+        text-align: left;
+      }
+    }
+
+    /* Mobile: stack vertically */
+    @media (max-width: 767px) {
+      .hero-visual {
+        margin-top: 28px;
+      }
+    }
+
+    /* Cyber Card Styles - All classes prefixed with cyber- */
+    .cyber-card-wrapper {
+      position: relative;
+      width: 320px;
+      height: 480px;
+    }
+
+    @media (max-width: 767px) {
+      .cyber-card-wrapper {
+        width: 280px;
+        height: 420px;
+      }
+    }
+
+    .cyber-mouse-position-tracker {
+      position: absolute;
+      width: 33.333%;
+      height: 33.333%;
+      z-index: 10;
+    }
+
+    .cyber-tr-1 {
+      top: 0;
+      left: 0;
+    }
+    .cyber-tr-2 {
+      top: 0;
+      left: 33.333%;
+    }
+    .cyber-tr-3 {
+      top: 0;
+      left: 66.666%;
+    }
+    .cyber-tr-4 {
+      top: 33.333%;
+      left: 0;
+    }
+    .cyber-tr-5 {
+      top: 33.333%;
+      left: 33.333%;
+    }
+    .cyber-tr-6 {
+      top: 33.333%;
+      left: 66.666%;
+    }
+    .cyber-tr-7 {
+      top: 66.666%;
+      left: 0;
+    }
+    .cyber-tr-8 {
+      top: 66.666%;
+      left: 33.333%;
+    }
+    .cyber-tr-9 {
+      top: 66.666%;
+      left: 66.666%;
+    }
+
+    .cyber-card {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition:
+        transform 0.2s ease-out,
+        box-shadow 0.2s ease;
+      transform-style: preserve-3d;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+
+    .cyber-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+      background-size: 30px 30px;
+      opacity: 0.5;
+      -webkit-mask-image: radial-gradient(circle at center, white, transparent 80%);
+      mask-image: radial-gradient(circle at center, white, transparent 80%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .cyber-card::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        circle at center,
+        rgba(0, 243, 255, 0.2),
+        transparent 50%
+      );
+      top: -50%;
+      left: -50%;
+      opacity: 0;
+      transition: 0.3s;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .cyber-content {
+      z-index: 5;
+      transform: translateZ(40px);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .cyber-title {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      line-height: 1;
+      position: relative;
+      mix-blend-mode: lighten;
+    }
+
+    @media (max-width: 767px) {
+      .cyber-title {
+        font-size: 3rem;
+      }
+    }
+
+    .cyber-subtitle {
+      margin-top: 10px;
+      color: var(--neon-blue);
+      letter-spacing: 3px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .cyber-hud-corner {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--neon-blue);
+      transition: 0.3s;
+      z-index: 4;
+    }
+    .cyber-tl {
+      top: 20px;
+      left: 20px;
+      border-right: none;
+      border-bottom: none;
+    }
+    .cyber-tr {
+      top: 20px;
+      right: 20px;
+      border-left: none;
+      border-bottom: none;
+    }
+    .cyber-bl {
+      bottom: 20px;
+      left: 20px;
+      border-right: none;
+      border-top: none;
+    }
+    .cyber-br {
+      bottom: 20px;
+      right: 20px;
+      border-left: none;
+      border-top: none;
+    }
+
+    .cyber-glitch {
+      position: relative;
+    }
+    .cyber-glitch::before,
+    .cyber-glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 10, 0.8);
+    }
+    .cyber-glitch::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00c1;
+      clip: rect(44px, 450px, 56px, 0);
+      animation: cyber-glitch-anim 5s infinite linear alternate-reverse;
+    }
+    .cyber-glitch::after {
+      left: -2px;
+      text-shadow: -1px 0 #00fff9;
+      clip: rect(44px, 450px, 56px, 0);
+      animation: cyber-glitch-anim2 5s infinite linear alternate-reverse;
+    }
+
+    @keyframes cyber-glitch-anim {
+      0% {
+        clip: rect(15px, 9999px, 81px, 0);
+      }
+      5% {
+        clip: rect(72px, 9999px, 24px, 0);
+      }
+      10% {
+        clip: rect(4px, 9999px, 88px, 0);
+      }
+      15% {
+        clip: rect(66px, 9999px, 14px, 0);
+      }
+      20% {
+        clip: rect(25px, 9999px, 96px, 0);
+      }
+      100% {
+        clip: rect(50px, 9999px, 50px, 0);
+      }
+    }
+    @keyframes cyber-glitch-anim2 {
+      0% {
+        clip: rect(80px, 9999px, 4px, 0);
+      }
+      5% {
+        clip: rect(30px, 9999px, 100px, 0);
+      }
+      10% {
+        clip: rect(10px, 9999px, 20px, 0);
+      }
+      100% {
+        clip: rect(90px, 9999px, 90px, 0);
+      }
+    }
+
+    /* Desktop hover effects */
+    @media (min-width: 768px) {
+      .cyber-tr-1:hover ~ .cyber-card {
+        transform: rotateX(20deg) rotateY(-20deg);
+      }
+      .cyber-tr-1:hover ~ .cyber-card::after {
+        opacity: 1;
+        transform: translate(-20%, -20%);
+      }
+
+      .cyber-tr-2:hover ~ .cyber-card {
+        transform: rotateX(20deg) rotateY(0deg);
+      }
+      .cyber-tr-2:hover ~ .cyber-card::after {
+        opacity: 1;
+        transform: translate(0%, -20%);
+      }
+
+      .cyber-tr-3:hover ~ .cyber-card {
+        transform: rotateX(20deg) rotateY(20deg);
+      }
+      .cyber-tr-3:hover ~ .cyber-card::after {
+        opacity: 1;
+        transform: translate(20%, -20%);
+      }
+
+      .cyber-tr-4:hover ~ .cyber-card {
+        transform: rotateX(0deg) rotateY(-20deg);
+      }
+      .cyber-tr-4:hover ~ .cyber-card::after {
+        opacity: 1;
+        transform: translate(-20%, 0%);
+      }
+
+      .cyber-tr-5:hover ~ .cyber-card {
+        transform: rotateX(0deg) rotateY(0deg) scale(1.05);
+        box-shadow: 0 0 30px var(--neon-blue);
+      }
+      .cyber-tr-5:hover ~ .cyber-card::after {
+        opacity: 1;
+        transform: translate(0%, 0%);
+      }
+
+      .cyber-tr-6:hover ~ .cyber-card {
+        transform: rotateX(0deg) rotateY(20deg);
+      }
+      .cyber-tr-6:hover ~ .cyber-card::after {
+        opacity: 1;
+        transform: translate(20%, 0%);
+      }
+
+      .cyber-tr-7:hover ~ .cyber-card {
+        transform: rotateX(-20deg) rotateY(-20deg);
+      }
+      .cyber-tr-7:hover ~ .cyber-card::after {
+        opacity: 1;
+        transform: translate(-20%, 20%);
+      }
+
+      .cyber-tr-8:hover ~ .cyber-card {
+        transform: rotateX(-20deg) rotateY(0deg);
+      }
+      .cyber-tr-8:hover ~ .cyber-card::after {
+        opacity: 1;
+        transform: translate(0%, 20%);
+      }
+
+      .cyber-tr-9:hover ~ .cyber-card {
+        transform: rotateX(-20deg) rotateY(20deg);
+      }
+      .cyber-tr-9:hover ~ .cyber-card::after {
+        opacity: 1;
+        transform: translate(20%, 20%);
+      }
+
+      .cyber-card-wrapper:hover .cyber-hud-corner {
+        box-shadow: 0 0 10px var(--neon-blue);
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    /* Mobile: disable hover trackers, add tap-to-glow */
+    @media (max-width: 767px) {
+      .cyber-mouse-position-tracker {
+        display: none;
+      }
+
+      .cyber-card-wrapper.cyber-active .cyber-card {
+        transform: scale(1.03);
+        box-shadow: 0 0 25px var(--neon-blue);
+      }
+
+      .cyber-card-wrapper.cyber-active .cyber-card::after {
+        opacity: 0.7;
+      }
+
+      .cyber-card-wrapper.cyber-active .cyber-hud-corner {
+        box-shadow: 0 0 8px var(--neon-blue);
+      }
+    }
+
+    /* Reduced motion: disable animations */
+    @media (prefers-reduced-motion: reduce) {
+      .cyber-card {
+        transition: none;
+      }
+
+      .cyber-glitch::before,
+      .cyber-glitch::after {
+        animation: none !important;
+      }
+
+      .cyber-tr-1:hover ~ .cyber-card,
+      .cyber-tr-2:hover ~ .cyber-card,
+      .cyber-tr-3:hover ~ .cyber-card,
+      .cyber-tr-4:hover ~ .cyber-card,
+      .cyber-tr-5:hover ~ .cyber-card,
+      .cyber-tr-6:hover ~ .cyber-card,
+      .cyber-tr-7:hover ~ .cyber-card,
+      .cyber-tr-8:hover ~ .cyber-card,
+      .cyber-tr-9:hover ~ .cyber-card {
+        transform: none !important;
+      }
+
+      .cyber-card-wrapper.cyber-active .cyber-card {
+        transform: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1047,40 +1459,71 @@
   <!-- Site Content -->
   <main id="siteContent">
     <section class="hero">
-      <h1>Hacemos que las marcas crezcan.<br>Punto.</h1>
-      <p>Sistemas digitales diseñados para vender, escalar y dominar su mercado.</p>
-      <div class="btn-wrapper">
-        <button class="btn" id="growButton">
-          <svg class="btn-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
-            ></path>
-          </svg>
+      <div class="hero-inner">
+        <div class="hero-content">
+          <h1>Hacemos que las marcas crezcan.<br>Punto.</h1>
+          <p>Sistemas digitales diseñados para vender, escalar y dominar su mercado.</p>
+          <div class="btn-wrapper">
+            <button class="btn" id="growButton">
+              <svg class="btn-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
+                ></path>
+              </svg>
 
-          <div class="txt-wrapper">
-            <div class="txt-1">
-              <span class="btn-letter">Q</span>
-              <span class="btn-letter">u</span>
-              <span class="btn-letter">i</span>
-              <span class="btn-letter">e</span>
-              <span class="btn-letter">r</span>
-              <span class="btn-letter">o</span>
-              <span class="btn-letter"> </span>
-              <span class="btn-letter">C</span>
-              <span class="btn-letter">r</span>
-              <span class="btn-letter">e</span>
-              <span class="btn-letter">c</span>
-              <span class="btn-letter">e</span>
-              <span class="btn-letter">r</span>
-              <span class="btn-letter"> </span>
-              <span class="btn-letter">-</span>
-              <span class="btn-letter">-</span>
-              <span class="btn-letter">></span>
+              <div class="txt-wrapper">
+                <div class="txt-1">
+                  <span class="btn-letter">Q</span>
+                  <span class="btn-letter">u</span>
+                  <span class="btn-letter">i</span>
+                  <span class="btn-letter">e</span>
+                  <span class="btn-letter">r</span>
+                  <span class="btn-letter">o</span>
+                  <span class="btn-letter"> </span>
+                  <span class="btn-letter">C</span>
+                  <span class="btn-letter">r</span>
+                  <span class="btn-letter">e</span>
+                  <span class="btn-letter">c</span>
+                  <span class="btn-letter">e</span>
+                  <span class="btn-letter">r</span>
+                  <span class="btn-letter"> </span>
+                  <span class="btn-letter">-</span>
+                  <span class="btn-letter">-</span>
+                  <span class="btn-letter">></span>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="cyber-card-wrapper">
+            <div class="cyber-mouse-position-tracker cyber-tr-1"></div>
+            <div class="cyber-mouse-position-tracker cyber-tr-2"></div>
+            <div class="cyber-mouse-position-tracker cyber-tr-3"></div>
+            <div class="cyber-mouse-position-tracker cyber-tr-4"></div>
+            <div class="cyber-mouse-position-tracker cyber-tr-5"></div>
+            <div class="cyber-mouse-position-tracker cyber-tr-6"></div>
+            <div class="cyber-mouse-position-tracker cyber-tr-7"></div>
+            <div class="cyber-mouse-position-tracker cyber-tr-8"></div>
+            <div class="cyber-mouse-position-tracker cyber-tr-9"></div>
+
+            <div class="cyber-card">
+              <div class="cyber-hud-corner cyber-tl"></div>
+              <div class="cyber-hud-corner cyber-tr"></div>
+              <div class="cyber-hud-corner cyber-bl"></div>
+              <div class="cyber-hud-corner cyber-br"></div>
+
+              <div class="cyber-content">
+                <div class="cyber-title cyber-glitch" data-text="CYBER">CYBER</div>
+                <div class="cyber-title cyber-glitch" data-text="CORE">CORE</div>
+                <div class="cyber-subtitle">System Online</div>
+              </div>
             </div>
           </div>
-        </button>
+        </div>
       </div>
     </section>
 
@@ -1326,6 +1769,30 @@
         initProgressiveReveal();
       }
       
+    })();
+  </script>
+
+  <!-- Cyber Card Mobile Tap Interaction -->
+  <script>
+    (function() {
+      // Detect touch device
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+      if (isTouchDevice) {
+        const cyberWrapper = document.querySelector('.cyber-card-wrapper');
+
+        if (cyberWrapper) {
+          cyberWrapper.addEventListener('click', function() {
+            // Toggle active class
+            cyberWrapper.classList.add('cyber-active');
+
+            // Remove after 1.2s
+            setTimeout(function() {
+              cyberWrapper.classList.remove('cyber-active');
+            }, 1200);
+          });
+        }
+      }
     })();
   </script>
 
