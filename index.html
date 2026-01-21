@@ -495,6 +495,49 @@
       pointer-events: none;
     }
 
+    /* Powered by KETOS text overlay */
+    .powered-by-ketos {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(242, 242, 242, 0.6);
+      z-index: 2;
+      pointer-events: none;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-family: 'Space Grotesk', sans-serif;
+      text-shadow: 
+        0 0 8px rgba(0, 243, 255, 0.3),
+        0 0 12px rgba(0, 243, 255, 0.15);
+      transition: all 0.3s ease;
+      animation: ketos-glow 4s ease-in-out infinite;
+    }
+
+    /* Subtle animation for the powered by text */
+    @keyframes ketos-glow {
+      0%, 100% {
+        text-shadow: 
+          0 0 8px rgba(0, 243, 255, 0.3),
+          0 0 12px rgba(0, 243, 255, 0.15);
+      }
+      50% {
+        text-shadow: 
+          0 0 10px rgba(0, 243, 255, 0.4),
+          0 0 16px rgba(0, 243, 255, 0.2);
+      }
+    }
+
+    /* Mobile: Smaller text and adjusted position */
+    @media (max-width: 767px) {
+      .powered-by-ketos {
+        font-size: 10px;
+        bottom: 12px;
+        right: 12px;
+      }
+    }
+
     /* Intense Glitch Effect Container */
     .hero-glitch-effect {
       position: absolute;
@@ -1758,6 +1801,9 @@
       
       <!-- Dark overlay for text readability -->
       <div class="hero-overlay"></div>
+      
+      <!-- Powered by KETOS text -->
+      <div class="powered-by-ketos">Powered by KETOS</div>
       
       <!-- Intense Glitch Effects -->
       <div class="hero-glitch-effect"></div>
