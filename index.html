@@ -489,6 +489,7 @@
       pointer-events: none;
       transition: transform 0.3s ease-out;
       will-change: transform;
+      animation: cyber-glitch-anim 5s infinite linear alternate-reverse;
     }
 
     /* Desktop: Mouse-controlled movement */
@@ -498,9 +499,15 @@
       }
     }
 
-    /* Mobile: Auto-animate grid background */
+    /* Mobile: Use CSS variables for device orientation OR fallback animation */
     @media (max-width: 767px) {
       .hero::before {
+        /* Will be overridden by transform from CSS variables when device orientation is active */
+        transform: translate(var(--hero-bg-x, 0), var(--hero-bg-y, 0));
+      }
+      
+      /* Fallback animation when device orientation is not active */
+      .hero.use-fallback-animation::before {
         animation: hero-bg-mobile-move 20s ease-in-out infinite;
       }
     }
@@ -510,13 +517,13 @@
         transform: translate(0, 0);
       }
       25% {
-        transform: translate(10px, -10px);
+        transform: translate(20px, -20px);
       }
       50% {
-        transform: translate(-5px, 10px);
+        transform: translate(-15px, 20px);
       }
       75% {
-        transform: translate(10px, 5px);
+        transform: translate(20px, 15px);
       }
     }
 
@@ -536,7 +543,7 @@
       opacity: 0.4;
       z-index: 0;
       pointer-events: none;
-      animation: hero-glow-pulse 4s ease-in-out infinite;
+      animation: hero-glow-pulse 4s ease-in-out infinite, cyber-glitch-anim2 5s infinite linear alternate-reverse;
       transition: transform 0.3s ease-out;
       will-change: transform;
     }
@@ -548,9 +555,15 @@
       }
     }
 
-    /* Mobile: Auto-animate glow */
+    /* Mobile: Use CSS variables for device orientation OR fallback animation */
     @media (max-width: 767px) {
       .hero::after {
+        /* Will be overridden by transform from CSS variables when device orientation is active */
+        transform: translate(calc(var(--hero-bg-x, 0px) * 0.5), calc(var(--hero-bg-y, 0px) * 0.5));
+      }
+      
+      /* Fallback animation when device orientation is not active */
+      .hero.use-fallback-animation::after {
         animation: hero-glow-pulse 4s ease-in-out infinite, hero-glow-mobile-move 25s ease-in-out infinite;
       }
     }
@@ -560,10 +573,10 @@
         transform: translate(0, 0) scale(1);
       }
       33% {
-        transform: translate(-15px, 15px) scale(1.02);
+        transform: translate(-25px, 25px) scale(1.02);
       }
       66% {
-        transform: translate(15px, -10px) scale(0.98);
+        transform: translate(25px, -20px) scale(0.98);
       }
     }
 
@@ -1615,7 +1628,7 @@
     <section class="hero">
       <div class="hero-inner">
         <div class="hero-content">
-          <h1 class="cyber-glitch" data-text="Hacemos que las marcas crezcan. Punto.">Hacemos que las marcas <span class="hero-letter">c</span><span class="hero-letter">r</span><span class="hero-letter">e</span><span class="hero-letter">z</span><span class="hero-letter">c</span><span class="hero-letter">a</span><span class="hero-letter">n</span><span class="hero-letter">.</span> <span class="hero-letter">P</span><span class="hero-letter">u</span><span class="hero-letter">n</span><span class="hero-letter">t</span><span class="hero-letter">o</span><span class="hero-letter">.</span></h1>
+          <h1><span class="hero-letter">H</span><span class="hero-letter">a</span><span class="hero-letter">c</span><span class="hero-letter">e</span><span class="hero-letter">m</span><span class="hero-letter">o</span><span class="hero-letter">s</span> <span class="hero-letter">q</span><span class="hero-letter">u</span><span class="hero-letter">e</span> <span class="hero-letter">l</span><span class="hero-letter">a</span><span class="hero-letter">s</span> <span class="hero-letter">m</span><span class="hero-letter">a</span><span class="hero-letter">r</span><span class="hero-letter">c</span><span class="hero-letter">a</span><span class="hero-letter">s</span> <span class="hero-letter">c</span><span class="hero-letter">r</span><span class="hero-letter">e</span><span class="hero-letter">z</span><span class="hero-letter">c</span><span class="hero-letter">a</span><span class="hero-letter">n</span><span class="hero-letter">.</span> <span class="hero-letter">P</span><span class="hero-letter">u</span><span class="hero-letter">n</span><span class="hero-letter">t</span><span class="hero-letter">o</span><span class="hero-letter">.</span></h1>
           <p>Sistemas digitales diseñados para vender, escalar y dominar su mercado.</p>
           <div class="btn-wrapper">
             <button class="btn" id="growButton">
@@ -1951,10 +1964,10 @@
         const relativeX = (mouseX - heroRect.left) / heroRect.width;
         const relativeY = (mouseY - heroRect.top) / heroRect.height;
         
-        // Center around 0.5 (-0.5 to 0.5 range) and scale for subtle movement
-        // When relativeX/Y = 0, we get -0.5 * 20 = -10px (left/top edge)
-        // When relativeX/Y = 1, we get 0.5 * 20 = 10px (right/bottom edge)
-        const MAX_MOVEMENT = 10; // Maximum pixels to move in any direction
+        // Center around 0.5 (-0.5 to 0.5 range) and scale for premium movement
+        // When relativeX/Y = 0, we get -0.5 * 50 = -25px (left/top edge)
+        // When relativeX/Y = 1, we get 0.5 * 50 = 25px (right/bottom edge)
+        const MAX_MOVEMENT = 25; // Maximum pixels to move in any direction
         const moveX = (relativeX - 0.5) * (MAX_MOVEMENT * 2);
         const moveY = (relativeY - 0.5) * (MAX_MOVEMENT * 2);
         
@@ -1986,6 +1999,178 @@
         hero.style.setProperty('--hero-bg-x', '0px');
         hero.style.setProperty('--hero-bg-y', '0px');
       }, { passive: true });
+    })();
+
+    /**
+     * Mobile Device Orientation Parallax Effect
+     */
+    (function() {
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      // Check if mobile (max-width: 767px)
+      const isMobile = window.matchMedia('(max-width: 767px)').matches;
+      if (!isMobile) return;
+
+      const hero = document.querySelector('.hero');
+      if (!hero) return;
+
+      let permissionGranted = false;
+      let permissionDenied = false;
+      let deviceOrientationSupported = false;
+      let motionButton = null;
+
+      /**
+       * Update hero background position based on device orientation
+       */
+      function handleDeviceOrientation(event) {
+        if (!permissionGranted) return;
+
+        // Get beta (tilt forward/backward) and gamma (tilt left/right)
+        // beta: -180 to 180 (negative = tilt back, positive = tilt forward)
+        // gamma: -90 to 90 (negative = tilt left, positive = tilt right)
+        const beta = event.beta || 0;
+        const gamma = event.gamma || 0;
+
+        // Normalize and scale for premium movement
+        // For gamma: -90 to 90 becomes -40px to 40px
+        // For beta: -90 to 90 becomes -40px to 40px (we'll limit beta range)
+        const MAX_TILT = 30; // Max tilt angle to consider
+        const MAX_MOVEMENT = 40; // Maximum pixels to move in any direction
+        
+        // Clamp beta to reasonable range (we don't want extreme forward/back tilts)
+        const clampedBeta = clamp(beta, -MAX_TILT, MAX_TILT);
+        const clampedGamma = clamp(gamma, -MAX_TILT, MAX_TILT);
+        
+        // Calculate movement (inverted for natural feel)
+        const moveX = -(clampedGamma / MAX_TILT) * MAX_MOVEMENT;
+        const moveY = (clampedBeta / MAX_TILT) * MAX_MOVEMENT;
+
+        // Apply transform
+        hero.style.setProperty('--hero-bg-x', `${moveX}px`);
+        hero.style.setProperty('--hero-bg-y', `${moveY}px`);
+      }
+
+      /**
+       * Remove the motion activation button
+       */
+      function removeMotionButton() {
+        if (motionButton) {
+          motionButton.remove();
+          motionButton = null;
+        }
+      }
+
+      /**
+       * Clamp a value between min and max
+       */
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      /**
+       * Request permission for device motion (iOS 13+)
+       */
+      function requestPermission() {
+        if (typeof DeviceOrientationEvent !== 'undefined' && 
+            typeof DeviceOrientationEvent.requestPermission === 'function') {
+          DeviceOrientationEvent.requestPermission()
+            .then(permissionState => {
+              if (permissionState === 'granted') {
+                permissionGranted = true;
+                deviceOrientationSupported = true;
+                hero.classList.remove('use-fallback-animation');
+                window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
+                removeMotionButton();
+              } else {
+                permissionDenied = true;
+                hero.classList.add('use-fallback-animation');
+                removeMotionButton();
+              }
+            })
+            .catch(error => {
+              console.error('Device orientation permission error:', error);
+              permissionDenied = true;
+              hero.classList.add('use-fallback-animation');
+              removeMotionButton();
+            });
+        }
+      }
+
+      /**
+       * Create motion activation button
+       */
+      function createMotionButton() {
+        motionButton = document.createElement('button');
+        motionButton.textContent = 'Activar movimiento';
+        motionButton.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1000;
+          padding: 12px 24px;
+          background: var(--cyber-neon-color, #00f3ff);
+          color: #0a0a0a;
+          border: none;
+          border-radius: 8px;
+          font-family: 'Inter', system-ui, -apple-system, sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+          transition: all 0.3s ease;
+        `;
+        
+        motionButton.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateX(-50%) scale(1.05)';
+          this.style.boxShadow = '0 0 30px rgba(0, 243, 255, 0.7)';
+        });
+        
+        motionButton.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateX(-50%) scale(1)';
+          this.style.boxShadow = '0 0 20px rgba(0, 243, 255, 0.5)';
+        });
+        
+        motionButton.addEventListener('click', requestPermission);
+        
+        document.body.appendChild(motionButton);
+      }
+
+      /**
+       * Initialize device orientation
+       */
+      function initDeviceOrientation() {
+        // Check if DeviceOrientationEvent is supported
+        if (typeof DeviceOrientationEvent === 'undefined') {
+          console.log('DeviceOrientation not supported');
+          hero.classList.add('use-fallback-animation');
+          return;
+        }
+
+        // iOS 13+ requires permission
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+          // Show button to request permission
+          createMotionButton();
+        } else {
+          // Android and older iOS - no permission needed
+          deviceOrientationSupported = true;
+          permissionGranted = true;
+          hero.classList.remove('use-fallback-animation');
+          window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
+        }
+      }
+
+      // Initialize on page load
+      initDeviceOrientation();
+
+      // Cleanup on page unload
+      window.addEventListener('beforeunload', function() {
+        if (permissionGranted) {
+          window.removeEventListener('deviceorientation', handleDeviceOrientation);
+        }
+      });
     })();
   </script>
 
