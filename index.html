@@ -141,6 +141,7 @@
     .btn-wrapper {
       position: relative;
       display: inline-block;
+      z-index: 10;
     }
 
     .btn {
@@ -455,21 +456,86 @@
     }
     
     .hero {
+      --cyber-neon-color: #00f3ff; /* Neon cyan color for effects */
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      background: var(--dark);
+      background: rgba(10, 10, 10, 0.95);
       padding: 100px 5% 60px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cyber grid background effect */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(color-mix(in srgb, var(--cyber-neon-color) 15%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--cyber-neon-color) 15%, transparent) 1px, transparent 1px);
+      background-size: 30px 30px;
+      opacity: 0.6;
+      -webkit-mask-image: radial-gradient(circle at center, white, transparent 75%);
+      mask-image: radial-gradient(circle at center, white, transparent 75%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Radial glow effect */
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        circle at center,
+        color-mix(in srgb, var(--cyber-neon-color) 25%, transparent),
+        transparent 50%
+      );
+      top: -50%;
+      left: -50%;
+      opacity: 0.4;
+      z-index: 0;
+      pointer-events: none;
+      animation: hero-glow-pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes hero-glow-pulse {
+      0%, 100% {
+        opacity: 0.4;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.6;
+        transform: scale(1.05);
+      }
     }
     .hero h1 {
       font-size: clamp(2.8rem, 8vw, 6rem);
       margin-bottom: 1.5rem;
       color: var(--light);
+      position: relative;
+      z-index: 5;
+      font-weight: 900;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      line-height: 1.2;
+      mix-blend-mode: lighten;
     }
-    .hero p { font-size: 1.4rem; max-width: 700px; margin-bottom: 2.5rem; opacity: 0.9; color: var(--light); }
+    .hero p { 
+      font-size: 1.4rem; 
+      max-width: 700px; 
+      margin-bottom: 2.5rem; 
+      opacity: 0.9; 
+      color: var(--light); 
+      position: relative;
+      z-index: 5;
+    }
     
     .cta {
       background: var(--gray);
@@ -993,6 +1059,8 @@
       justify-content: center;
       gap: 48px;
       width: 100%;
+      position: relative;
+      z-index: 10;
     }
 
     .hero-content {
@@ -1001,12 +1069,12 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+      position: relative;
+      z-index: 10;
     }
 
     .hero-visual {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: none; /* Hidden since card is removed */
     }
 
     /* Desktop: 2 columns */
@@ -1461,7 +1529,7 @@
     <section class="hero">
       <div class="hero-inner">
         <div class="hero-content">
-          <h1>CYBER CORE</h1>
+          <h1 class="cyber-glitch" data-text="Hacemos que las marcas crezcan. Punto.">Hacemos que las marcas crezcan. Punto.</h1>
           <p>Sistemas digitales diseñados para vender, escalar y dominar su mercado.</p>
           <div class="btn-wrapper">
             <button class="btn" id="growButton">
@@ -1495,33 +1563,6 @@
                 </div>
               </div>
             </button>
-          </div>
-        </div>
-
-        <div class="hero-visual">
-          <div class="cyber-card-wrapper">
-            <div class="cyber-mouse-position-tracker cyber-tr-1"></div>
-            <div class="cyber-mouse-position-tracker cyber-tr-2"></div>
-            <div class="cyber-mouse-position-tracker cyber-tr-3"></div>
-            <div class="cyber-mouse-position-tracker cyber-tr-4"></div>
-            <div class="cyber-mouse-position-tracker cyber-tr-5"></div>
-            <div class="cyber-mouse-position-tracker cyber-tr-6"></div>
-            <div class="cyber-mouse-position-tracker cyber-tr-7"></div>
-            <div class="cyber-mouse-position-tracker cyber-tr-8"></div>
-            <div class="cyber-mouse-position-tracker cyber-tr-9"></div>
-
-            <div class="cyber-card">
-              <div class="cyber-hud-corner cyber-tl"></div>
-              <div class="cyber-hud-corner cyber-tr"></div>
-              <div class="cyber-hud-corner cyber-bl"></div>
-              <div class="cyber-hud-corner cyber-br"></div>
-
-              <div class="cyber-content">
-                <div class="cyber-title cyber-glitch" data-text="CYBER">CYBER</div>
-                <div class="cyber-title cyber-glitch" data-text="CORE">CORE</div>
-                <div class="cyber-subtitle">System Online</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
