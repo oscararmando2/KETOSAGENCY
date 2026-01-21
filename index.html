@@ -20,7 +20,6 @@
       --light: #F2F2F2;      /* blanco suave para textos */
       --header-height: 90px; /* Fixed header height */
       --header-height-mobile: 70px; /* Mobile header height */
-      --neon-blue: #00f3ff;  /* neon blue for cyber card */
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     html {
@@ -1032,6 +1031,7 @@
 
     /* Cyber Card Styles - All classes prefixed with cyber- */
     .cyber-card-wrapper {
+      --cyber-neon-color: #00f3ff; /* Scoped neon color for cyber card */
       position: relative;
       width: 320px;
       height: 480px;
@@ -1112,8 +1112,8 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+      background: linear-gradient(color-mix(in srgb, var(--cyber-neon-color) 10%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--cyber-neon-color) 10%, transparent) 1px, transparent 1px);
       background-size: 30px 30px;
       opacity: 0.5;
       -webkit-mask-image: radial-gradient(circle at center, white, transparent 80%);
@@ -1129,7 +1129,7 @@
       height: 200%;
       background: radial-gradient(
         circle at center,
-        rgba(0, 243, 255, 0.2),
+        color-mix(in srgb, var(--cyber-neon-color) 20%, transparent),
         transparent 50%
       );
       top: -50%;
@@ -1165,7 +1165,7 @@
 
     .cyber-subtitle {
       margin-top: 10px;
-      color: var(--neon-blue);
+      color: var(--cyber-neon-color);
       letter-spacing: 3px;
       font-size: 0.8rem;
       text-transform: uppercase;
@@ -1175,7 +1175,7 @@
       position: absolute;
       width: 20px;
       height: 20px;
-      border: 2px solid var(--neon-blue);
+      border: 2px solid var(--cyber-neon-color);
       transition: 0.3s;
       z-index: 4;
     }
@@ -1301,7 +1301,7 @@
 
       .cyber-tr-5:hover ~ .cyber-card {
         transform: rotateX(0deg) rotateY(0deg) scale(1.05);
-        box-shadow: 0 0 30px var(--neon-blue);
+        box-shadow: 0 0 30px var(--cyber-neon-color);
       }
       .cyber-tr-5:hover ~ .cyber-card::after {
         opacity: 1;
@@ -1341,7 +1341,7 @@
       }
 
       .cyber-card-wrapper:hover .cyber-hud-corner {
-        box-shadow: 0 0 10px var(--neon-blue);
+        box-shadow: 0 0 10px var(--cyber-neon-color);
         width: 30px;
         height: 30px;
       }
@@ -1355,7 +1355,7 @@
 
       .cyber-card-wrapper.cyber-active .cyber-card {
         transform: scale(1.03);
-        box-shadow: 0 0 25px var(--neon-blue);
+        box-shadow: 0 0 25px var(--cyber-neon-color);
       }
 
       .cyber-card-wrapper.cyber-active .cyber-card::after {
@@ -1363,7 +1363,7 @@
       }
 
       .cyber-card-wrapper.cyber-active .cyber-hud-corner {
-        box-shadow: 0 0 8px var(--neon-blue);
+        box-shadow: 0 0 8px var(--cyber-neon-color);
       }
     }
 
