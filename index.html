@@ -1951,9 +1951,12 @@
         const relativeX = (mouseX - heroRect.left) / heroRect.width;
         const relativeY = (mouseY - heroRect.top) / heroRect.height;
         
-        // Center around 0.5 and scale to subtle movement (-0.5 to 0.5)
-        const moveX = (relativeX - 0.5) * 20; // Max 10px movement in each direction
-        const moveY = (relativeY - 0.5) * 20;
+        // Center around 0.5 (-0.5 to 0.5 range) and scale for subtle movement
+        // When relativeX/Y = 0, we get -0.5 * 20 = -10px (left/top edge)
+        // When relativeX/Y = 1, we get 0.5 * 20 = 10px (right/bottom edge)
+        const MAX_MOVEMENT = 10; // Maximum pixels to move in any direction
+        const moveX = (relativeX - 0.5) * (MAX_MOVEMENT * 2);
+        const moveY = (relativeY - 0.5) * (MAX_MOVEMENT * 2);
         
         // Apply transform to ::before and ::after via CSS custom properties
         hero.style.setProperty('--hero-bg-x', `${moveX}px`);
