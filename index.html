@@ -496,19 +496,13 @@
       flex-direction: column;
       justify-content: flex-start;
       padding-top: 20vh;
-      /* Initially hidden */
-      opacity: 0;
-      visibility: hidden;
+      /* Always visible by default */
+      opacity: 1;
+      visibility: visible;
       transition: opacity 0.4s ease, visibility 0.4s ease;
       /* Position for absolute background */
       position: relative;
       overflow: hidden;
-    }
-    
-    /* Visible state for section-2 */
-    .what-we-do.section-visible {
-      opacity: 1;
-      visibility: visible;
     }
     
     /* Animated background for section-2 */
@@ -999,11 +993,11 @@
       transition: none;
       position: relative;
       z-index: 1;
-      /* Start hidden and rotated - ready to flip in */
-      opacity: 0;
-      visibility: hidden;
-      transform: rotateX(60deg);
-      filter: blur(10px);
+      /* Visible by default, transform/filter for visual effect */
+      opacity: 1;
+      visibility: visible;
+      transform: rotateX(0deg);
+      filter: blur(0);
     }
     
     /* Section 2 flipping in state */
@@ -1011,12 +1005,8 @@
       animation: section2-flip-in 1000ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
     }
     
-    /* Section 2 visible state */
+    /* Section 2 visible state - ensures proper z-index during animation */
     .what-we-do.section-visible {
-      opacity: 1;
-      visibility: visible;
-      transform: rotateX(0deg);
-      filter: blur(0);
       z-index: 2;
     }
     
@@ -1466,6 +1456,10 @@
       
       // Show header with smooth animation
       header.classList.remove('header-hidden');
+      
+      // Safety fallback: ensure section2 is visible
+      document.querySelector('#section-2')?.style.setProperty('visibility', 'visible');
+      document.querySelector('#section-2')?.style.setProperty('opacity', '1');
     }
     
     // Click handlers
