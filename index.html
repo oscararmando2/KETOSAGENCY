@@ -18,6 +18,8 @@
       --dark: #0E0E11;       /* negro principal */
       --gray: #2A2A2A;       /* gris medio para fondos secundarios */
       --light: #F2F2F2;      /* blanco suave para textos */
+      --header-height: 90px; /* Fixed header height */
+      --header-height-mobile: 70px; /* Mobile header height */
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     html {
@@ -730,7 +732,7 @@
     /* Sticky header block for headline elements */
     #section-2 .sticky-head {
       position: sticky;
-      top: 90px;                 /* below fixed header */
+      top: var(--header-height);  /* below fixed header */
       z-index: 5;
       max-width: 980px;
       margin: 0 auto 40px;
@@ -899,7 +901,7 @@
       }
       
       #section-2 .sticky-head {
-        top: 70px; /* Adjusted for mobile header */
+        top: var(--header-height-mobile); /* Adjusted for mobile header */
         padding: 14px 14px 18px;
         border-radius: 14px;
       }
@@ -1235,21 +1237,26 @@
         const sectionTop = sectionRect.top;
         const viewportMid = viewportHeight / 2;
         
+        // Guard against division by zero
+        const denominator = sectionHeight - viewportHeight;
+        if (denominator <= 0) return;
+        
         // Calculate progress: 0 when section top is at viewport mid, 1 when section bottom passes viewport mid
-        const rawProgress = (viewportMid - sectionTop) / (sectionHeight - viewportHeight);
+        const rawProgress = (viewportMid - sectionTop) / denominator;
         const progress = Math.max(0, Math.min(1, rawProgress));
         
         // Progressive reveal thresholds
+        // These values determine when each element becomes visible based on scroll progress
         const thresholds = {
-          mainTitle: 0.05,
-          subtitle: 0.15,
-          description: 0.25,
-          card1: 0.40,
-          card2: 0.55,
-          card3: 0.70
+          mainTitle: 0.05,    // 5% - Main title appears first
+          subtitle: 0.15,     // 15% - Subtitle follows
+          description: 0.25,  // 25% - Description completes the headline
+          card1: 0.40,        // 40% - First card
+          card2: 0.55,        // 55% - Second card  
+          card3: 0.70         // 70% - Third card
         };
         
-        // Reveal elements based on progress (forward only, no reverse)
+        // Reveal headline elements based on progress (forward only, no reverse)
         if (progress >= thresholds.mainTitle) {
           revealElement(mainTitle, 'mainTitle');
         }
@@ -1259,15 +1266,14 @@
         if (progress >= thresholds.description) {
           revealElement(description, 'description');
         }
-        if (progress >= thresholds.card1 && cards[0]) {
-          revealElement(cards[0], 'card1');
-        }
-        if (progress >= thresholds.card2 && cards[1]) {
-          revealElement(cards[1], 'card2');
-        }
-        if (progress >= thresholds.card3 && cards[2]) {
-          revealElement(cards[2], 'card3');
-        }
+        
+        // Reveal cards dynamically using array indexing
+        const cardThresholds = [thresholds.card1, thresholds.card2, thresholds.card3];
+        cards.forEach((card, index) => {
+          if (progress >= cardThresholds[index]) {
+            revealElement(card, `card${index + 1}`);
+          }
+        });
         
         ticking = false;
       }
