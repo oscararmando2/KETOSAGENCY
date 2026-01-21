@@ -488,20 +488,20 @@
 
     /* Section 2: Qué hacemos diferente */
     .what-we-do {
-      min-height: 300vh; /* Increased height for scroll-based reveals */
-      padding: 100px 5% 80px;
+      min-height: 240vh; /* Scroll space for progressive reveal */
+      padding-top: 12vh;
+      padding-bottom: 12vh;
       background: var(--gray);
       text-align: center;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      padding-top: 20vh;
       /* Always visible by default */
       opacity: 1;
       visibility: visible;
       /* Position for absolute background */
       position: relative;
-      overflow: hidden;
+      overflow: visible;
     }
     
     /* Animated background for section-2 */
@@ -726,6 +726,21 @@
       position: relative;
       z-index: 1;
     }
+    
+    /* Sticky header block for headline elements */
+    #section-2 .sticky-head {
+      position: sticky;
+      top: 90px;                 /* below fixed header */
+      z-index: 5;
+      max-width: 980px;
+      margin: 0 auto 40px;
+      padding: 18px 18px 22px;
+      background: rgba(14,14,17,0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(242,242,242,0.08);
+      border-radius: 18px;
+    }
     .what-we-do h2 {
       font-size: clamp(2rem, 5vw, 3.5rem);
       margin-bottom: 1.5rem;
@@ -733,26 +748,34 @@
       font-weight: 700;
     }
     
-    /* Progressive reveal - Split titles */
-    .what-we-do .main-title,
-    .what-we-do .subtitle {
+    /* Progressive reveal - Base states with blur effect */
+    #section-2 .main-title,
+    #section-2 .subtitle,
+    #section-2 .description,
+    #section-2 .card {
+      opacity: 0;
+      transform: translateY(18px);
+      filter: blur(10px);
+      transition: opacity 500ms ease, transform 500ms ease, filter 500ms ease;
+      will-change: transform, opacity, filter;
+    }
+    
+    #section-2 .main-title,
+    #section-2 .subtitle {
       font-size: clamp(2rem, 5vw, 3.5rem);
       margin-bottom: 1.5rem;
       color: white;
       font-weight: 700;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 1s ease, transform 1s ease;
     }
     
-    .what-we-do .subtitle {
+    #section-2 .subtitle {
       margin-top: 0;
     }
     
-    .what-we-do .main-title.revealed,
-    .what-we-do .subtitle.revealed {
+    #section-2 .is-revealed {
       opacity: 1;
       transform: translateY(0);
+      filter: blur(0);
     }
     
     .what-we-do > p,
@@ -760,22 +783,14 @@
       font-size: 1.2rem;
       max-width: 800px;
       margin: 0 auto 4rem;
-      opacity: 0;
       line-height: 1.8;
-      transform: translateY(30px);
-      transition: opacity 1s ease, transform 1s ease;
-    }
-    
-    .what-we-do .description.revealed {
-      opacity: 0.9;
-      transform: translateY(0);
     }
     .cards-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 2rem;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 28px auto 0;
     }
     .card {
       background: rgba(42, 42, 42, 0.5);
@@ -783,19 +798,10 @@
       border-radius: 16px;
       padding: 2.5rem 2rem;
       transition: all 0.3s ease;
-      /* Initial state for entrance animation */
-      opacity: 0;
-      transform: translateY(-150px) rotateX(45deg) rotateY(-15deg);
-      transform-style: preserve-3d;
-    }
-    
-    /* Individual card reveal animation */
-    .card.revealed {
-      animation: card-fall-in 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
     
     /* Only apply hover after card is revealed */
-    .card.revealed:hover {
+    #section-2 .card.is-revealed:hover {
       transform: translateY(-4px);
       background: rgba(42, 42, 42, 0.7);
       border-color: rgba(242, 242, 242, 0.1);
@@ -887,50 +893,35 @@
       
       /* Section 2 mobile adjustments */
       .what-we-do {
-        min-height: 250vh; /* Adjusted for mobile */
-        padding: 60px 5% 50px;
+        min-height: 200vh; /* Adjusted for mobile */
+        padding-top: 8vh;
+        padding-bottom: 8vh;
       }
+      
+      #section-2 .sticky-head {
+        top: 70px; /* Adjusted for mobile header */
+        padding: 14px 14px 18px;
+        border-radius: 14px;
+      }
+      
       .what-we-do h2,
-      .what-we-do .main-title,
-      .what-we-do .subtitle {
+      #section-2 .main-title,
+      #section-2 .subtitle {
         font-size: 1.8rem;
         margin-bottom: 1rem;
       }
       .what-we-do > p,
-      .what-we-do .description {
+      #section-2 .description {
         font-size: 1rem;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
       }
       .cards-container {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+        margin-top: 20px;
       }
       .card {
         padding: 2rem 1.5rem;
-      }
-      
-      /* Lighter 3D effects on mobile - use separate animation name */
-      @keyframes card-fall-in-mobile {
-        0% {
-          opacity: 0;
-          transform: translateY(-100px) rotateX(30deg) rotateY(-10deg);
-        }
-        50% {
-          opacity: 0.7;
-          transform: translateY(8px) rotateX(-3deg) rotateY(2deg);
-        }
-        70% {
-          transform: translateY(-3px) rotateX(1deg) rotateY(-1deg);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0) rotateX(0deg) rotateY(0deg);
-        }
-      }
-      
-      /* Apply mobile animation on mobile devices */
-      .card.revealed {
-        animation-name: card-fall-in-mobile;
       }
       
       /* Reduce animation intensity on mobile for better performance */
@@ -965,18 +956,22 @@
       
       /* Disable card entrance animations for reduced motion */
       .card,
-      .card.revealed {
+      .card.revealed,
+      .card.is-revealed {
         opacity: 1 !important;
         transform: none !important;
         animation: none !important;
       }
       
       /* Show all progressive reveal elements immediately */
-      .what-we-do .main-title,
-      .what-we-do .subtitle,
-      .what-we-do .description {
+      #section-2 .main-title,
+      #section-2 .subtitle,
+      #section-2 .description,
+      #section-2 .card {
         opacity: 1 !important;
         transform: none !important;
+        filter: none !important;
+        transition: none !important;
       }
       
       .cards-container.cards-animated .card {
@@ -1094,9 +1089,11 @@
       
       <!-- Content wrapper -->
       <div class="section2-content">
-        <h2 class="main-title">No hacemos marketing.</h2>
-        <h2 class="subtitle">Creamos máquinas de crecimiento.</h2>
-        <p class="description">Estrategia, IA y creatividad enfocadas en resultados medibles.</p>
+        <div class="sticky-head">
+          <h2 class="main-title">No hacemos marketing.</h2>
+          <h2 class="subtitle">Creamos máquinas de crecimiento.</h2>
+          <p class="description">Estrategia, IA y creatividad enfocadas en resultados medibles.</p>
+        </div>
         
         <div class="cards-container">
           <div class="card">
@@ -1203,8 +1200,8 @@
         CARD_SELECTOR: '.card',
       };
       
-      // State to track which steps have been revealed
-      const revealedSteps = new Set();
+      // State to track which elements have been revealed (one-time only)
+      const revealedElements = new Set();
       
       // Elements to observe
       let section2 = null;
@@ -1213,68 +1210,76 @@
       let description = null;
       let cards = [];
       
+      // requestAnimationFrame throttling
+      let ticking = false;
+      
       /**
-       * Reveal an element with the "revealed" class
+       * Reveal an element with the "is-revealed" class (one-time only)
        */
-      function revealElement(element, step) {
-        if (!element || revealedSteps.has(step)) return;
+      function revealElement(element, key) {
+        if (!element || revealedElements.has(key)) return;
         
-        element.classList.add('revealed');
-        revealedSteps.add(step);
+        element.classList.add('is-revealed');
+        revealedElements.add(key);
       }
       
       /**
-       * Calculate which step should be revealed based on scroll position
+       * Calculate scroll progress and reveal elements at specific thresholds
        */
       function updateRevealSteps() {
         if (!section2) return;
         
-        const section2Rect = section2.getBoundingClientRect();
+        const sectionRect = section2.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        const sectionHeight = section2Rect.height;
-        const scrollProgress = -section2Rect.top / (sectionHeight - viewportHeight);
+        const sectionHeight = section2.offsetHeight;
+        const sectionTop = sectionRect.top;
+        const viewportMid = viewportHeight / 2;
         
-        // Define thresholds for each step
-        // Step 1: Main title appears when section enters viewport
-        if (scrollProgress >= 0 && !revealedSteps.has(1)) {
-          revealElement(mainTitle, 1);
+        // Calculate progress: 0 when section top is at viewport mid, 1 when section bottom passes viewport mid
+        const rawProgress = (viewportMid - sectionTop) / (sectionHeight - viewportHeight);
+        const progress = Math.max(0, Math.min(1, rawProgress));
+        
+        // Progressive reveal thresholds
+        const thresholds = {
+          mainTitle: 0.05,
+          subtitle: 0.15,
+          description: 0.25,
+          card1: 0.40,
+          card2: 0.55,
+          card3: 0.70
+        };
+        
+        // Reveal elements based on progress (forward only, no reverse)
+        if (progress >= thresholds.mainTitle) {
+          revealElement(mainTitle, 'mainTitle');
+        }
+        if (progress >= thresholds.subtitle) {
+          revealElement(subtitle, 'subtitle');
+        }
+        if (progress >= thresholds.description) {
+          revealElement(description, 'description');
+        }
+        if (progress >= thresholds.card1 && cards[0]) {
+          revealElement(cards[0], 'card1');
+        }
+        if (progress >= thresholds.card2 && cards[1]) {
+          revealElement(cards[1], 'card2');
+        }
+        if (progress >= thresholds.card3 && cards[2]) {
+          revealElement(cards[2], 'card3');
         }
         
-        // Step 2: Subtitle and description appear after scrolling 15%
-        if (scrollProgress >= 0.15 && !revealedSteps.has(2)) {
-          revealElement(subtitle, 2);
-          revealElement(description, 2);
-        }
-        
-        // Step 3: Card 1 appears after scrolling 30%
-        if (scrollProgress >= 0.30 && !revealedSteps.has(3)) {
-          if (cards[0]) revealElement(cards[0], 3);
-        }
-        
-        // Step 4: Card 2 appears after scrolling 45%
-        if (scrollProgress >= 0.45 && !revealedSteps.has(4)) {
-          if (cards[1]) revealElement(cards[1], 4);
-        }
-        
-        // Step 5: Card 3 appears after scrolling 60%
-        if (scrollProgress >= 0.60 && !revealedSteps.has(5)) {
-          if (cards[2]) revealElement(cards[2], 5);
-        }
+        ticking = false;
       }
       
       /**
-       * Handle scroll events with throttling
+       * Handle scroll events with requestAnimationFrame
        */
-      let scrollTimeout = null;
       function handleScroll() {
-        if (scrollTimeout) {
-          clearTimeout(scrollTimeout);
+        if (!ticking) {
+          window.requestAnimationFrame(updateRevealSteps);
+          ticking = true;
         }
-        
-        scrollTimeout = setTimeout(() => {
-          updateRevealSteps();
-          scrollTimeout = null;
-        }, 50);
       }
       
       /**
@@ -1296,12 +1301,12 @@
         if (prefersReducedMotion) {
           // For reduced motion, immediately show all elements
           [mainTitle, subtitle, description, ...cards].forEach(el => {
-            if (el) el.classList.add('revealed');
+            if (el) el.classList.add('is-revealed');
           });
           return;
         }
         
-        // Add scroll listener
+        // Add scroll listener with passive for better performance
         window.addEventListener('scroll', handleScroll, { passive: true });
         
         // Initial check in case section is already in view
