@@ -2040,8 +2040,8 @@
         const MAX_MOVEMENT = 40; // Maximum pixels to move in any direction
         
         // Clamp beta to reasonable range (we don't want extreme forward/back tilts)
-        const clampedBeta = Math.max(-MAX_TILT, Math.min(MAX_TILT, beta));
-        const clampedGamma = Math.max(-MAX_TILT, Math.min(MAX_TILT, gamma));
+        const clampedBeta = clamp(beta, -MAX_TILT, MAX_TILT);
+        const clampedGamma = clamp(gamma, -MAX_TILT, MAX_TILT);
         
         // Calculate movement (inverted for natural feel)
         const moveX = -(clampedGamma / MAX_TILT) * MAX_MOVEMENT;
@@ -2050,6 +2050,23 @@
         // Apply transform
         hero.style.setProperty('--hero-bg-x', `${moveX}px`);
         hero.style.setProperty('--hero-bg-y', `${moveY}px`);
+      }
+
+      /**
+       * Remove the motion activation button
+       */
+      function removeMotionButton() {
+        if (motionButton) {
+          motionButton.remove();
+          motionButton = null;
+        }
+      }
+
+      /**
+       * Clamp a value between min and max
+       */
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
       }
 
       /**
@@ -2065,30 +2082,18 @@
                 deviceOrientationSupported = true;
                 hero.classList.remove('use-fallback-animation');
                 window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
-                // Remove button
-                if (motionButton) {
-                  motionButton.remove();
-                  motionButton = null;
-                }
+                removeMotionButton();
               } else {
                 permissionDenied = true;
                 hero.classList.add('use-fallback-animation');
-                // Remove button
-                if (motionButton) {
-                  motionButton.remove();
-                  motionButton = null;
-                }
+                removeMotionButton();
               }
             })
             .catch(error => {
               console.error('Device orientation permission error:', error);
               permissionDenied = true;
               hero.classList.add('use-fallback-animation');
-              // Remove button
-              if (motionButton) {
-                motionButton.remove();
-                motionButton = null;
-              }
+              removeMotionButton();
             });
         }
       }
