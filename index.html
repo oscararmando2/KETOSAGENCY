@@ -2254,6 +2254,7 @@
       opacity: 1;
       transform: translateY(0);
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      animation: glitch 5s infinite;
     }
     
     /* Glitch effect animation */
@@ -2280,38 +2281,25 @@
       }
     }
     
-    .system-card {
-      animation: glitch 5s infinite;
-    }
-    
     /* Individual card glitch delays for variation */
     .system-card:nth-child(1),
-    .system-card:nth-child(5),
-    .system-card:nth-child(9) {
+    .system-card:nth-child(5) {
       animation-delay: 0s;
     }
     
     .system-card:nth-child(2),
-    .system-card:nth-child(6),
-    .system-card:nth-child(10) {
+    .system-card:nth-child(6) {
       animation-delay: 1.25s;
     }
     
     .system-card:nth-child(3),
-    .system-card:nth-child(7),
-    .system-card:nth-child(11) {
+    .system-card:nth-child(7) {
       animation-delay: 2.5s;
     }
     
     .system-card:nth-child(4),
-    .system-card:nth-child(8),
-    .system-card:nth-child(12) {
+    .system-card:nth-child(8) {
       animation-delay: 3.75s;
-    }
-
-    .system-card.visible {
-      opacity: 1;
-      transform: translateY(0);
     }
 
     /* Corner markers - Cyber style */
