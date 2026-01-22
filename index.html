@@ -2194,14 +2194,37 @@
       letter-spacing: 0.5px;
     }
 
-    /* Systems Grid - 4 columns */
+    /* Systems Grid - Horizontal Scroll Loop */
     .section-3-systems {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      display: flex;
       gap: 30px;
+      overflow: hidden;
+      position: relative;
+      padding: 20px 0;
+    }
+    
+    .systems-track {
+      display: flex;
+      gap: 30px;
+      animation: scroll-horizontal 25s linear infinite;
+      will-change: transform;
+    }
+    
+    @keyframes scroll-horizontal {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+    
+    /* Pause animation on hover */
+    .section-3-systems:hover .systems-track {
+      animation-play-state: paused;
     }
 
-    /* Individual System Card - Glassmorphism Effect */
+    /* Individual System Card - Glassmorphism Effect with Glitch */
     .system-card {
       position: relative;
       background: linear-gradient(
@@ -2211,6 +2234,9 @@
       );
       border: 1px solid rgba(255, 255, 255, 0.15);
       padding: 40px 30px;
+      min-width: 350px;
+      max-width: 350px;
+      flex-shrink: 0;
       clip-path: polygon(
         0 0,
         calc(100% - 20px) 0,
@@ -2225,31 +2251,67 @@
         0 8px 32px 0 rgba(0, 0, 0, 0.4),
         inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
         0 0 0 1px rgba(0, 243, 255, 0.08);
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      opacity: 1;
+      transform: translateY(0);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    /* Glitch effect animation */
+    @keyframes glitch {
+      0%, 90%, 100% {
+        transform: translate(0, 0);
+        filter: hue-rotate(0deg);
+      }
+      92% {
+        transform: translate(-2px, 2px);
+        filter: hue-rotate(90deg);
+      }
+      94% {
+        transform: translate(2px, -2px);
+        filter: hue-rotate(180deg);
+      }
+      96% {
+        transform: translate(-2px, -2px);
+        filter: hue-rotate(270deg);
+      }
+      98% {
+        transform: translate(2px, 2px);
+        filter: hue-rotate(360deg);
+      }
+    }
+    
+    .system-card {
+      animation: glitch 5s infinite;
+    }
+    
+    /* Individual card glitch delays for variation */
+    .system-card:nth-child(1),
+    .system-card:nth-child(5),
+    .system-card:nth-child(9) {
+      animation-delay: 0s;
+    }
+    
+    .system-card:nth-child(2),
+    .system-card:nth-child(6),
+    .system-card:nth-child(10) {
+      animation-delay: 1.25s;
+    }
+    
+    .system-card:nth-child(3),
+    .system-card:nth-child(7),
+    .system-card:nth-child(11) {
+      animation-delay: 2.5s;
+    }
+    
+    .system-card:nth-child(4),
+    .system-card:nth-child(8),
+    .system-card:nth-child(12) {
+      animation-delay: 3.75s;
     }
 
     .system-card.visible {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    /* Stagger animation delays */
-    .system-card:nth-child(1) {
-      transition-delay: 0.1s;
-    }
-
-    .system-card:nth-child(2) {
-      transition-delay: 0.2s;
-    }
-
-    .system-card:nth-child(3) {
-      transition-delay: 0.3s;
-    }
-
-    .system-card:nth-child(4) {
-      transition-delay: 0.4s;
     }
 
     /* Corner markers - Cyber style */
@@ -2320,8 +2382,9 @@
 
     /* Responsive adjustments */
     @media (max-width: 1024px) {
-      .section-3-systems {
-        grid-template-columns: repeat(2, 1fr);
+      .system-card {
+        min-width: 300px;
+        max-width: 300px;
       }
     }
 
@@ -2335,11 +2398,12 @@
       }
 
       .section-3-systems {
-        grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 20px;
       }
 
       .system-card {
+        min-width: 280px;
+        max-width: 280px;
         padding: 30px 25px;
         clip-path: polygon(
           0 0,
@@ -2562,32 +2626,63 @@
 
         <!-- Systems Grid -->
         <div class="section-3-systems">
-          <!-- Sistema 01 -->
-          <div class="system-card" data-system="1">
-            <span class="system-label">Sistema 01</span>
-            <h3 class="system-title">Presencia que atrae</h3>
-            <p class="system-text">Redes sociales, contenido y posicionamiento que te ponen frente a quien ya quiere comprar.</p>
-          </div>
+          <div class="systems-track">
+            <!-- Sistema 01 -->
+            <div class="system-card" data-system="1">
+              <span class="system-label">Sistema 01</span>
+              <h3 class="system-title">Presencia que atrae</h3>
+              <p class="system-text">Redes sociales, contenido y posicionamiento que te ponen frente a quien ya quiere comprar.</p>
+            </div>
 
-          <!-- Sistema 02 -->
-          <div class="system-card" data-system="2">
-            <span class="system-label">Sistema 02</span>
-            <h3 class="system-title">Automatización inteligente</h3>
-            <p class="system-text">IA y procesos que trabajan por ti, responden, filtran y convierten sin esfuerzo humano.</p>
-          </div>
+            <!-- Sistema 02 -->
+            <div class="system-card" data-system="2">
+              <span class="system-label">Sistema 02</span>
+              <h3 class="system-title">Automatización inteligente</h3>
+              <p class="system-text">IA y procesos que trabajan por ti, responden, filtran y convierten sin esfuerzo humano.</p>
+            </div>
 
-          <!-- Sistema 03 -->
-          <div class="system-card" data-system="3">
-            <span class="system-label">Sistema 03</span>
-            <h3 class="system-title">Experiencia que vende</h3>
-            <p class="system-text">Webs, funnels y apps diseñadas para guiar al cliente hasta la compra.</p>
-          </div>
+            <!-- Sistema 03 -->
+            <div class="system-card" data-system="3">
+              <span class="system-label">Sistema 03</span>
+              <h3 class="system-title">Experiencia que vende</h3>
+              <p class="system-text">Webs, funnels y apps diseñadas para guiar al cliente hasta la compra.</p>
+            </div>
 
-          <!-- Sistema 04 -->
-          <div class="system-card" data-system="4">
-            <span class="system-label">Sistema 04</span>
-            <h3 class="system-title">Escala paga</h3>
-            <p class="system-text">Publicidad digital enfocada en retorno, no en likes.</p>
+            <!-- Sistema 04 -->
+            <div class="system-card" data-system="4">
+              <span class="system-label">Sistema 04</span>
+              <h3 class="system-title">Escala paga</h3>
+              <p class="system-text">Publicidad digital enfocada en retorno, no en likes.</p>
+            </div>
+
+            <!-- Duplicated cards for seamless loop -->
+            <!-- Sistema 01 (duplicate) -->
+            <div class="system-card" data-system="1">
+              <span class="system-label">Sistema 01</span>
+              <h3 class="system-title">Presencia que atrae</h3>
+              <p class="system-text">Redes sociales, contenido y posicionamiento que te ponen frente a quien ya quiere comprar.</p>
+            </div>
+
+            <!-- Sistema 02 (duplicate) -->
+            <div class="system-card" data-system="2">
+              <span class="system-label">Sistema 02</span>
+              <h3 class="system-title">Automatización inteligente</h3>
+              <p class="system-text">IA y procesos que trabajan por ti, responden, filtran y convierten sin esfuerzo humano.</p>
+            </div>
+
+            <!-- Sistema 03 (duplicate) -->
+            <div class="system-card" data-system="3">
+              <span class="system-label">Sistema 03</span>
+              <h3 class="system-title">Experiencia que vende</h3>
+              <p class="system-text">Webs, funnels y apps diseñadas para guiar al cliente hasta la compra.</p>
+            </div>
+
+            <!-- Sistema 04 (duplicate) -->
+            <div class="system-card" data-system="4">
+              <span class="system-label">Sistema 04</span>
+              <h3 class="system-title">Escala paga</h3>
+              <p class="system-text">Publicidad digital enfocada en retorno, no en likes.</p>
+            </div>
           </div>
         </div>
       </div>
