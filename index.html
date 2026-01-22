@@ -1905,11 +1905,15 @@
       gap: 40px;
     }
 
-    /* Individual HUD Panel Module */
+    /* Individual HUD Panel Module - Glassmorphism Effect */
     .cyber-module {
       position: relative;
-      background: rgba(10, 10, 10, 0.7);
-      border: 1px solid rgba(0, 243, 255, 0.2);
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.02) 100%
+      );
+      border: 1px solid rgba(255, 255, 255, 0.18);
       padding: 40px;
       clip-path: polygon(
         0 0,
@@ -1919,11 +1923,15 @@
         30px 100%,
         0 calc(100% - 30px)
       );
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.37),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(0, 243, 255, 0.1);
       opacity: 0;
       transform: translateY(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s ease;
+      transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .cyber-module.visible {
@@ -1944,7 +1952,7 @@
       transition-delay: 0.5s;
     }
 
-    /* Corner markers/ticks */
+    /* Corner markers/ticks - Enhanced with glass effect */
     .cyber-module::before {
       content: "";
       position: absolute;
@@ -1954,7 +1962,8 @@
       height: 15px;
       border-left: 2px solid var(--cyber-neon-color);
       border-top: 2px solid var(--cyber-neon-color);
-      opacity: 0.5;
+      opacity: 0.7;
+      filter: drop-shadow(0 0 3px var(--cyber-neon-color));
     }
 
     .cyber-module::after {
@@ -1966,12 +1975,18 @@
       height: 15px;
       border-right: 2px solid var(--cyber-neon-color);
       border-bottom: 2px solid var(--cyber-neon-color);
-      opacity: 0.5;
+      opacity: 0.7;
+      filter: drop-shadow(0 0 3px var(--cyber-neon-color));
     }
 
-    /* Module hover effect */
+    /* Module hover effect - Enhanced glassmorphism */
     .cyber-module:hover {
-      border-color: rgba(0, 243, 255, 0.4);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 
+        0 12px 40px 0 rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+        0 0 0 1px rgba(0, 243, 255, 0.3),
+        0 0 20px 0 rgba(0, 243, 255, 0.2);
     }
 
     /* Module Label */
