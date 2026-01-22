@@ -2117,6 +2117,262 @@
         transform: none !important;
       }
     }
+
+    /* ========================================
+       SECTION 3 - CORE SYSTEMS
+       ======================================== */
+    .section-3 {
+      --cyber-neon-color: #00f3ff;
+      position: relative;
+      min-height: 100vh;
+      padding: 100px 5% 120px;
+      background: var(--dark);
+      overflow: hidden;
+    }
+
+    /* Dark background with subtle grid texture */
+    .section-3::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(color-mix(in srgb, var(--cyber-neon-color) 8%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--cyber-neon-color) 8%, transparent) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.3;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Noise/scanlines overlay */
+    .section-3::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.5"/></svg>');
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+      animation: noise-animation 0.4s steps(4) infinite;
+    }
+
+    .section-3-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Header Section */
+    .section-3-header {
+      text-align: center;
+      margin-bottom: 80px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .section-3-header.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-3-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      color: var(--light);
+      margin-bottom: 1rem;
+      line-height: 1.1;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .section-3-subtitle {
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      color: rgba(242, 242, 242, 0.7);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    /* Systems Grid - 4 columns */
+    .section-3-systems {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    /* Individual System Card - Glassmorphism Effect */
+    .system-card {
+      position: relative;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.06) 0%,
+        rgba(255, 255, 255, 0.02) 100%
+      );
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 40px 30px;
+      clip-path: polygon(
+        0 0,
+        calc(100% - 20px) 0,
+        100% 20px,
+        100% 100%,
+        20px 100%,
+        0 calc(100% - 20px)
+      );
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+        0 0 0 1px rgba(0, 243, 255, 0.08);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .system-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger animation delays */
+    .system-card:nth-child(1) {
+      transition-delay: 0.1s;
+    }
+
+    .system-card:nth-child(2) {
+      transition-delay: 0.2s;
+    }
+
+    .system-card:nth-child(3) {
+      transition-delay: 0.3s;
+    }
+
+    .system-card:nth-child(4) {
+      transition-delay: 0.4s;
+    }
+
+    /* Corner markers - Cyber style */
+    .system-card::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 12px;
+      height: 12px;
+      border-left: 2px solid var(--cyber-neon-color);
+      border-top: 2px solid var(--cyber-neon-color);
+      opacity: 0.6;
+      filter: drop-shadow(0 0 3px var(--cyber-neon-color));
+    }
+
+    .system-card::after {
+      content: "";
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      width: 12px;
+      height: 12px;
+      border-right: 2px solid var(--cyber-neon-color);
+      border-bottom: 2px solid var(--cyber-neon-color);
+      opacity: 0.6;
+      filter: drop-shadow(0 0 3px var(--cyber-neon-color));
+    }
+
+    /* Hover effect */
+    .system-card:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 
+        0 12px 40px 0 rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+        0 0 0 1px rgba(0, 243, 255, 0.2),
+        0 0 20px 0 rgba(0, 243, 255, 0.15);
+    }
+
+    /* System Label */
+    .system-label {
+      font-size: 0.8rem;
+      color: var(--cyber-neon-color);
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      opacity: 0.9;
+      display: block;
+    }
+
+    /* System Title */
+    .system-title {
+      font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+      font-weight: 800;
+      color: var(--light);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    /* System Text */
+    .system-text {
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      color: rgba(242, 242, 242, 0.7);
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .section-3-systems {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .section-3 {
+        padding: 80px 5% 100px;
+      }
+
+      .section-3-header {
+        margin-bottom: 60px;
+      }
+
+      .section-3-systems {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .system-card {
+        padding: 30px 25px;
+        clip-path: polygon(
+          0 0,
+          calc(100% - 15px) 0,
+          100% 15px,
+          100% 100%,
+          15px 100%,
+          0 calc(100% - 15px)
+        );
+      }
+
+      .system-label {
+        font-size: 0.75rem;
+      }
+    }
+
+    /* Reduced motion accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      .section-3::after {
+        animation: none !important;
+      }
+
+      .section-3-header,
+      .system-card {
+        transition: none !important;
+      }
+
+      .section-3-header,
+      .system-card {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2290,6 +2546,48 @@
             <h3 class="module-title">Te compran</h3>
             <p class="module-text">Todo está diseñado para convertir atención en ventas reales.</p>
             <div class="module-separator"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: CORE SYSTEMS -->
+    <section class="section-3" id="section-3">
+      <div class="section-3-container">
+        <!-- Header -->
+        <div class="section-3-header">
+          <h2 class="section-3-title">CORE SYSTEMS</h2>
+          <p class="section-3-subtitle">Los sistemas que hacen que vendas</p>
+        </div>
+
+        <!-- Systems Grid -->
+        <div class="section-3-systems">
+          <!-- Sistema 01 -->
+          <div class="system-card" data-system="1">
+            <span class="system-label">Sistema 01</span>
+            <h3 class="system-title">Presencia que atrae</h3>
+            <p class="system-text">Redes sociales, contenido y posicionamiento que te ponen frente a quien ya quiere comprar.</p>
+          </div>
+
+          <!-- Sistema 02 -->
+          <div class="system-card" data-system="2">
+            <span class="system-label">Sistema 02</span>
+            <h3 class="system-title">Automatización inteligente</h3>
+            <p class="system-text">IA y procesos que trabajan por ti, responden, filtran y convierten sin esfuerzo humano.</p>
+          </div>
+
+          <!-- Sistema 03 -->
+          <div class="system-card" data-system="3">
+            <span class="system-label">Sistema 03</span>
+            <h3 class="system-title">Experiencia que vende</h3>
+            <p class="system-text">Webs, funnels y apps diseñadas para guiar al cliente hasta la compra.</p>
+          </div>
+
+          <!-- Sistema 04 -->
+          <div class="system-card" data-system="4">
+            <span class="system-label">Sistema 04</span>
+            <h3 class="system-title">Escala paga</h3>
+            <p class="system-text">Publicidad digital enfocada en retorno, no en likes.</p>
           </div>
         </div>
       </div>
@@ -2565,6 +2863,10 @@
         document.querySelectorAll('.cyber-module').forEach(module => {
           module.classList.add('visible');
         });
+        document.querySelector('.section-3-header')?.classList.add('visible');
+        document.querySelectorAll('.system-card').forEach(card => {
+          card.classList.add('visible');
+        });
         return;
       }
 
@@ -2584,16 +2886,28 @@
         });
       }, observerOptions);
 
-      // Observe section header
-      const header = document.querySelector('.section-2-header');
-      if (header) {
-        observer.observe(header);
+      // Observe section 2 header
+      const header2 = document.querySelector('.section-2-header');
+      if (header2) {
+        observer.observe(header2);
       }
 
-      // Observe each module
+      // Observe section 2 modules
       const modules = document.querySelectorAll('.cyber-module');
       modules.forEach(module => {
         observer.observe(module);
+      });
+
+      // Observe section 3 header
+      const header3 = document.querySelector('.section-3-header');
+      if (header3) {
+        observer.observe(header3);
+      }
+
+      // Observe section 3 system cards
+      const systemCards = document.querySelectorAll('.system-card');
+      systemCards.forEach(card => {
+        observer.observe(card);
       });
     })();
   </script>
