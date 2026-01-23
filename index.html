@@ -2187,6 +2187,74 @@
       text-transform: uppercase;
     }
 
+    .section-3-title-glitch {
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-3-title-glitch::before,
+    .section-3-title-glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    .section-3-title-glitch::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00c1;
+      clip: rect(44px, 9999px, 56px, 0);
+      animation: section-3-glitch-anim 7s infinite linear alternate-reverse;
+    }
+
+    .section-3-title-glitch::after {
+      left: -2px;
+      text-shadow: -1px 0 var(--cyber-neon-color);
+      clip: rect(44px, 9999px, 56px, 0);
+      animation: section-3-glitch-anim2 7s infinite linear alternate-reverse;
+    }
+
+    @keyframes section-3-glitch-anim {
+      0%, 95% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+      96% {
+        opacity: 1;
+        clip: rect(20px, 9999px, 80px, 0);
+      }
+      97% {
+        opacity: 1;
+        clip: rect(60px, 9999px, 30px, 0);
+      }
+      98%, 100% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+    }
+
+    @keyframes section-3-glitch-anim2 {
+      0%, 94% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+      95% {
+        opacity: 1;
+        clip: rect(40px, 9999px, 90px, 0);
+      }
+      96% {
+        opacity: 1;
+        clip: rect(10px, 9999px, 50px, 0);
+      }
+      97%, 100% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+    }
+
     .section-3-subtitle {
       font-size: clamp(1.2rem, 2.5vw, 1.6rem);
       color: rgba(242, 242, 242, 0.7);
@@ -2545,6 +2613,74 @@
         0 0 40px rgba(0, 243, 255, 0.08);
     }
 
+    .stage-title-glitch {
+      position: relative;
+      display: inline-block;
+    }
+
+    .stage-title-glitch::before,
+    .stage-title-glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    .stage-title-glitch::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00c1;
+      clip: rect(44px, 9999px, 56px, 0);
+      animation: stage-glitch-anim 7s infinite linear alternate-reverse;
+    }
+
+    .stage-title-glitch::after {
+      left: -2px;
+      text-shadow: -1px 0 var(--cyber-neon-color);
+      clip: rect(44px, 9999px, 56px, 0);
+      animation: stage-glitch-anim2 7s infinite linear alternate-reverse;
+    }
+
+    @keyframes stage-glitch-anim {
+      0%, 95% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+      96% {
+        opacity: 1;
+        clip: rect(20px, 9999px, 80px, 0);
+      }
+      97% {
+        opacity: 1;
+        clip: rect(60px, 9999px, 30px, 0);
+      }
+      98%, 100% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+    }
+
+    @keyframes stage-glitch-anim2 {
+      0%, 94% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+      95% {
+        opacity: 1;
+        clip: rect(40px, 9999px, 90px, 0);
+      }
+      96% {
+        opacity: 1;
+        clip: rect(10px, 9999px, 50px, 0);
+      }
+      97%, 100% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+    }
+
     /* Stage Text - Small */
     .stage-text {
       font-size: clamp(0.95rem, 1.5vw, 1.15rem);
@@ -2711,6 +2847,74 @@
     .section-5-main-title.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .section-5-main-title-glitch {
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-5-main-title-glitch::before,
+    .section-5-main-title-glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    .section-5-main-title-glitch::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00c1;
+      clip: rect(44px, 9999px, 56px, 0);
+      animation: section-5-glitch-anim 7s infinite linear alternate-reverse;
+    }
+
+    .section-5-main-title-glitch::after {
+      left: -2px;
+      text-shadow: -1px 0 var(--cyber-neon-color);
+      clip: rect(44px, 9999px, 56px, 0);
+      animation: section-5-glitch-anim2 7s infinite linear alternate-reverse;
+    }
+
+    @keyframes section-5-glitch-anim {
+      0%, 95% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+      96% {
+        opacity: 1;
+        clip: rect(20px, 9999px, 80px, 0);
+      }
+      97% {
+        opacity: 1;
+        clip: rect(60px, 9999px, 30px, 0);
+      }
+      98%, 100% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+    }
+
+    @keyframes section-5-glitch-anim2 {
+      0%, 94% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+      95% {
+        opacity: 1;
+        clip: rect(40px, 9999px, 90px, 0);
+      }
+      96% {
+        opacity: 1;
+        clip: rect(10px, 9999px, 50px, 0);
+      }
+      97%, 100% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
     }
 
     /* Secondary text */
@@ -3217,6 +3421,74 @@
       margin-bottom: 60px;
       text-transform: lowercase;
     }
+
+    .section-6-title-glitch {
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-6-title-glitch::before,
+    .section-6-title-glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    .section-6-title-glitch::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00c1;
+      clip: rect(44px, 9999px, 56px, 0);
+      animation: section-6-glitch-anim 7s infinite linear alternate-reverse;
+    }
+
+    .section-6-title-glitch::after {
+      left: -2px;
+      text-shadow: -1px 0 #00f3ff;
+      clip: rect(44px, 9999px, 56px, 0);
+      animation: section-6-glitch-anim2 7s infinite linear alternate-reverse;
+    }
+
+    @keyframes section-6-glitch-anim {
+      0%, 95% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+      96% {
+        opacity: 1;
+        clip: rect(20px, 9999px, 80px, 0);
+      }
+      97% {
+        opacity: 1;
+        clip: rect(60px, 9999px, 30px, 0);
+      }
+      98%, 100% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+    }
+
+    @keyframes section-6-glitch-anim2 {
+      0%, 94% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+      95% {
+        opacity: 1;
+        clip: rect(40px, 9999px, 90px, 0);
+      }
+      96% {
+        opacity: 1;
+        clip: rect(10px, 9999px, 50px, 0);
+      }
+      97%, 100% {
+        opacity: 0;
+        clip: rect(44px, 9999px, 56px, 0);
+      }
+    }
   </style>
 </head>
 <body>
@@ -3400,7 +3672,9 @@
       <div class="section-3-container">
         <!-- Header -->
         <div class="section-3-header">
-          <h2 class="section-3-title">CORE SYSTEMS</h2>
+          <h2 class="section-3-title">
+            <span class="section-3-title-glitch" data-text="CORE SYSTEMS">CORE SYSTEMS</span>
+          </h2>
           <p class="section-3-subtitle">Los sistemas que hacen que vendas</p>
         </div>
 
@@ -3476,7 +3750,9 @@
           <!-- Stage 01 -->
           <div class="stage-column">
             <div class="stage-label">ETAPA 01</div>
-            <h3 class="stage-title">Te ven</h3>
+            <h3 class="stage-title">
+              <span class="stage-title-glitch" data-text="Te ven">Te ven</span>
+            </h3>
             <p class="stage-text">
               Apareces donde importa.<br>
               Dejas de ser invisible.
@@ -3486,7 +3762,9 @@
           <!-- Stage 02 -->
           <div class="stage-column">
             <div class="stage-label">ETAPA 02</div>
-            <h3 class="stage-title">Te entienden</h3>
+            <h3 class="stage-title">
+              <span class="stage-title-glitch" data-text="Te entienden">Te entienden</span>
+            </h3>
             <p class="stage-text">
               Tu mensaje es claro.<br>
               Tu marca se siente confiable.
@@ -3496,7 +3774,9 @@
           <!-- Stage 03 -->
           <div class="stage-column">
             <div class="stage-label">ETAPA 03</div>
-            <h3 class="stage-title">Te compran</h3>
+            <h3 class="stage-title">
+              <span class="stage-title-glitch" data-text="Te compran">Te compran</span>
+            </h3>
             <p class="stage-text">
               La atención se convierte en ventas.<br>
               Sin fricción. Sin vueltas.
@@ -3514,7 +3794,9 @@
     <!-- SECTION 5: FINAL/CLOSING -->
     <section class="section-5" id="section-5">
       <div class="section-5-container">
-        <h2 class="section-5-main-title">Hacemos que vendas.</h2>
+        <h2 class="section-5-main-title">
+          <span class="section-5-main-title-glitch" data-text="Hacemos que vendas.">Hacemos que vendas.</span>
+        </h2>
         <p class="section-5-secondary-text">
           Estrategia, tecnología y ejecución<br>
           alineadas a resultados reales.
@@ -3528,7 +3810,9 @@
     <!-- SECTION 6: RADIO BUTTONS -->
     <section class="section-6" id="section-6">
       <div class="section-6-container">
-        <h2 class="section-6-title">¿Estás listo para crecer?</h2>
+        <h2 class="section-6-title">
+          <span class="section-6-title-glitch" data-text="¿Estás listo para crecer?">¿Estás listo para crecer?</span>
+        </h2>
         
         <div class="radio-group">
           <div class="radio-container danger">
