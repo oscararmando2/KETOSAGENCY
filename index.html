@@ -3910,5 +3910,22 @@
     })();
   </script>
 
+  <script>
+    // WhatsApp redirect for green button
+    (function() {
+      const greenButton = document.getElementById('radio-yes');
+      if (greenButton) {
+        greenButton.addEventListener('change', function() {
+          if (this.checked) {
+            // Redirect to WhatsApp with phone number +1 314 850 96 15
+            const phoneNumber = '13148509615'; // Format for WhatsApp API
+            const message = encodeURIComponent('¡Hola! Estoy listo para crecer con Ketos Agency.');
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+          }
+        });
+      }
+    })();
+  </script>
+
 </body>
 </html>
