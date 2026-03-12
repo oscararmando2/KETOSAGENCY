@@ -305,6 +305,19 @@ function playCelebrate()  {
   const notes = [523, 659, 784, 1047];
   notes.forEach((n, i) => setTimeout(() => playTone(n, 'sine', 0.25, 0.12), i * 130));
 }
+function playError()      { playTone(200, 'sawtooth', 0.3, 0.07); }
+
+// ── Text-to-Speech (Web Speech API) ─────────────────────────────────────────
+function speakEnglish(text) {
+  if (muted) return;
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang  = 'en-US';
+  utter.rate  = 0.75;  // Slow for pronunciation learning
+  utter.pitch = 1;
+  window.speechSynthesis.speak(utter);
+}
 
 // ── Mute toggle ─────────────────────────────────────────────────────────────
 const muteBtn = document.getElementById('mute-btn');
@@ -376,8 +389,8 @@ function renderStage(index, dir) {
         ${SVG_FNS[index]()}
       </div>
 
-      <div class="phrase-en" role="text">
-        <span class="phrase-lang-badge">English</span>
+      <div class="phrase-en phrase-speakable" id="phrase-en-${index}" role="button" tabindex="0" aria-label="Tap to hear: ${s.phraseEn}">
+        <span class="phrase-lang-badge">🔊 English — tap to hear!</span>
         ${s.phraseEn}
       </div>
       <div class="phrase-es" role="text">
@@ -413,6 +426,15 @@ function renderStage(index, dir) {
       direction    = 'back';
       currentStage = index - 1;
       renderStage(currentStage, 'back');
+    });
+  }
+
+  // Tap-to-speak: English phrase
+  const phraseEnEl = document.getElementById(`phrase-en-${index}`);
+  if (phraseEnEl) {
+    phraseEnEl.addEventListener('click', () => speakEnglish(s.phraseEn));
+    phraseEnEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); speakEnglish(s.phraseEn); }
     });
   }
 }
@@ -461,14 +483,211 @@ function showFinal() {
       </div>
 
       <div class="btn-row">
+        <button class="btn btn-trivia" id="btn-trivia" aria-label="Play trivia game">
+          🎮 ¡Jugar Trivia!
+        </button>
         <button class="btn btn-restart" id="btn-restart" aria-label="Play again">
-          ↺ Play Again / Jugar de Nuevo
+          ↺ Jugar de Nuevo
         </button>
       </div>
     </div>
   `;
 
   document.getElementById('btn-restart').addEventListener('click', () => {
+    playClick();
+    burstSparkle();
+    currentStage = 0;
+    renderStage(0, 'next');
+  });
+
+  document.getElementById('btn-trivia').addEventListener('click', () => {
+    playClick();
+    burstSparkle();
+    renderTrivia(0, 0);
+  });
+
+  // Tap-to-speak on review cards (English phrase)
+  document.querySelectorAll('.review-card').forEach((card, i) => {
+    const enEl = card.querySelector('.review-card-en');
+    if (enEl) {
+      enEl.classList.add('phrase-speakable');
+      enEl.setAttribute('role', 'button');
+      enEl.setAttribute('tabindex', '0');
+      enEl.setAttribute('title', 'Tap to hear / Toca para escuchar');
+      enEl.addEventListener('click', () => speakEnglish(STAGES[i].phraseEn));
+      enEl.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); speakEnglish(STAGES[i].phraseEn); }
+      });
+    }
+  });
+}
+
+// ── Trivia questions ─────────────────────────────────────────────────────────
+// Simple questions for a 5-year-old — vocabulary focus, emoji-rich
+const TRIVIA_QUESTIONS = [
+  {
+    emoji: '🦋',
+    question: '¿Qué es esto? / What is this?',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
+    correct: 0
+  },
+  {
+    emoji: '🥚',
+    question: '¿Qué es esto? / What is this?',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
+    correct: 1
+  },
+  {
+    emoji: '🐛',
+    question: '¿Qué es esto? / What is this?',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
+    correct: 2
+  },
+  {
+    emoji: '🫛',
+    question: '¿Qué es esto? / What is this?',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
+    correct: 3
+  },
+  {
+    emoji: '🦋',
+    question: 'Mariposa en inglés es...',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
+    correct: 0
+  },
+  {
+    emoji: '🥚',
+    question: 'Huevo en inglés es...',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
+    correct: 1
+  },
+  {
+    emoji: '1️⃣',
+    question: '¿Cuál es primero? / Which is first?',
+    options: ['Butterfly 🦋', 'Caterpillar 🐛', 'Chrysalis 🫛', 'Egg 🥚'],
+    correct: 3
+  },
+  {
+    emoji: '4️⃣',
+    question: '¿Cuál es último? / Which is last?',
+    options: ['Egg 🥚', 'Caterpillar 🐛', 'Butterfly 🦋', 'Chrysalis 🫛'],
+    correct: 2
+  }
+];
+
+// ── Trivia renderer ───────────────────────────────────────────────────────────
+function renderTrivia(qIndex, score) {
+  stageView.classList.add('hidden');
+  finalView.classList.remove('hidden');
+  buildProgressBar(STAGES.length); // keep all done
+
+  const q      = TRIVIA_QUESTIONS[qIndex];
+  const totalQ = TRIVIA_QUESTIONS.length;
+
+  finalView.innerHTML = `
+    <div class="trivia-card fade-in" role="main" aria-label="Trivia question ${qIndex + 1}">
+      <div class="trivia-header">
+        <span class="trivia-progress">${qIndex + 1} / ${totalQ}</span>
+        <span class="trivia-score-badge">⭐ ${score} pts</span>
+      </div>
+
+      <div class="trivia-emoji" aria-hidden="true">${q.emoji}</div>
+      <p class="trivia-question">${q.question}</p>
+
+      <div class="trivia-options" id="trivia-options" role="group" aria-label="Answer options">
+        ${q.options.map((opt, i) => `
+          <button class="btn trivia-option" data-idx="${i}" aria-label="${opt}">${opt}</button>
+        `).join('')}
+      </div>
+
+      <div class="trivia-feedback" id="trivia-feedback" aria-live="polite"></div>
+    </div>
+  `;
+
+  document.querySelectorAll('.trivia-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const chosen    = parseInt(btn.dataset.idx, 10);
+      const isCorrect = chosen === q.correct;
+
+      // Lock all buttons
+      document.querySelectorAll('.trivia-option').forEach(b => { b.disabled = true; });
+
+      // Highlight correct / wrong
+      document.querySelectorAll('.trivia-option').forEach((b, i) => {
+        if (i === q.correct)                b.classList.add('trivia-correct');
+        else if (i === chosen && !isCorrect) b.classList.add('trivia-wrong');
+      });
+
+      const newScore = score + (isCorrect ? 1 : 0);
+      const feedback = document.getElementById('trivia-feedback');
+
+      if (isCorrect) {
+        feedback.innerHTML = '<span class="feedback-icon">🎉</span> ¡MUY BIEN KETZY! <span class="feedback-icon">🎉</span>';
+        feedback.className  = 'trivia-feedback trivia-feedback-correct';
+        playCelebrate();
+        burstSparkle();
+        speakEnglish('Very good Ketzy!');
+      } else {
+        feedback.innerHTML = '<span class="feedback-icon">💪</span> ¡Casi! Sigue intentando.';
+        feedback.className  = 'trivia-feedback trivia-feedback-wrong';
+        playError();
+      }
+
+      setTimeout(() => {
+        const nextIndex  = qIndex + 1;
+        const actionBtn  = document.createElement('button');
+        actionBtn.className = 'btn btn-next';
+        if (nextIndex < totalQ) {
+          actionBtn.textContent = 'Siguiente pregunta ➜';
+          actionBtn.addEventListener('click', () => {
+            playAdvance();
+            renderTrivia(nextIndex, newScore);
+          });
+        } else {
+          actionBtn.textContent = '🏆 Ver resultado';
+          actionBtn.addEventListener('click', () => {
+            playAdvance();
+            showTriviaResult(newScore, totalQ);
+          });
+        }
+        feedback.appendChild(actionBtn);
+      }, 900);
+    });
+  });
+}
+
+// ── Trivia result screen ──────────────────────────────────────────────────────
+function showTriviaResult(score, total) {
+  stageView.classList.add('hidden');
+  finalView.classList.remove('hidden');
+
+  const pct    = Math.round((score / total) * 100);
+  const trophy = pct >= 80 ? '🏆' : pct >= 50 ? '🌟' : '💪';
+  const msgEn  = pct >= 80 ? 'Excellent!' : pct >= 50 ? 'Well done!' : 'Keep practicing!';
+  const msgEs  = pct >= 80 ? '¡Excelente!' : pct >= 50 ? '¡Bien hecho!' : '¡Sigue practicando!';
+
+  playCelebrate();
+  setTimeout(spawnConfetti, 300);
+
+  finalView.innerHTML = `
+    <div class="final-screen fade-in" role="main">
+      <span class="final-trophy" aria-hidden="true">${trophy}</span>
+      <h2 class="final-title">¡MUY BIEN KETZY! 🎉</h2>
+      <p class="trivia-result-score">${score} / ${total} correctas</p>
+      <p class="final-subtitle-en">${msgEn}</p>
+      <p class="final-subtitle-es">${msgEs}</p>
+      <div class="btn-row">
+        <button class="btn btn-trivia" id="btn-play-again-trivia">🎮 Trivia de Nuevo</button>
+        <button class="btn btn-restart" id="btn-restart-from-trivia">↺ Jugar de Nuevo</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('btn-play-again-trivia').addEventListener('click', () => {
+    playClick();
+    renderTrivia(0, 0);
+  });
+  document.getElementById('btn-restart-from-trivia').addEventListener('click', () => {
     playClick();
     burstSparkle();
     currentStage = 0;
