@@ -523,54 +523,55 @@ function showFinal() {
 }
 
 // ── Trivia questions ─────────────────────────────────────────────────────────
+// Simple questions for a 5-year-old — vocabulary focus, emoji-rich
 const TRIVIA_QUESTIONS = [
   {
     emoji: '🦋',
-    question: '¿Cómo se dice "mariposa" en inglés?<br><em>How do you say "mariposa" in English?</em>',
-    options: ['Butterfly', 'Caterpillar', 'Egg', 'Chrysalis'],
+    question: '¿Qué es esto? / What is this?',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
     correct: 0
   },
   {
     emoji: '🥚',
-    question: '¿Cómo se dice "huevo" en inglés?<br><em>How do you say "huevo" in English?</em>',
-    options: ['Chrysalis', 'Butterfly', 'Caterpillar', 'Egg'],
-    correct: 3
-  },
-  {
-    emoji: '🐛',
-    question: '¿Cómo se dice "oruga" en inglés?<br><em>How do you say "oruga" in English?</em>',
-    options: ['Egg', 'Butterfly', 'Caterpillar', 'Chrysalis'],
-    correct: 2
-  },
-  {
-    emoji: '🫛',
-    question: '¿Cómo se dice "crisálida" en inglés?<br><em>How do you say "crisálida" in English?</em>',
-    options: ['Caterpillar', 'Chrysalis', 'Egg', 'Butterfly'],
+    question: '¿Qué es esto? / What is this?',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
     correct: 1
   },
   {
     emoji: '🐛',
-    question: 'What does the caterpillar do?<br><em>¿Qué hace la oruga?</em>',
-    options: ['It flies.', 'It changes.', 'It eats and grows.', 'It starts here.'],
+    question: '¿Qué es esto? / What is this?',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
     correct: 2
   },
   {
+    emoji: '🫛',
+    question: '¿Qué es esto? / What is this?',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
+    correct: 3
+  },
+  {
+    emoji: '🦋',
+    question: 'Mariposa en inglés es...',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
+    correct: 0
+  },
+  {
+    emoji: '🥚',
+    question: 'Huevo en inglés es...',
+    options: ['Butterfly', 'Egg', 'Caterpillar', 'Chrysalis'],
+    correct: 1
+  },
+  {
     emoji: '1️⃣',
-    question: 'Which stage comes FIRST?<br><em>¿Qué etapa es la PRIMERA?</em>',
+    question: '¿Cuál es primero? / Which is first?',
     options: ['Butterfly 🦋', 'Caterpillar 🐛', 'Chrysalis 🫛', 'Egg 🥚'],
     correct: 3
   },
   {
     emoji: '4️⃣',
-    question: 'Which stage comes LAST?<br><em>¿Qué etapa es la ÚLTIMA?</em>',
+    question: '¿Cuál es último? / Which is last?',
     options: ['Egg 🥚', 'Caterpillar 🐛', 'Butterfly 🦋', 'Chrysalis 🫛'],
     correct: 2
-  },
-  {
-    emoji: '🔊',
-    question: '"It flies." — which stage?<br><em>"Vuela." — ¿qué etapa?</em>',
-    options: ['Egg 🥚', 'Caterpillar 🐛', 'Chrysalis 🫛', 'Butterfly 🦋'],
-    correct: 3
   }
 ];
 
