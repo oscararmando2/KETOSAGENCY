@@ -726,6 +726,281 @@ function buildBgDecorations() {
   }
 }
 
+// ── Words Spelling — data ────────────────────────────────────────────────────
+const WORDS_DATA = [
+  { en: 'DESK',    es: 'escritorio', emoji: '🪑' },
+  { en: 'RULER',   es: 'regla',      emoji: '📏' },
+  { en: 'TABLET',  es: 'tableta',    emoji: '📱' },
+  { en: 'SPEAK',   es: 'hablar',     emoji: '🗣️' },
+  { en: 'READ',    es: 'leer',       emoji: '📖' },
+  { en: 'CIRCLE',  es: 'círculo',    emoji: '⭕' },
+  { en: 'HEART',   es: 'corazón',    emoji: '❤️' },
+  { en: 'STAR',    es: 'estrella',   emoji: '⭐' },
+  { en: 'BIRD',    es: 'pájaro',     emoji: '🐦' },
+  { en: 'FISH',    es: 'pez',        emoji: '🐟' },
+  { en: 'SUNSET',  es: 'atardecer',  emoji: '🌅' },
+  { en: 'NIGHT',   es: 'noche',      emoji: '🌙' },
+  { en: 'ORANGE',  es: 'naranja',    emoji: '🍊' },
+  { en: 'BROWN',   es: 'marrón',     emoji: '🟤' },
+  { en: 'SQUARE',  es: 'cuadrado',   emoji: '🟦' },
+  { en: 'SHEEP',   es: 'oveja',      emoji: '🐑' },
+  { en: 'HONEY',   es: 'miel',       emoji: '🍯' },
+  { en: 'MILK',    es: 'leche',      emoji: '🥛' },
+  { en: 'PUPPY',   es: 'cachorro',   emoji: '🐶' },
+  { en: 'LAMB',    es: 'cordero',    emoji: '🐏' },
+  { en: 'NEST',    es: 'nido',       emoji: '🐣' },
+  { en: 'GRANDMA', es: 'abuela',     emoji: '👵' },
+  { en: 'UNCLE',   es: 'tío',        emoji: '👨' },
+  { en: 'PARENTS', es: 'padres',     emoji: '👪' },
+  { en: 'SHARE',   es: 'compartir',  emoji: '🤝' },
+  { en: 'HELP',    es: 'ayudar',     emoji: '🙏' },
+  { en: 'NOISY',   es: 'ruidoso',    emoji: '🔔' },
+  { en: 'FINGER',  es: 'dedo',       emoji: '☝️' },
+  { en: 'SHORT',   es: 'corto',      emoji: '🔻' },
+  { en: 'BLOND',   es: 'rubio',      emoji: '👱' },
+  { en: 'SNAP',    es: 'chasquido',  emoji: '🫰' },
+  { en: 'WAVE',    es: 'ola',        emoji: '🌊' },
+  { en: 'CLIMB',   es: 'trepar',     emoji: '🧗' },
+  { en: 'CODE',    es: 'código',     emoji: '💻' },
+  { en: 'PHONE',   es: 'teléfono',   emoji: '📞' },
+  { en: 'GAME',    es: 'juego',      emoji: '🎮' },
+  { en: 'GRAPES',  es: 'uvas',       emoji: '🍇' },
+  { en: 'LEMON',   es: 'limón',      emoji: '🍋' },
+  { en: 'BEANS',   es: 'frijoles',   emoji: '🫘' },
+  { en: 'PASTA',   es: 'pasta',      emoji: '🍝' },
+  { en: 'WRITE',   es: 'escribir',   emoji: '✏️' },
+  { en: 'PINK',    es: 'rosado',     emoji: '🌸' },
+  { en: 'NOON',    es: 'mediodía',   emoji: '☀️' },
+  { en: 'GOOSE',   es: 'ganso',      emoji: '🦢' },
+  { en: 'BARN',    es: 'granero',    emoji: '🏡' },
+  { en: 'SISTER',  es: 'hermana',    emoji: '👧' },
+  { en: 'ROUND',   es: 'redondo',    emoji: '🔵' },
+  { en: 'SWIM',    es: 'nadar',      emoji: '🏊' },
+  { en: 'SOCCER',  es: 'fútbol',     emoji: '⚽' },
+  { en: 'YOGURT',  es: 'yogur',      emoji: '🫙' }
+];
+
+// Pastel background gradients — cycles every 6 cards
+const CARD_GRADIENTS = [
+  'linear-gradient(145deg,#fff0f5,#ffd6e8)',
+  'linear-gradient(145deg,#e8f4ff,#cce5ff)',
+  'linear-gradient(145deg,#f0fff0,#ccf5cc)',
+  'linear-gradient(145deg,#fffbe0,#fff0a0)',
+  'linear-gradient(145deg,#f5f0ff,#e4d0ff)',
+  'linear-gradient(145deg,#fff5eb,#ffdcb3)'
+];
+
+// ── Section switching helpers ────────────────────────────────────────────────
+const wordsApp = document.getElementById('words-app');
+const homeBtn  = document.getElementById('home-btn');
+
+function showOnlySection(id) {
+  ['selection-view', 'app', 'words-app'].forEach(sid => {
+    document.getElementById(sid).classList.toggle('hidden', sid !== id);
+  });
+  homeBtn.classList.toggle('hidden', id === 'selection-view');
+}
+
+function showSelection() {
+  showOnlySection('selection-view');
+  window.speechSynthesis && window.speechSynthesis.cancel();
+}
+
+function showButterflyGame() {
+  showOnlySection('app');
+  currentStage = 0;
+  renderStage(0, 'next');
+}
+
+// ── Selection screen setup ───────────────────────────────────────────────────
+document.getElementById('btn-butterfly').addEventListener('click', () => {
+  playClick();
+  burstSparkle();
+  showButterflyGame();
+});
+
+document.getElementById('btn-words').addEventListener('click', () => {
+  playClick();
+  burstSparkle();
+  showWordsApp('study');
+});
+
+homeBtn.addEventListener('click', () => {
+  playClick();
+  showSelection();
+});
+
+// ── Words Spelling App ────────────────────────────────────────────────────────
+let wordsMode    = 'study';  // 'study' | 'exam'
+let revealedSet  = new Set();
+
+function resetWordCards() {
+  playClick();
+  revealedSet = new Set();
+  renderWordsSection();
+}
+
+function showWordsApp(mode) {
+  wordsMode   = mode || 'study';
+  revealedSet = new Set();
+  showOnlySection('words-app');
+  renderWordsSection();
+}
+
+function renderWordsSection() {
+  const isStudy  = wordsMode === 'study';
+  const revealed = revealedSet.size;
+
+  wordsApp.innerHTML = `
+    <div class="words-header">
+      <h1>📝 Words Spelling</h1>
+      <p class="subtitle">50 English words / 50 palabras en inglés</p>
+    </div>
+
+    <div class="words-mode-row" role="group" aria-label="Select study mode">
+      <button class="btn btn-mode btn-mode-study${isStudy ? ' btn-active' : ''}" id="wbtn-study" aria-pressed="${isStudy}">
+        📚 Study / Estudiar
+      </button>
+      <button class="btn btn-mode btn-mode-exam${!isStudy ? ' btn-active' : ''}" id="wbtn-exam" aria-pressed="${!isStudy}">
+        📝 Exam / Examen
+      </button>
+    </div>
+
+    <div class="words-count-bar">
+      <span class="words-count-text" id="words-count-text">
+        ${isStudy
+          ? `🔊 ${revealed} / ${WORDS_DATA.length} heard`
+          : `✅ ${revealed} / ${WORDS_DATA.length} checked`}
+      </span>
+      ${revealed > 0
+        ? `<button class="btn-reset-cards" id="btn-reset-cards">↺ Reset</button>`
+        : ''}
+    </div>
+
+    <div class="words-grid" id="words-grid" role="list" aria-label="Vocabulary cards">
+      ${WORDS_DATA.map((w, i) => buildWordCardHTML(w, i, isStudy)).join('')}
+    </div>
+  `;
+
+  // Mode toggle buttons
+  document.getElementById('wbtn-study').addEventListener('click', () => {
+    if (wordsMode === 'study') return;
+    playClick();
+    wordsMode   = 'study';
+    revealedSet = new Set();
+    renderWordsSection();
+  });
+
+  document.getElementById('wbtn-exam').addEventListener('click', () => {
+    if (wordsMode === 'exam') return;
+    playClick();
+    wordsMode   = 'exam';
+    revealedSet = new Set();
+    renderWordsSection();
+  });
+
+  // Reset button
+  const resetBtn = document.getElementById('btn-reset-cards');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetWordCards);
+  }
+
+  // Wire up each word card
+  document.querySelectorAll('.word-card').forEach(card => {
+    card.addEventListener('click', () => onWordCardClick(card));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onWordCardClick(card); }
+    });
+  });
+}
+
+function buildWordCardHTML(word, index, isStudy) {
+  const bg    = CARD_GRADIENTS[index % CARD_GRADIENTS.length];
+  const extra = isStudy ? '' : ' exam-card';
+  const hint  = isStudy ? '🔊 tap to hear' : '👁️ tap to check';
+  return `
+    <div
+      class="word-card${extra}"
+      data-index="${index}"
+      role="listitem"
+      tabindex="0"
+      aria-label="${word.en} — tap to ${isStudy ? 'hear and see meaning' : 'check meaning'}"
+      style="background:${bg}"
+    >
+      <span class="word-card-num">${index + 1}</span>
+      <span class="word-card-emoji" aria-hidden="true">${word.emoji}</span>
+      <span class="word-card-en">${word.en}</span>
+      <span class="word-card-hint">${hint}</span>
+    </div>
+  `;
+}
+
+function onWordCardClick(card) {
+  const index = parseInt(card.dataset.index, 10);
+  const word  = WORDS_DATA[index];
+
+  if (card.classList.contains('revealed')) {
+    // Already revealed — just replay pronunciation in study mode
+    if (wordsMode === 'study') speakEnglish(word.en);
+    return;
+  }
+
+  // Reveal the card
+  card.classList.add('revealed');
+  revealedSet.add(index);
+  playClick();
+
+  // Remove hint text
+  const hint = card.querySelector('.word-card-hint');
+  if (hint) hint.remove();
+
+  // Append Spanish translation
+  const esSpan = document.createElement('span');
+  esSpan.className   = 'word-card-es';
+  esSpan.textContent = word.es;
+  card.appendChild(esSpan);
+
+  // In study mode: speak the English word
+  if (wordsMode === 'study') {
+    speakEnglish(word.en);
+    burstSparkle();
+  }
+
+  // In exam mode: show emoji too (already handled by CSS class removal)
+  if (wordsMode === 'exam') {
+    const emojiSpan = card.querySelector('.word-card-emoji');
+    if (emojiSpan) emojiSpan.style.display = 'block';
+  }
+
+  // Update counter
+  const countEl = document.getElementById('words-count-text');
+  if (countEl) {
+    countEl.textContent = wordsMode === 'study'
+      ? `🔊 ${revealedSet.size} / ${WORDS_DATA.length} heard`
+      : `✅ ${revealedSet.size} / ${WORDS_DATA.length} checked`;
+  }
+
+  // Show reset button once first card is revealed
+  if (revealedSet.size === 1) {
+    const bar = document.querySelector('.words-count-bar');
+    if (bar && !document.getElementById('btn-reset-cards')) {
+      const rb = document.createElement('button');
+      rb.className = 'btn-reset-cards';
+      rb.id        = 'btn-reset-cards';
+      rb.textContent = '↺ Reset';
+      rb.addEventListener('click', resetWordCards);
+      bar.appendChild(rb);
+    }
+  }
+
+  // Celebrate when all revealed
+  if (revealedSet.size === WORDS_DATA.length) {
+    playCelebrate();
+    setTimeout(spawnConfetti, 200);
+    burstSparkle();
+  }
+}
+
 // ── Boot ──────────────────────────────────────────────────────────────────────
 buildBgDecorations();
-renderStage(0, 'next');
+showSelection();

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Butterfly Life Cycle — Learn and Play</title>
-  <meta name="description" content="Interactive bilingual mini-game for children to learn the butterfly life cycle." />
+  <title>KETZY — Learn and Play</title>
+  <meta name="description" content="Interactive bilingual mini-game for children to learn vocabulary and the butterfly life cycle." />
   <!-- Prevent indexing — this page is intentionally hidden from navigation -->
   <meta name="robots" content="noindex, nofollow" />
 
@@ -37,8 +37,47 @@
     aria-pressed="false"
   >🔊</button>
 
-  <!-- Main app -->
-  <div id="app">
+  <!-- Home / back-to-menu button -->
+  <button
+    id="home-btn"
+    class="hidden"
+    title="Back to menu"
+    aria-label="Back to main menu"
+  >🏠</button>
+
+  <!-- ══ SELECTION SCREEN ══ -->
+  <div id="selection-view">
+    <div class="selection-container">
+      <header class="game-header">
+        <h1>🎓 KETZY Studies</h1>
+        <p class="subtitle">Choose your lesson! / ¡Elige tu lección!</p>
+      </header>
+
+      <div class="selection-grid" role="list">
+
+        <button class="selection-card" id="btn-butterfly" role="listitem" aria-label="Butterfly Life Cycle">
+          <span class="sel-card-emoji" aria-hidden="true">🦋</span>
+          <span class="sel-card-title">Butterfly<br>Life Cycle</span>
+          <span class="sel-card-sub">Ciclo de vida · 4 stages</span>
+        </button>
+
+        <button class="selection-card sel-card-words" id="btn-words" role="listitem" aria-label="Words Spelling">
+          <span class="sel-card-emoji" aria-hidden="true">📝</span>
+          <span class="sel-card-title">Words<br>Spelling</span>
+          <span class="sel-card-sub">Vocabulario · 50 words</span>
+        </button>
+
+      </div>
+    </div>
+  </div><!-- /#selection-view -->
+
+  <!-- ══ WORDS SPELLING APP ══ -->
+  <div id="words-app" class="hidden">
+    <!-- JS renders content here -->
+  </div><!-- /#words-app -->
+
+  <!-- ══ BUTTERFLY GAME APP ══ -->
+  <div id="app" class="hidden">
 
     <!-- Header -->
     <header class="game-header">
