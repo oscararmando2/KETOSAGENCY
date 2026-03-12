@@ -1,0 +1,601 @@
+/* =====================================================
+   KETZY — Butterfly Life Cycle Mini-Game
+   Child-friendly, bilingual, premium educational page
+   ===================================================== */
+
+/* --- Reset & Base --- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sky:       #b8e8ff;
+  --sky-deep:  #7ecef4;
+  --grass:     #6dd67a;
+  --leaf:      #3bb54a;
+  --sun:       #ffe066;
+  --orange:    #ffb347;
+  --pink:      #ff8fc8;
+  --purple:    #c084fc;
+  --white:     #ffffff;
+  --text-dark: #1a2a1a;
+  --text-mid:  #2d5a27;
+  --card-bg:   rgba(255,255,255,0.88);
+  --radius:    28px;
+  --shadow:    0 8px 40px rgba(60,100,40,0.18);
+  --btn-radius:50px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Nunito', 'Fredoka One', 'Comic Sans MS', 'Trebuchet MS', Arial, sans-serif;
+  background: linear-gradient(175deg, var(--sky) 0%, var(--sky-deep) 40%, #c8f5c8 70%, var(--grass) 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--text-dark);
+}
+
+/* Google Font loaded in HTML */
+
+/* --- Floating background decorations --- */
+.bg-decorations {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.leaf {
+  position: absolute;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  animation: floatLeaf linear infinite;
+  opacity: 0.55;
+  user-select: none;
+}
+
+@keyframes floatLeaf {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0.55; }
+  50%  { transform: translateY(-22px) rotate(15deg); opacity: 0.7; }
+  100% { transform: translateY(0) rotate(-5deg); opacity: 0.55; }
+}
+
+.cloud {
+  position: absolute;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  animation: driftCloud linear infinite;
+  opacity: 0.45;
+  user-select: none;
+}
+
+@keyframes driftCloud {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(18px); }
+  100% { transform: translateX(0); }
+}
+
+/* --- Page wrapper --- */
+#app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem 3rem;
+}
+
+/* --- Header --- */
+.game-header {
+  text-align: center;
+  margin-bottom: 1.2rem;
+  animation: fadeSlideDown 0.7s ease both;
+}
+
+.game-header h1 {
+  font-family: 'Fredoka One', 'Nunito', cursive;
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  color: var(--text-dark);
+  text-shadow: 0 3px 8px rgba(60,150,60,0.18);
+  line-height: 1.1;
+}
+
+.game-header .subtitle {
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  color: var(--text-mid);
+  font-weight: 700;
+  margin-top: 0.3rem;
+  letter-spacing: 0.03em;
+}
+
+/* --- Mute button --- */
+#mute-btn {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 100;
+  background: rgba(255,255,255,0.75);
+  border: none;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  transition: transform 0.18s, background 0.18s;
+  display: flex; align-items: center; justify-content: center;
+}
+#mute-btn:hover { transform: scale(1.1); background: rgba(255,255,255,0.95); }
+
+/* --- Progress tracker --- */
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.4rem;
+  animation: fadeSlideDown 0.8s ease 0.1s both;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.step-icon {
+  width: clamp(40px, 9vw, 58px);
+  height: clamp(40px, 9vw, 58px);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  border: 3px solid rgba(255,255,255,0.6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(1.3rem, 3.5vw, 2rem);
+  transition: all 0.35s ease;
+  position: relative;
+}
+
+.step-icon.active {
+  background: var(--white);
+  border-color: var(--leaf);
+  box-shadow: 0 0 0 4px rgba(61,181,74,0.25), 0 4px 14px rgba(61,181,74,0.3);
+  transform: scale(1.15);
+}
+
+.step-icon.done {
+  background: var(--leaf);
+  border-color: var(--leaf);
+  box-shadow: 0 2px 8px rgba(61,181,74,0.35);
+}
+
+.step-icon.done::after {
+  content: '✓';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 16px;
+  height: 16px;
+  background: var(--white);
+  border-radius: 50%;
+  font-size: 9px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--leaf);
+  font-weight: 900;
+  border: 2px solid var(--leaf);
+}
+
+.step-label {
+  font-size: clamp(0.6rem, 1.8vw, 0.75rem);
+  font-weight: 700;
+  color: var(--text-dark);
+  text-align: center;
+  max-width: 60px;
+  line-height: 1.1;
+}
+
+.progress-connector {
+  width: clamp(16px, 4vw, 32px);
+  height: 3px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 2px;
+  margin-bottom: 14px;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.progress-connector.done { background: var(--leaf); }
+
+/* --- Stage Card --- */
+.stage-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.2rem, 5vw, 3rem);
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* entrance animation */
+.stage-card.enter-from-right {
+  animation: slideFromRight 0.45s cubic-bezier(0.34,1.2,0.64,1) both;
+}
+.stage-card.enter-from-left {
+  animation: slideFromLeft 0.45s cubic-bezier(0.34,1.2,0.64,1) both;
+}
+.stage-card.fade-in {
+  animation: fadeIn 0.5s ease both;
+}
+
+@keyframes slideFromRight {
+  from { opacity: 0; transform: translateX(80px) scale(0.97); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes slideFromLeft {
+  from { opacity: 0; transform: translateX(-80px) scale(0.97); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* stage number badge */
+.stage-number {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  background: var(--leaf);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+
+/* stage title */
+.stage-name {
+  font-family: 'Fredoka One', 'Nunito', cursive;
+  font-size: clamp(2rem, 7vw, 3rem);
+  color: var(--text-dark);
+  margin-top: 0.6rem;
+  line-height: 1.1;
+}
+
+/* --- Illustration area --- */
+.illustration-wrap {
+  margin: 1.2rem auto;
+  width: clamp(140px, 45vw, 210px);
+  height: clamp(140px, 45vw, 210px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.illustration-wrap svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* --- Stage-specific animations --- */
+
+/* Egg: bounce */
+.anim-egg .egg-group {
+  animation: bounceEgg 1.4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+@keyframes bounceEgg {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  30%       { transform: translateY(-14px) rotate(2deg); }
+  60%       { transform: translateY(-6px) rotate(-1deg); }
+}
+
+/* Caterpillar: crawl */
+.anim-caterpillar .cat-group {
+  animation: crawl 2.2s ease-in-out infinite;
+}
+.anim-caterpillar .cat-body {
+  animation: stretch 1.1s ease-in-out infinite alternate;
+  transform-origin: left center;
+}
+@keyframes crawl {
+  0%   { transform: translateX(-10px); }
+  50%  { transform: translateX(10px); }
+  100% { transform: translateX(-10px); }
+}
+@keyframes stretch {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(1.06); }
+}
+
+/* Chrysalis: glow pulse */
+.anim-chrysalis .chrysalis-group {
+  animation: glowPulse 1.8s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes glowPulse {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(192,132,252,0.4)); transform: scale(1); }
+  50%       { filter: drop-shadow(0 0 22px rgba(192,132,252,0.85)); transform: scale(1.04); }
+}
+
+/* Butterfly: wing flap */
+.anim-butterfly .wing-left {
+  animation: flapLeft 0.55s ease-in-out infinite alternate;
+  transform-origin: right center;
+}
+.anim-butterfly .wing-right {
+  animation: flapRight 0.55s ease-in-out infinite alternate;
+  transform-origin: left center;
+}
+.anim-butterfly .butterfly-body {
+  animation: bodyFloat 2.2s ease-in-out infinite;
+}
+@keyframes flapLeft {
+  from { transform: scaleX(1) rotateY(0deg); }
+  to   { transform: scaleX(0.35) rotateY(0deg); }
+}
+@keyframes flapRight {
+  from { transform: scaleX(1) rotateY(0deg); }
+  to   { transform: scaleX(0.35) rotateY(0deg); }
+}
+@keyframes bodyFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* --- Phrases --- */
+.phrase-en, .phrase-es {
+  border-radius: 16px;
+  padding: 0.65rem 1.2rem;
+  margin: 0.4rem 0;
+  font-size: clamp(1.05rem, 3.5vw, 1.3rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.phrase-en {
+  background: linear-gradient(135deg, #e8f7ff, #cff0ff);
+  color: #0e4a6e;
+  border-left: 4px solid var(--sky-deep);
+}
+
+.phrase-es {
+  background: linear-gradient(135deg, #fff3e0, #ffe5b0);
+  color: #7a3f00;
+  border-left: 4px solid var(--orange);
+}
+
+.phrase-lang-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  opacity: 0.6;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  display: block;
+}
+
+/* --- Buttons --- */
+.btn-row {
+  display: flex;
+  gap: 0.9rem;
+  justify-content: center;
+  margin-top: 1.6rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: 'Fredoka One', 'Nunito', cursive;
+  font-size: clamp(1.1rem, 3.5vw, 1.35rem);
+  font-weight: 800;
+  border: none;
+  border-radius: var(--btn-radius);
+  padding: 0.75rem 2.2rem;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  min-width: 120px;
+  min-height: 52px;
+  letter-spacing: 0.02em;
+}
+
+.btn:active { transform: scale(0.95) !important; }
+.btn:hover  { transform: scale(1.05); filter: brightness(1.06); }
+
+.btn-next {
+  background: linear-gradient(135deg, var(--leaf), #2ca839);
+  color: var(--white);
+  box-shadow: 0 5px 18px rgba(61,181,74,0.38);
+}
+
+.btn-back {
+  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+  color: var(--text-dark);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+}
+
+.btn-restart {
+  background: linear-gradient(135deg, var(--pink), #ff5fac);
+  color: var(--white);
+  box-shadow: 0 5px 18px rgba(255,95,172,0.38);
+  margin-top: 0.5rem;
+}
+
+/* --- Reward sparkle burst --- */
+.sparkle-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.sparkle {
+  position: absolute;
+  font-size: 1.6rem;
+  animation: sparklePop 0.9s ease-out forwards;
+  user-select: none;
+}
+
+@keyframes sparklePop {
+  0%   { opacity: 1; transform: translateY(0) scale(0.5); }
+  60%  { opacity: 1; transform: translateY(-60px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-120px) scale(0.8); }
+}
+
+/* --- Final screen --- */
+.final-screen {
+  text-align: center;
+  max-width: 580px;
+  width: 100%;
+}
+
+.final-trophy {
+  font-size: clamp(4rem, 14vw, 7rem);
+  animation: trophydance 1.2s ease-in-out infinite alternate;
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+@keyframes trophydance {
+  from { transform: scale(1) rotate(-4deg); }
+  to   { transform: scale(1.08) rotate(4deg); }
+}
+
+.final-title {
+  font-family: 'Fredoka One', 'Nunito', cursive;
+  font-size: clamp(2rem, 7vw, 3.2rem);
+  color: var(--text-dark);
+  line-height: 1.15;
+}
+.final-subtitle-en {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: #2d5a27;
+  font-weight: 700;
+  margin: 0.3rem 0 0.15rem;
+}
+.final-subtitle-es {
+  font-size: clamp(0.95rem, 2.8vw, 1.15rem);
+  color: #7a5500;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+/* --- Review cards section --- */
+.say-loud-title {
+  font-family: 'Fredoka One', 'Nunito', cursive;
+  font-size: clamp(1.3rem, 4.5vw, 1.8rem);
+  color: var(--text-dark);
+  margin: 1rem 0 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 540px;
+}
+
+@media (max-width: 480px) {
+  .review-grid { grid-template-columns: 1fr; }
+}
+
+.review-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 4px 18px rgba(60,100,40,0.14);
+  text-align: center;
+  animation: fadeIn 0.5s ease both;
+}
+
+.review-card-icon {
+  font-size: clamp(2rem, 6vw, 2.8rem);
+  line-height: 1.2;
+}
+
+.review-card-stage {
+  font-family: 'Fredoka One', 'Nunito', cursive;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  color: var(--leaf);
+  font-weight: 800;
+  margin: 0.3rem 0 0.1rem;
+}
+
+.review-card-en {
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  font-weight: 700;
+  color: #0e4a6e;
+  background: #e8f7ff;
+  border-radius: 8px;
+  padding: 3px 8px;
+  margin: 3px 0;
+  line-height: 1.4;
+}
+
+.review-card-es {
+  font-size: clamp(0.8rem, 2.3vw, 0.95rem);
+  font-weight: 700;
+  color: #7a3f00;
+  background: #fff3e0;
+  border-radius: 8px;
+  padding: 3px 8px;
+  margin: 3px 0;
+  line-height: 1.4;
+}
+
+.final-phrase-box {
+  background: linear-gradient(135deg, #e8f7ff, #fff3e0);
+  border-radius: 18px;
+  padding: 1rem 1.4rem;
+  margin: 1rem 0;
+  max-width: 540px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(60,100,40,0.13);
+}
+
+.final-phrase-en {
+  font-size: clamp(0.95rem, 3vw, 1.15rem);
+  font-weight: 800;
+  color: #0e4a6e;
+  margin-bottom: 4px;
+}
+.final-phrase-es {
+  font-size: clamp(0.9rem, 2.7vw, 1.05rem);
+  font-weight: 700;
+  color: #7a3f00;
+}
+
+/* --- Confetti canvas --- */
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 150;
+}
+
+/* --- Responsive tweaks --- */
+@media (max-width: 400px) {
+  .stage-card { padding: 1.2rem 0.9rem; }
+  .btn { padding: 0.7rem 1.6rem; min-width: 100px; }
+}
+
+/* --- Utility --- */
+.hidden { display: none !important; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}

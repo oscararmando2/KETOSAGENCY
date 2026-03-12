@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Butterfly Life Cycle — Learn and Play</title>
+  <meta name="description" content="Interactive bilingual mini-game for children to learn the butterfly life cycle." />
+  <!-- Prevent indexing — this page is intentionally hidden from navigation -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background floating decorations (JS-populated) -->
+  <div class="bg-decorations" aria-hidden="true"></div>
+
+  <!-- Confetti canvas -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- Sparkle burst container -->
+  <div id="sparkle-container" class="sparkle-container" aria-hidden="true"></div>
+
+  <!-- Mute / Unmute button -->
+  <button
+    id="mute-btn"
+    title="Mute"
+    aria-label="Toggle sound"
+    aria-pressed="false"
+  >🔊</button>
+
+  <!-- Main app -->
+  <div id="app">
+
+    <!-- Header -->
+    <header class="game-header">
+      <h1>🦋 Butterfly Life Cycle</h1>
+      <p class="subtitle">Learn and play / Aprende y juega</p>
+    </header>
+
+    <!-- Progress tracker -->
+    <nav id="progress-bar" class="progress-bar" aria-label="Stage progress"></nav>
+
+    <!-- Stage view (JS-rendered) -->
+    <section id="stage-view"></section>
+
+    <!-- Final celebration view (JS-rendered) -->
+    <section id="final-view" class="hidden"></section>
+
+  </div><!-- /#app -->
+
+  <script src="script.js"></script>
+</body>
+</html>
