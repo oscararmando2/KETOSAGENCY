@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎮 INGLES V. 9 Y 10 🎮</title>
+  <meta name="description" content="Juego educativo bilingüe para aprender vocabulario de inglés — Unidades 9 y 10." />
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    /* ============================================================
+       ESTILOS GENERALES — diseño kid-friendly, colorido y grande
+       ============================================================ */
+    :root {
+      --color-amarillo: #ffd93d;
+      --color-naranja:  #ff8c42;
+      --color-azul:     #4ea8de;
+      --color-azul-dk:  #2563eb;
+      --color-verde:    #6ab04c;
+      --color-rojo:     #e74c3c;
+      --color-rosa:     #ff6b9d;
+      --color-morado:   #845ec2;
+      --color-bg:       #fff8e7;
+      --color-card:     #ffffff;
+      --color-text:     #2d3436;
+      --sombra:         0 6px 0 rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.08);
+      --sombra-hover:   0 10px 0 rgba(0,0,0,0.14), 0 16px 32px rgba(0,0,0,0.12);
+      --radio:          22px;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', system-ui, sans-serif;
+      color: var(--color-text);
+      background:
+        radial-gradient(circle at 20% 10%, #ffe0a8 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, #b8e0ff 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, #ffd0e0 0%, transparent 45%),
+        var(--color-bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Header fijo del juego */
+    header.app-header {
+      background: linear-gradient(90deg, var(--color-naranja), var(--color-amarillo), var(--color-rosa));
+      padding: 14px 18px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    header.app-header h1 {
+      margin: 0;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      color: white;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+      letter-spacing: 1px;
+    }
+    .header-info {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      color: white;
+      font-weight: bold;
+    }
+    .header-info span {
+      background: rgba(255,255,255,0.25);
+      padding: 4px 12px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Botones flotantes (Inicio y Reiniciar) */
+    .floating-controls {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      display: flex;
+      gap: 8px;
+      z-index: 50;
+    }
+    .floating-controls button {
+      background: white;
+      border: 3px solid var(--color-azul-dk);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 4px 0 var(--color-azul-dk);
+      transition: transform 0.1s;
+    }
+    .floating-controls button:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 var(--color-azul-dk);
+    }
+
+    /* Contenedor principal */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 80px;
+    }
+
+    /* Barra de progreso */
+    .progress-bar-wrapper {
+      background: rgba(255,255,255,0.6);
+      border-radius: 20px;
+      height: 18px;
+      overflow: hidden;
+      margin: 16px auto;
+      max-width: 600px;
+      border: 2px solid rgba(0,0,0,0.08);
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-verde), var(--color-amarillo));
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 20px;
+    }
+
+    /* ============================================================
+       PANTALLA: MENÚ PRINCIPAL
+       ============================================================ */
+    .selector-unidad {
+      text-align: center;
+      margin: 18px 0;
+    }
+    .selector-unidad label {
+      font-size: 1.05rem;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .selector-unidad select {
+      font-family: inherit;
+      font-size: 1.05rem;
+      padding: 8px 14px;
+      border-radius: 14px;
+      border: 3px solid var(--color-azul-dk);
+      background: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .menu-card {
+      background: var(--color-card);
+      border: 4px solid transparent;
+      border-radius: var(--radio);
+      padding: 28px 18px;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: var(--sombra);
+      transition: transform 0.15s, box-shadow 0.15s;
+      font-family: inherit;
+      font-weight: bold;
+      color: var(--color-text);
+    }
+    .menu-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--sombra-hover);
+    }
+    .menu-card:active { transform: translateY(2px); }
+    .menu-card .emoji-grande {
+      font-size: clamp(3rem, 8vw, 4.5rem);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .menu-card .titulo-modo {
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      display: block;
+    }
+    .menu-card:nth-child(1) { border-color: var(--color-naranja); background: #fff3e0; }
+    .menu-card:nth-child(2) { border-color: var(--color-verde);   background: #e8f7df; }
+    .menu-card:nth-child(3) { border-color: var(--color-azul);    background: #dceeff; }
+    .menu-card:nth-child(4) { border-color: var(--color-morado);  background: #f0e4ff; }
+
+    /* ============================================================
+       MODO 1 — FLASHCARDS
+       ============================================================ */
+    .flashcard {
+      background: var(--color-card);
+      border-radius: var(--radio);
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: var(--sombra);
+      max-width: 500px;
+      margin: 0 auto;
+      animation: aparecer 0.35s ease-out;
+    }
+    .flashcard .emoji-card {
+      font-size: clamp(5rem, 18vw, 8rem);
+      display: block;
+      margin-bottom: 12px;
+    }
+    .flashcard .palabra-en {
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-weight: 900;
+      color: var(--color-azul-dk);
+      margin: 6px 0;
+    }
+    .flashcard .palabra-es {
+      font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+      color: var(--color-naranja);
+      font-style: italic;
+    }
+    .btn-escuchar {
+      background: var(--color-azul);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      box-shadow: 0 4px 0 var(--color-azul-dk);
+      margin: 16px 0;
+      transition: transform 0.1s;
+    }
+    .btn-escuchar:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--color-azul-dk); }
+
+    .nav-flashcards {
+      display: flex;
+      justify-content: space-between;
+      max-width: 500px;
+      margin: 18px auto 0;
+      gap: 12px;
+    }
+    .nav-flashcards button {
+      flex: 1;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-family: inherit;
+      font-weight: bold;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      background: var(--color-amarillo);
+      color: var(--color-text);
+      box-shadow: 0 4px 0 #c9a900;
+      transition: transform 0.1s;
+    }
+    .nav-flashcards button:active { transform: translateY(3px); box-shadow: 0 1px 0 #c9a900; }
+    .nav-flashcards button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ============================================================
+       MODO 2 — ADIVINA LA PALABRA
+       MODO 3 — ESCUCHA Y ELIGE (mismas clases base)
+       ============================================================ */
+    .pregunta-card {
+      background: var(--color-card);
+      border-radius: var(--radio);
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: var(--sombra);
+      max-width: 600px;
+      margin: 0 auto 18px;
+      animation: aparecer 0.35s ease-out;
+    }
+    .pregunta-card .emoji-pregunta {
+      font-size: clamp(4rem, 14vw, 6rem);
+      display: block;
+    }
+    .pregunta-card .palabra-pregunta {
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      font-weight: bold;
+      color: var(--color-naranja);
+      margin-top: 8px;
+    }
+
+    .opciones-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .opcion-btn {
+      background: white;
+      border: 4px solid var(--color-azul);
+      border-radius: 16px;
+      padding: 18px 12px;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-family: inherit;
+      font-weight: bold;
+      cursor: pointer;
+      color: var(--color-text);
+      box-shadow: 0 4px 0 var(--color-azul-dk);
+      transition: transform 0.1s;
+      min-height: 80px;
+    }
+    .opcion-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--color-azul-dk); }
+    .opcion-btn.opcion-emoji {
+      font-size: clamp(2.5rem, 8vw, 4rem);
+    }
+    .opcion-btn.correcta {
+      background: var(--color-verde);
+      color: white;
+      border-color: #3a7a1f;
+      box-shadow: 0 4px 0 #3a7a1f;
+      animation: rebote 0.4s ease;
+    }
+    .opcion-btn.incorrecta {
+      background: var(--color-rojo);
+      color: white;
+      border-color: #a02818;
+      box-shadow: 0 4px 0 #a02818;
+      animation: temblar 0.35s ease;
+    }
+
+    .mensaje-respuesta {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 16px 0;
+      min-height: 28px;
+    }
+    .mensaje-respuesta.ok { color: var(--color-verde); }
+    .mensaje-respuesta.err { color: var(--color-rojo); }
+
+    /* ============================================================
+       MODO 4 — MEMORAMA
+       ============================================================ */
+    .memorama-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    @media (max-width: 480px) {
+      .memorama-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    }
+    .memo-card {
+      aspect-ratio: 1;
+      perspective: 800px;
+      cursor: pointer;
+    }
+    .memo-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.4s;
+    }
+    .memo-card.volteada .memo-card-inner,
+    .memo-card.match .memo-card-inner {
+      transform: rotateY(180deg);
+    }
+    .memo-frente, .memo-reverso {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--sombra);
+      padding: 6px;
+      text-align: center;
+    }
+    .memo-frente {
+      background: linear-gradient(135deg, var(--color-morado), var(--color-rosa));
+      color: white;
+      font-size: 2rem;
+      font-weight: 900;
+    }
+    .memo-reverso {
+      background: white;
+      transform: rotateY(180deg);
+      font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+      font-weight: bold;
+      color: var(--color-text);
+      border: 3px solid var(--color-amarillo);
+    }
+    .memo-card.match .memo-reverso {
+      background: #e8f7df;
+      border-color: var(--color-verde);
+      animation: rebote 0.4s ease;
+    }
+
+    /* ============================================================
+       ANIMACIONES
+       ============================================================ */
+    @keyframes aparecer {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes rebote {
+      0%, 100% { transform: scale(1); }
+      40%      { transform: scale(1.12); }
+      70%      { transform: scale(0.96); }
+    }
+    @keyframes temblar {
+      0%, 100% { transform: translateX(0); }
+      20%      { transform: translateX(-8px); }
+      40%      { transform: translateX(8px); }
+      60%      { transform: translateX(-6px); }
+      80%      { transform: translateX(6px); }
+    }
+
+    /* Confeti CSS al ganar 10 seguidos */
+    .confeti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 100;
+    }
+    .confeti-pieza {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      top: -20px;
+      animation: caer linear forwards;
+    }
+    @keyframes caer {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0.7;
+      }
+    }
+    .celebracion {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 32px 28px;
+      border-radius: 24px;
+      box-shadow: var(--sombra-hover);
+      text-align: center;
+      z-index: 101;
+      border: 6px solid var(--color-amarillo);
+      animation: aparecer 0.4s ease-out;
+    }
+    .celebracion h2 {
+      margin: 0 0 8px;
+      color: var(--color-naranja);
+      font-size: 1.8rem;
+    }
+    .celebracion button {
+      margin-top: 14px;
+      background: var(--color-verde);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      font-family: inherit;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #3a7a1f;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 18px;
+      color: var(--color-text);
+      font-size: 0.95rem;
+      opacity: 0.7;
+    }
+
+    /* Ocultar */
+    .oculto { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════ HEADER ══════════ -->
+  <header class="app-header">
+    <h1>🎮 INGLES V. 9 Y 10 🎮</h1>
+    <div class="header-info">
+      <span>⭐ Puntos: <strong id="puntos">0</strong></span>
+      <span>🔥 Racha: <strong id="racha">0</strong></span>
+    </div>
+  </header>
+
+  <!-- Botones flotantes -->
+  <div class="floating-controls">
+    <button id="btn-inicio" title="Inicio" aria-label="Ir al menú principal">🏠</button>
+    <button id="btn-reiniciar" title="Reiniciar puntos" aria-label="Reiniciar puntos">🔄</button>
+  </div>
+
+  <main>
+    <!-- Barra de progreso -->
+    <div class="progress-bar-wrapper">
+      <div class="progress-bar-fill" id="progreso"></div>
+    </div>
+
+    <!-- ══════════ PANTALLA: MENÚ ══════════ -->
+    <section id="pantalla-menu">
+      <div class="selector-unidad">
+        <label for="select-unidad">Unidad:</label>
+        <select id="select-unidad">
+          <option value="unit9">Unit 9 — Juguetes y juegos</option>
+          <option value="unit10">Unit 10 — Ropa y clima</option>
+          <option value="mix" selected>Mix — Todas</option>
+        </select>
+      </div>
+
+      <div class="menu-grid">
+        <button class="menu-card" data-modo="aprender">
+          <span class="emoji-grande">📚</span>
+          <span class="titulo-modo">APRENDER</span>
+        </button>
+        <button class="menu-card" data-modo="adivinar">
+          <span class="emoji-grande">🎯</span>
+          <span class="titulo-modo">ADIVINA LA PALABRA</span>
+        </button>
+        <button class="menu-card" data-modo="escuchar">
+          <span class="emoji-grande">🔊</span>
+          <span class="titulo-modo">ESCUCHA Y ELIGE</span>
+        </button>
+        <button class="menu-card" data-modo="memorama">
+          <span class="emoji-grande">🧩</span>
+          <span class="titulo-modo">MEMORAMA</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ══════════ PANTALLA: FLASHCARDS ══════════ -->
+    <section id="pantalla-aprender" class="oculto">
+      <div class="flashcard" id="flashcard-area">
+        <!-- JS rellena aquí -->
+      </div>
+      <div class="nav-flashcards">
+        <button id="btn-anterior">⬅️ Anterior</button>
+        <button id="btn-siguiente">Siguiente ➡️</button>
+      </div>
+    </section>
+
+    <!-- ══════════ PANTALLA: ADIVINA LA PALABRA ══════════ -->
+    <section id="pantalla-adivinar" class="oculto">
+      <div class="pregunta-card" id="adivinar-pregunta"></div>
+      <div class="opciones-grid" id="adivinar-opciones"></div>
+      <div class="mensaje-respuesta" id="adivinar-mensaje"></div>
+    </section>
+
+    <!-- ══════════ PANTALLA: ESCUCHA Y ELIGE ══════════ -->
+    <section id="pantalla-escuchar" class="oculto">
+      <div class="pregunta-card" id="escuchar-pregunta"></div>
+      <div class="opciones-grid" id="escuchar-opciones"></div>
+      <div class="mensaje-respuesta" id="escuchar-mensaje"></div>
+    </section>
+
+    <!-- ══════════ PANTALLA: MEMORAMA ══════════ -->
+    <section id="pantalla-memorama" class="oculto">
+      <div class="memorama-grid" id="memorama-grid"></div>
+    </section>
+  </main>
+
+  <footer>Hecho con ❤️ para aprender inglés</footer>
+
+  <script>
+    // ============================================================
+    // VOCABULARIO — Unidades 9 y 10
+    // ============================================================
+    const vocabulary = {
+      unit9: [
+        { en: "action figure", es: "figura de acción", emoji: "🦸" },
+        { en: "blocks",        es: "bloques",          emoji: "🧱" },
+        { en: "hopscotch",     es: "rayuela",          emoji: "🔢" },
+        { en: "hula-hoop",     es: "hula-hula",        emoji: "⭕" },
+        { en: "lose",          es: "perder",           emoji: "😞" },
+        { en: "monkey bars",   es: "barras de mono",   emoji: "🐒" },
+        { en: "robot",         es: "robot",            emoji: "🤖" },
+        { en: "scooter",       es: "patín del diablo", emoji: "🛴" },
+        { en: "slide",         es: "resbaladilla",     emoji: "🛝" },
+        { en: "stuffed animal",es: "animal de peluche",emoji: "🧸" },
+        { en: "swings",        es: "columpios",        emoji: "🎠" },
+        { en: "tag",           es: "traes/atrapadas",  emoji: "🏃" },
+        { en: "take turns",    es: "tomar turnos",     emoji: "🔄" },
+        { en: "toy boat",      es: "barco de juguete", emoji: "⛵" },
+        { en: "toy truck",     es: "camión de juguete",emoji: "🚚" },
+        { en: "win",           es: "ganar",            emoji: "🏆" },
+        { en: "ball",          es: "pelota",           emoji: "⚽" },
+        { en: "bike",          es: "bicicleta",        emoji: "🚲" },
+        { en: "board game",    es: "juego de mesa",    emoji: "🎲" },
+        { en: "car",           es: "carro",            emoji: "🚗" },
+        { en: "doll",          es: "muñeca",           emoji: "🪆" },
+        { en: "kite",          es: "papalote",         emoji: "🪁" },
+        { en: "plane",         es: "avión",            emoji: "✈️" },
+        { en: "teddy bear",    es: "osito de peluche", emoji: "🧸" }
+      ],
+      unit10: [
+        { en: "bathing suit",  es: "traje de baño",         emoji: "🩱" },
+        { en: "blouse",        es: "blusa",                 emoji: "👚" },
+        { en: "boots",         es: "botas",                 emoji: "👢" },
+        { en: "cool",          es: "fresco",                emoji: "🌤️" },
+        { en: "dry",           es: "seco",                  emoji: "☀️" },
+        { en: "gloves",        es: "guantes",               emoji: "🧤" },
+        { en: "jacket",        es: "chamarra",              emoji: "🧥" },
+        { en: "sandals",       es: "sandalias",             emoji: "👡" },
+        { en: "short",         es: "corto",                 emoji: "📏" },
+        { en: "shorts",        es: "shorts",                emoji: "🩳" },
+        { en: "sweater",       es: "suéter",                emoji: "🧶" },
+        { en: "tall",          es: "alto",                  emoji: "📐" },
+        { en: "thick",         es: "grueso",                emoji: "📚" },
+        { en: "thin",          es: "delgado",               emoji: "📄" },
+        { en: "warm",          es: "cálido",                emoji: "🔥" },
+        { en: "wet",           es: "mojado",                emoji: "💧" },
+        { en: "colours",       es: "colores",               emoji: "🎨" },
+        { en: "dress",         es: "vestido",               emoji: "👗" },
+        { en: "jeans",         es: "pantalón de mezclilla", emoji: "👖" },
+        { en: "pants",         es: "pantalones",            emoji: "👖" },
+        { en: "shirt",         es: "camisa",                emoji: "👔" },
+        { en: "shoe",          es: "zapato",                emoji: "👞" },
+        { en: "skirt",         es: "falda",                 emoji: "👗" },
+        { en: "socks",         es: "calcetines",            emoji: "🧦" },
+        { en: "T-shirt",       es: "playera",               emoji: "👕" }
+      ]
+    };
+
+    // ============================================================
+    // ESTADO GLOBAL
+    // ============================================================
+    const estado = {
+      unidadActual: 'mix',      // 'unit9' | 'unit10' | 'mix'
+      modoActual:   null,       // 'aprender' | 'adivinar' | 'escuchar' | 'memorama'
+      puntos:       0,
+      racha:        0,
+      flashIndex:   0,
+      preguntaActual: null,
+      memoramaEstado: null
+    };
+
+    // ============================================================
+    // UTILIDADES
+    // ============================================================
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    function obtenerVocabulario() {
+      // Devuelve el arreglo de palabras según unidad seleccionada
+      if (estado.unidadActual === 'unit9')  return vocabulary.unit9.slice();
+      if (estado.unidadActual === 'unit10') return vocabulary.unit10.slice();
+      return vocabulary.unit9.concat(vocabulary.unit10);
+    }
+
+    function mezclar(arr) {
+      // Fisher-Yates: barajar un arreglo
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function actualizarHUD() {
+      $('#puntos').textContent = estado.puntos;
+      $('#racha').textContent  = estado.racha;
+      const max = obtenerVocabulario().length;
+      const pct = max > 0 ? Math.min(100, (estado.puntos / max) * 100) : 0;
+      $('#progreso').style.width = pct + '%';
+    }
+
+    // ============================================================
+    // SÍNTESIS DE VOZ (Web Speech API)
+    // ============================================================
+    function hablar(texto) {
+      if (!('speechSynthesis' in window)) return;
+      try {
+        // Cancelar anteriores para evitar solapamiento
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(texto);
+        u.lang = 'en-US';
+        u.rate = 0.8;
+        u.pitch = 1.1;
+        window.speechSynthesis.speak(u);
+      } catch (e) { /* silencioso */ }
+    }
+
+    // ============================================================
+    // SONIDOS (Web Audio API — oscilador)
+    // ============================================================
+    let audioCtx = null;
+    function getAudioCtx() {
+      if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
+      }
+      return audioCtx;
+    }
+
+    function sonidoExito() {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const ahora = ctx.currentTime;
+      // Pequeño arpegio: do-mi-sol
+      [523.25, 659.25, 783.99].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, ahora + i * 0.08);
+        gain.gain.linearRampToValueAtTime(0.25, ahora + i * 0.08 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, ahora + i * 0.08 + 0.25);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(ahora + i * 0.08);
+        osc.stop(ahora + i * 0.08 + 0.3);
+      });
+    }
+
+    function sonidoError() {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const ahora = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(220, ahora);
+      osc.frequency.exponentialRampToValueAtTime(110, ahora + 0.35);
+      gain.gain.setValueAtTime(0.2, ahora);
+      gain.gain.exponentialRampToValueAtTime(0.001, ahora + 0.35);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(ahora);
+      osc.stop(ahora + 0.35);
+    }
+
+    // ============================================================
+    // NAVEGACIÓN ENTRE PANTALLAS
+    // ============================================================
+    const pantallas = ['menu', 'aprender', 'adivinar', 'escuchar', 'memorama'];
+
+    function mostrarPantalla(nombre) {
+      pantallas.forEach((p) => {
+        $('#pantalla-' + p).classList.toggle('oculto', p !== nombre);
+      });
+      estado.modoActual = (nombre === 'menu') ? null : nombre;
+    }
+
+    // ============================================================
+    // MODO 1 — FLASHCARDS
+    // ============================================================
+    function iniciarAprender() {
+      estado.flashIndex = 0;
+      renderFlashcard();
+      mostrarPantalla('aprender');
+    }
+
+    function renderFlashcard() {
+      const palabras = obtenerVocabulario();
+      if (palabras.length === 0) return;
+      const idx = ((estado.flashIndex % palabras.length) + palabras.length) % palabras.length;
+      const palabra = palabras[idx];
+      $('#flashcard-area').innerHTML = `
+        <span class="emoji-card">${palabra.emoji}</span>
+        <div class="palabra-en">${palabra.en}</div>
+        <div class="palabra-es">${palabra.es}</div>
+        <button class="btn-escuchar" id="btn-hablar" aria-label="Escuchar pronunciación">🔊</button>
+        <div style="font-size:0.9rem;opacity:0.6;">${idx + 1} / ${palabras.length}</div>
+      `;
+      $('#btn-hablar').addEventListener('click', () => hablar(palabra.en));
+      hablar(palabra.en); // pronunciar automáticamente al cambiar
+    }
+
+    $('#btn-anterior').addEventListener('click', () => {
+      estado.flashIndex--;
+      renderFlashcard();
+    });
+    $('#btn-siguiente').addEventListener('click', () => {
+      estado.flashIndex++;
+      renderFlashcard();
+    });
+
+    // ============================================================
+    // MODO 2 — ADIVINA LA PALABRA
+    // ============================================================
+    function iniciarAdivinar() {
+      mostrarPantalla('adivinar');
+      siguientePreguntaAdivinar();
+    }
+
+    function siguientePreguntaAdivinar() {
+      const palabras = obtenerVocabulario();
+      if (palabras.length < 4) return;
+      const correcta = palabras[Math.floor(Math.random() * palabras.length)];
+      const distractores = mezclar(palabras.filter(p => p.en !== correcta.en)).slice(0, 3);
+      const opciones = mezclar([correcta, ...distractores]);
+      estado.preguntaActual = correcta;
+
+      $('#adivinar-pregunta').innerHTML = `
+        <span class="emoji-pregunta">${correcta.emoji}</span>
+        <div class="palabra-pregunta">${correcta.es}</div>
+      `;
+      $('#adivinar-mensaje').textContent = '';
+      $('#adivinar-mensaje').className = 'mensaje-respuesta';
+
+      const cont = $('#adivinar-opciones');
+      cont.innerHTML = '';
+      opciones.forEach((op) => {
+        const btn = document.createElement('button');
+        btn.className = 'opcion-btn';
+        btn.textContent = op.en;
+        btn.addEventListener('click', () => responderAdivinar(btn, op, correcta));
+        cont.appendChild(btn);
+      });
+    }
+
+    function responderAdivinar(btn, eleccion, correcta) {
+      const botones = $$('#adivinar-opciones .opcion-btn');
+      botones.forEach(b => b.disabled = true);
+
+      if (eleccion.en === correcta.en) {
+        btn.classList.add('correcta');
+        $('#adivinar-mensaje').textContent = '✅ ¡Correcto!';
+        $('#adivinar-mensaje').className = 'mensaje-respuesta ok';
+        sonidoExito();
+        hablar(correcta.en);
+        estado.puntos++;
+        estado.racha++;
+        actualizarHUD();
+        revisarCelebracion();
+        setTimeout(siguientePreguntaAdivinar, 1100);
+      } else {
+        btn.classList.add('incorrecta');
+        // marcar también la correcta en verde
+        botones.forEach(b => {
+          if (b.textContent === correcta.en) b.classList.add('correcta');
+        });
+        $('#adivinar-mensaje').textContent = `❌ La correcta era: ${correcta.en}`;
+        $('#adivinar-mensaje').className = 'mensaje-respuesta err';
+        sonidoError();
+        estado.racha = 0;
+        actualizarHUD();
+        setTimeout(siguientePreguntaAdivinar, 1800);
+      }
+    }
+
+    // ============================================================
+    // MODO 3 — ESCUCHA Y ELIGE
+    // ============================================================
+    function iniciarEscuchar() {
+      mostrarPantalla('escuchar');
+      siguientePreguntaEscuchar();
+    }
+
+    function siguientePreguntaEscuchar() {
+      const palabras = obtenerVocabulario();
+      if (palabras.length < 4) return;
+      const correcta = palabras[Math.floor(Math.random() * palabras.length)];
+      const distractores = mezclar(palabras.filter(p => p.en !== correcta.en)).slice(0, 3);
+      const opciones = mezclar([correcta, ...distractores]);
+      estado.preguntaActual = correcta;
+
+      $('#escuchar-pregunta').innerHTML = `
+        <div class="palabra-pregunta">Escucha la palabra:</div>
+        <button class="btn-escuchar" id="btn-hablar-escuchar" aria-label="Reproducir palabra">🔊</button>
+      `;
+      $('#btn-hablar-escuchar').addEventListener('click', () => hablar(correcta.en));
+      hablar(correcta.en);
+
+      $('#escuchar-mensaje').textContent = '';
+      $('#escuchar-mensaje').className = 'mensaje-respuesta';
+
+      const cont = $('#escuchar-opciones');
+      cont.innerHTML = '';
+      opciones.forEach((op) => {
+        const btn = document.createElement('button');
+        btn.className = 'opcion-btn opcion-emoji';
+        btn.textContent = op.emoji;
+        btn.setAttribute('aria-label', op.en);
+        btn.addEventListener('click', () => responderEscuchar(btn, op, correcta));
+        cont.appendChild(btn);
+      });
+    }
+
+    function responderEscuchar(btn, eleccion, correcta) {
+      const botones = $$('#escuchar-opciones .opcion-btn');
+      botones.forEach(b => b.disabled = true);
+
+      if (eleccion.en === correcta.en) {
+        btn.classList.add('correcta');
+        $('#escuchar-mensaje').textContent = `✅ ¡Sí! Es "${correcta.en}"`;
+        $('#escuchar-mensaje').className = 'mensaje-respuesta ok';
+        sonidoExito();
+        estado.puntos++;
+        estado.racha++;
+        actualizarHUD();
+        revisarCelebracion();
+        setTimeout(siguientePreguntaEscuchar, 1200);
+      } else {
+        btn.classList.add('incorrecta');
+        botones.forEach(b => {
+          if (b.getAttribute('aria-label') === correcta.en) b.classList.add('correcta');
+        });
+        $('#escuchar-mensaje').textContent = `❌ Era ${correcta.emoji} "${correcta.en}"`;
+        $('#escuchar-mensaje').className = 'mensaje-respuesta err';
+        sonidoError();
+        estado.racha = 0;
+        actualizarHUD();
+        setTimeout(siguientePreguntaEscuchar, 1800);
+      }
+    }
+
+    // ============================================================
+    // MODO 4 — MEMORAMA
+    // ============================================================
+    function iniciarMemorama() {
+      mostrarPantalla('memorama');
+      const palabras = obtenerVocabulario();
+      // Tomar 8 palabras al azar para 16 cartas (8 pares)
+      const seleccion = mezclar(palabras).slice(0, 8);
+      const cartas = mezclar(
+        seleccion.flatMap((p, i) => [
+          { id: i + '_emoji', tipo: 'emoji', valor: p.emoji, parId: i, palabra: p },
+          { id: i + '_word',  tipo: 'word',  valor: p.en,    parId: i, palabra: p }
+        ])
+      );
+
+      estado.memoramaEstado = {
+        primera: null,
+        bloqueado: false,
+        pares: 0,
+        total: seleccion.length
+      };
+
+      const grid = $('#memorama-grid');
+      grid.innerHTML = '';
+      cartas.forEach((c) => {
+        const div = document.createElement('div');
+        div.className = 'memo-card';
+        div.dataset.parId = c.parId;
+        div.dataset.tipo = c.tipo;
+        div.innerHTML = `
+          <div class="memo-card-inner">
+            <div class="memo-frente">?</div>
+            <div class="memo-reverso">${c.valor}</div>
+          </div>
+        `;
+        div.addEventListener('click', () => voltearCartaMemo(div, c));
+        grid.appendChild(div);
+      });
+    }
+
+    function voltearCartaMemo(div, carta) {
+      const m = estado.memoramaEstado;
+      if (m.bloqueado) return;
+      if (div.classList.contains('volteada') || div.classList.contains('match')) return;
+
+      div.classList.add('volteada');
+      // pronunciar al voltear si es la palabra en inglés
+      if (carta.tipo === 'word') hablar(carta.valor);
+
+      if (!m.primera) {
+        m.primera = { div, carta };
+        return;
+      }
+
+      // Segunda carta
+      if (m.primera.carta.parId === carta.parId) {
+        // Match
+        m.primera.div.classList.add('match');
+        div.classList.add('match');
+        m.pares++;
+        sonidoExito();
+        hablar(carta.palabra.en);
+        estado.puntos++;
+        estado.racha++;
+        actualizarHUD();
+        revisarCelebracion();
+        m.primera = null;
+
+        if (m.pares === m.total) {
+          setTimeout(() => {
+            mostrarCelebracion('¡Ganaste el memorama! 🎉', 'Otra ronda');
+            lanzarConfeti();
+          }, 600);
+        }
+      } else {
+        // No match → voltear de regreso
+        m.bloqueado = true;
+        sonidoError();
+        estado.racha = 0;
+        actualizarHUD();
+        setTimeout(() => {
+          m.primera.div.classList.remove('volteada');
+          div.classList.remove('volteada');
+          m.primera = null;
+          m.bloqueado = false;
+        }, 1000);
+      }
+    }
+
+    // ============================================================
+    // CELEBRACIÓN Y CONFETI
+    // ============================================================
+    function revisarCelebracion() {
+      if (estado.racha > 0 && estado.racha % 10 === 0) {
+        lanzarConfeti();
+        mostrarCelebracion(`¡10 aciertos seguidos! 🎉🎊`, 'Seguir');
+      }
+    }
+
+    function lanzarConfeti() {
+      const cont = document.createElement('div');
+      cont.className = 'confeti-container';
+      const colores = ['#ffd93d','#ff8c42','#4ea8de','#6ab04c','#ff6b9d','#845ec2'];
+      for (let i = 0; i < 80; i++) {
+        const pieza = document.createElement('div');
+        pieza.className = 'confeti-pieza';
+        pieza.style.left = Math.random() * 100 + 'vw';
+        pieza.style.background = colores[Math.floor(Math.random() * colores.length)];
+        pieza.style.animationDuration = (1.8 + Math.random() * 1.4) + 's';
+        pieza.style.animationDelay = (Math.random() * 0.6) + 's';
+        pieza.style.transform = `rotate(${Math.random() * 360}deg)`;
+        cont.appendChild(pieza);
+      }
+      document.body.appendChild(cont);
+      setTimeout(() => cont.remove(), 4000);
+    }
+
+    function mostrarCelebracion(titulo, textoBoton) {
+      // Evitar duplicados
+      const existente = document.querySelector('.celebracion');
+      if (existente) existente.remove();
+
+      const div = document.createElement('div');
+      div.className = 'celebracion';
+      div.innerHTML = `
+        <h2>${titulo}</h2>
+        <p>Puntos totales: <strong>${estado.puntos}</strong></p>
+        <button>${textoBoton}</button>
+      `;
+      div.querySelector('button').addEventListener('click', () => {
+        div.remove();
+        // Si fue en memorama, reiniciar tablero
+        if (estado.modoActual === 'memorama') iniciarMemorama();
+      });
+      document.body.appendChild(div);
+    }
+
+    // ============================================================
+    // CONTROLES GLOBALES Y BOTONES DEL MENÚ
+    // ============================================================
+    $$('.menu-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        const modo = card.dataset.modo;
+        if (modo === 'aprender')  iniciarAprender();
+        if (modo === 'adivinar')  iniciarAdivinar();
+        if (modo === 'escuchar')  iniciarEscuchar();
+        if (modo === 'memorama')  iniciarMemorama();
+      });
+    });
+
+    $('#select-unidad').addEventListener('change', (e) => {
+      estado.unidadActual = e.target.value;
+      // Si está en un modo, reiniciar el modo con la nueva unidad
+      if (estado.modoActual === 'aprender')  iniciarAprender();
+      if (estado.modoActual === 'adivinar')  iniciarAdivinar();
+      if (estado.modoActual === 'escuchar')  iniciarEscuchar();
+      if (estado.modoActual === 'memorama')  iniciarMemorama();
+      actualizarHUD();
+    });
+
+    $('#btn-inicio').addEventListener('click', () => {
+      mostrarPantalla('menu');
+    });
+
+    $('#btn-reiniciar').addEventListener('click', () => {
+      estado.puntos = 0;
+      estado.racha = 0;
+      actualizarHUD();
+      // Si está en un modo, refrescarlo
+      if (estado.modoActual === 'aprender')  iniciarAprender();
+      if (estado.modoActual === 'adivinar')  iniciarAdivinar();
+      if (estado.modoActual === 'escuchar')  iniciarEscuchar();
+      if (estado.modoActual === 'memorama')  iniciarMemorama();
+    });
+
+    // Inicializar HUD al cargar
+    actualizarHUD();
+
+    // Algunas voces de Web Speech tardan en cargar — forzar el listado
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+  </script>
+</body>
+</html>
