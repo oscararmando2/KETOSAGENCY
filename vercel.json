@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    { "source": "/ketzy", "destination": "/ketzy/", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/ketzy/", "destination": "/KETZY/index.html" },
+    { "source": "/ketzy/:path*", "destination": "/KETZY/:path*" }
+  ]
+}
