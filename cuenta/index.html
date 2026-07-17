@@ -127,13 +127,6 @@
       max-width: 620px;
       margin: 16px auto 0;
     }
-    .account-hint {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.82rem;
-      color: rgba(0, 243, 255, 0.85);
-      margin-top: 10px;
-      letter-spacing: 0.4px;
-    }
 
     .methods {
       display: grid;
@@ -147,9 +140,9 @@
     /* ===== Bank card visual ===== */
     .bank-card {
       position: relative;
-      aspect-ratio: 1.586 / 1;
+      aspect-ratio: 1.5 / 1;
       border-radius: 18px;
-      padding: 22px;
+      padding: 20px 22px;
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -169,7 +162,7 @@
     }
     .bank-card.bbva  { background: linear-gradient(135deg, #0a4b8f 0%, #072146 78%); }
     .bank-card.mp    { background: linear-gradient(135deg, #00b1ea 0%, #0079c1 92%); }
-    .bank-card.zelle { background: linear-gradient(135deg, #8a2be2 0%, #5a17c0 92%); }
+    .bank-card.zelle { background: linear-gradient(135deg, #e0122f 0%, #8b0a1e 94%); }
 
     .card-top {
       display: flex;
@@ -221,9 +214,10 @@
     .card-number {
       position: relative;
       z-index: 3;
-      font-size: clamp(1.15rem, 4.6vw, 1.5rem);
+      font-size: clamp(1.02rem, 3.4vw, 1.3rem);
       font-weight: 600;
-      letter-spacing: 2.5px;
+      letter-spacing: 1.4px;
+      white-space: nowrap;
       font-variant-numeric: tabular-nums;
       text-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
@@ -242,25 +236,54 @@
       opacity: 0.75;
       margin-bottom: 3px;
     }
-    .card-holder { font-size: 0.9rem; font-weight: 600; letter-spacing: 1px; }
+    .card-holder { font-size: 0.9rem; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
     .card-extra  { font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; }
+    .card-holder-line {
+      position: relative;
+      z-index: 3;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      white-space: nowrap;
+    }
 
-    /* Brand marks */
+    /* Brand marks (pequeños) */
     .visa {
       font-style: italic;
       font-weight: 800;
-      font-size: 1.5rem;
-      letter-spacing: 1px;
+      font-size: 1.15rem;
+      letter-spacing: 0.5px;
       text-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
     .mastercard { display: inline-flex; align-items: center; }
     .mastercard i {
-      width: 26px; height: 26px; border-radius: 50%; display: block;
+      width: 20px; height: 20px; border-radius: 50%; display: block;
     }
     .mastercard i.red { background: #eb001b; }
-    .mastercard i.yellow { background: #f79e1b; margin-left: -11px; mix-blend-mode: screen; }
+    .mastercard i.yellow { background: #f79e1b; margin-left: -8px; mix-blend-mode: screen; }
     .mp-word { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.3px; }
-    .zelle-word { font-size: 1.35rem; font-weight: 700; letter-spacing: 0.3px; }
+    .zelle-word { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.3px; }
+
+    /* Bank of America mini logo */
+    .boa-issuer { display: inline-flex; align-items: center; gap: 8px; }
+    .boa-flag {
+      position: relative;
+      width: 24px; height: 15px;
+      border-radius: 2px;
+      overflow: hidden;
+      flex: none;
+      background: repeating-linear-gradient(#ffffff 0 1.9px, #d81028 1.9px 3.8px);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+    }
+    .boa-flag::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 10px; height: 8px;
+      background: #012169;
+    }
     .zelle-primary {
       position: relative; z-index: 3;
       font-size: clamp(1.1rem, 4.4vw, 1.45rem);
@@ -386,9 +409,8 @@
             <span class="account-title-glitch" data-text="Cuenta">Cuenta</span>
           </h1>
           <p class="account-subtitle">
-            Datos para tu transferencia. Toca cualquier dato para copiarlo al instante.
+            En cualquier transferencia, por favor envía tu comprobante por WhatsApp. ¡Gracias!
           </p>
-          <p class="account-hint">Toca la tarjeta o el botón “Copiar” · se copia el valor exacto</p>
         </div>
 
         <div class="methods">
@@ -397,14 +419,16 @@
           <div class="method">
             <div class="bank-card zelle" data-copy="+13148509615" role="button" tabindex="0" aria-label="Copiar teléfono Zelle">
               <div class="card-top">
+                <span class="card-issuer boa-issuer"><span class="boa-flag" aria-hidden="true"></span>Bank of America</span>
                 <span class="zelle-word">zelle&reg;</span>
-                <svg class="contactless" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-                  <path d="M6 8a8 8 0 0 1 0 8M10 5a13 13 0 0 1 0 14M14 3.5a17 17 0 0 1 0 17"/>
-                </svg>
               </div>
               <div class="zelle-primary">+1 314 850 96 15</div>
               <div class="card-bottom">
                 <div>
+                  <div class="card-label">Titular</div>
+                  <div class="card-holder">Oscar Esquivel</div>
+                </div>
+                <div style="text-align:right">
                   <div class="card-label">Correo Zelle</div>
                   <div class="card-extra">pliegomx@outlook.com</div>
                 </div>
@@ -447,6 +471,7 @@
                 <div class="chip"><span></span></div>
               </div>
               <div class="card-number">4152 3138 9112 5291</div>
+              <div class="card-holder-line">Oscar Armando Esquivel Pliego</div>
               <div class="card-bottom">
                 <div>
                   <div class="card-label">SWIFT / BIC</div>
@@ -492,9 +517,10 @@
                 <div class="chip"><span></span></div>
               </div>
               <div class="card-number">5428 7801 3561 8627</div>
+              <div class="card-holder-line">Oscar Armando Esquivel Pliego</div>
               <div class="card-bottom">
                 <div>
-                  <div class="card-label">Tarjeta</div>
+                  <div class="card-label">Titular</div>
                   <div class="card-extra">Mercado Pago</div>
                 </div>
                 <span class="mastercard" aria-label="Mastercard"><i class="red"></i><i class="yellow"></i></span>
