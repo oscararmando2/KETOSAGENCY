@@ -5,6 +5,6 @@
   "rewrites": [
     { "source": "/ketzy/", "destination": "/KETZY/index.html" },
     { "source": "/ketzy/:path*", "destination": "/KETZY/:path*" },
-    { "source": "/portafolio", "destination": "/portafolio/index.html" }
+    { "source": "/cuenta", "destination": "/cuenta/index.html" }
   ]
 }
