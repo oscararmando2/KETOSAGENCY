@@ -4,6 +4,7 @@
   ],
   "rewrites": [
     { "source": "/ketzy/", "destination": "/KETZY/index.html" },
-    { "source": "/ketzy/:path*", "destination": "/KETZY/:path*" }
+    { "source": "/ketzy/:path*", "destination": "/KETZY/:path*" },
+    { "source": "/cuenta", "destination": "/cuenta/index.html" }
   ]
 }
