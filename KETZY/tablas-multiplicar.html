@@ -11,17 +11,13 @@
 <style>
   :root{
     --sky1:#3aa0ff; --sky2:#7cc6ff; --grass:#2fbf4e; --grass-d:#26a043;
-    --robored:#e2231a; --yellow:#ffd23f; --purple:#8b5cf6; --ink:#22304a;
-    --shadow:rgba(20,30,60,.30);
+    --robored:#e2231a; --yellow:#ffd23f; --purple:#8b5cf6; --ink:#22304a; --shadow:rgba(20,30,60,.30);
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
-  body{
-    font-family:'Fredoka',system-ui,sans-serif;color:var(--ink);
+  body{font-family:'Fredoka',system-ui,sans-serif;color:var(--ink);
     background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 58%,var(--grass) 58%,var(--grass-d) 100%);
-    background-attachment:fixed;min-height:100vh;overflow-x:hidden;
-    -webkit-user-select:none;user-select:none;touch-action:manipulation;position:relative;
-  }
+    background-attachment:fixed;min-height:100vh;overflow-x:hidden;-webkit-user-select:none;user-select:none;touch-action:manipulation;position:relative;}
   .blocks{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
   .blk{position:absolute;border-radius:10px;opacity:.5;animation:float 7s ease-in-out infinite;}
   .blk::after{content:"";position:absolute;inset:0;border-radius:10px;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.5),transparent 55%);}
@@ -73,6 +69,15 @@
   .adv-btn{width:100%;margin-top:14px;border:none;cursor:pointer;border-radius:20px;padding:18px;font-family:'Luckiest Guy';font-size:1.5rem;color:#fff;letter-spacing:1px;background:linear-gradient(180deg,#ffd23f,#ff9f1c);box-shadow:0 7px 0 #d97b00;transition:transform .08s;}
   .adv-btn:active{transform:translateY(5px);box-shadow:0 2px 0 #d97b00;}
 
+  /* premio banner */
+  .premio{margin-top:12px;border-radius:20px;padding:14px 16px;display:flex;align-items:center;gap:12px;
+    background:linear-gradient(135deg,#00c06a,#00915a);box-shadow:0 8px 0 rgba(0,0,0,.2);color:#fff;}
+  .premio .gift{font-size:2.2rem;flex:none;}
+  .premio .ptxt{flex:1;} .premio .ptxt b{display:block;font-size:1.05rem;}
+  .premio .ptxt span{font-size:.85rem;opacity:.95;}
+  .premio .pstars{font-size:1rem;letter-spacing:1px;margin-top:3px;display:block;}
+  .premio.done{background:linear-gradient(135deg,#ffd23f,#ff9f1c);color:#5b3d00;}
+
   /* mode selection */
   .modes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
   @media(max-width:560px){.modes-grid{grid-template-columns:repeat(2,1fr);}}
@@ -86,12 +91,26 @@
   .study-btn{width:100%;margin-bottom:14px;border:none;cursor:pointer;border-radius:18px;padding:16px;font-family:'Luckiest Guy';font-size:1.3rem;color:#5b3d00;letter-spacing:1px;background:linear-gradient(180deg,#ffe08a,#ffca3a);box-shadow:0 6px 0 #d9a400;transition:transform .08s;}
   .study-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #d9a400;}
 
-  /* study table */
-  .study-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  @media(max-width:520px){.study-list{grid-template-columns:1fr;}}
-  .study-row{display:flex;align-items:center;justify-content:center;gap:8px;background:#eef4ff;border-radius:14px;padding:12px;font-family:'Luckiest Guy';font-size:1.5rem;color:var(--ink);}
-  .study-row .eq{color:var(--robored);} .study-row .res{color:#22a03f;}
-  .study-go{width:100%;margin-top:16px;border:none;cursor:pointer;border-radius:18px;padding:16px;font-family:'Luckiest Guy';font-size:1.4rem;color:#fff;background:linear-gradient(180deg,#2fbf4e,#22a03f);box-shadow:0 6px 0 #178030;transition:transform .08s;}
+  /* STUDY (easy + fun) */
+  .study-eq{font-family:'Luckiest Guy';font-size:clamp(2.4rem,11vw,4rem);color:var(--ink);text-align:center;line-height:1.1;margin:4px 0 4px;}
+  .study-eq .x{color:var(--robored);} .study-eq .res{color:#22a03f;}
+  .study-help{text-align:center;color:#5b6b86;font-weight:600;font-size:1rem;margin-bottom:10px;}
+  .study-array{display:flex;flex-direction:column;gap:9px;align-items:center;min-height:130px;justify-content:center;margin:8px 0 14px;}
+  .arr-row{display:flex;gap:9px;}
+  .dot{width:32px;height:32px;border-radius:9px;box-shadow:inset 0 -6px 0 rgba(0,0,0,.18),0 3px 6px rgba(0,0,0,.15);animation:pin .3s ease both;}
+  @media(max-width:520px){.dot{width:26px;height:26px;gap:7px;}}
+  @keyframes pin{from{transform:scale(0)}to{transform:scale(1)}}
+  .study-say{display:block;margin:0 auto 14px;border:none;cursor:pointer;border-radius:16px;padding:12px 22px;font-family:'Fredoka';font-weight:700;font-size:1.1rem;color:#fff;background:linear-gradient(180deg,#8b5cf6,#6d3fd6);box-shadow:0 6px 0 #532bb0;transition:transform .08s;}
+  .study-say:active{transform:translateY(4px);box-shadow:0 2px 0 #532bb0;}
+  .study-dots{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
+  .sdot{width:14px;height:14px;border-radius:50%;background:#cfe0f5;}
+  .sdot.on{background:#ff9f1c;transform:scale(1.2);}
+  .study-nav{display:grid;grid-template-columns:1fr 2fr;gap:12px;}
+  .snav{border:none;cursor:pointer;border-radius:16px;padding:16px;font-family:'Luckiest Guy';font-size:1.3rem;color:#fff;transition:transform .08s;}
+  .snav.prev{background:linear-gradient(180deg,#9aa7bd,#6f7c92);box-shadow:0 6px 0 #55627a;}
+  .snav.next{background:linear-gradient(180deg,#3aa0ff,#2b7fe0);box-shadow:0 6px 0 #1f66bd;}
+  .snav:active{transform:translateY(4px);}
+  .study-go{width:100%;margin-top:12px;border:none;cursor:pointer;border-radius:18px;padding:16px;font-family:'Luckiest Guy';font-size:1.4rem;color:#fff;background:linear-gradient(180deg,#2fbf4e,#22a03f);box-shadow:0 6px 0 #178030;transition:transform .08s;}
   .study-go:active{transform:translateY(4px);box-shadow:0 2px 0 #178030;}
 
   /* game */
@@ -110,15 +129,11 @@
   @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
   @keyframes shakeb{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
   .feedback{text-align:center;font-family:'Luckiest Guy';font-size:1.6rem;margin-top:14px;min-height:34px;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.25);}
-
-  /* true / false */
   .tf-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;}
   .tf-btn{border:none;cursor:pointer;border-radius:20px;padding:26px 8px;font-family:'Luckiest Guy';font-size:1.7rem;color:#fff;transition:transform .08s;min-height:96px;}
   .tf-btn.t{background:linear-gradient(180deg,#3ddc6d,#22a03f);box-shadow:0 7px 0 #178030;}
   .tf-btn.f{background:linear-gradient(180deg,#ff6b6b,#e2231a);box-shadow:0 7px 0 #b01109;}
   .tf-btn:active{transform:translateY(5px);}
-
-  /* write / keypad */
   .answer-slot{font-family:'Luckiest Guy';font-size:3rem;color:var(--ink);background:#eef4ff;border-radius:16px;padding:10px;margin-top:14px;min-height:70px;display:flex;align-items:center;justify-content:center;letter-spacing:3px;}
   .answer-slot.correct{background:#d6f7e0;color:#22a03f;} .answer-slot.wrong{background:#ffe0de;color:#e2231a;}
   .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:360px;margin:16px auto 0;}
@@ -143,6 +158,21 @@
 
   #confetti{position:fixed;inset:0;z-index:40;pointer-events:none;}
   .credit{text-align:center;color:#fff;opacity:.85;font-size:.8rem;margin-top:auto;padding-top:16px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.3);}
+
+  /* REWARD overlay */
+  .reward-ov{position:fixed;inset:0;z-index:60;background:rgba(10,20,40,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;}
+  .reward-card{background:#fff;border-radius:28px;padding:26px 22px 28px;max-width:420px;width:100%;text-align:center;box-shadow:0 16px 0 rgba(0,0,0,.3);animation:pop .5s;}
+  .reward-card h2{font-family:'Luckiest Guy';font-size:1.9rem;color:var(--robored);line-height:1.05;}
+  .reward-card p{font-weight:600;color:var(--ink);margin:8px 0;font-size:1.05rem;}
+  .reward-note{font-size:.95rem;color:#00915a;font-weight:700;}
+  .robux-card{background:linear-gradient(140deg,#00c06a,#00794b);border-radius:18px;padding:20px;margin:14px 0;color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.25);position:relative;overflow:hidden;}
+  .robux-card::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.25),transparent 45%);}
+  .rb-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;}
+  .rb-logo{font-family:'Luckiest Guy';font-size:1.7rem;letter-spacing:1px;}
+  .rb-gem{font-size:1.6rem;}
+  .rb-mid{position:relative;z-index:2;text-align:left;margin-top:24px;font-size:.8rem;letter-spacing:2px;opacity:.9;}
+  .rb-amt{position:relative;z-index:2;text-align:left;font-family:'Luckiest Guy';font-size:1.5rem;margin-top:2px;}
+  .reward-burst{font-size:2.6rem;}
 </style>
 </head>
 <body>
@@ -167,6 +197,7 @@
         <div class="arm l"></div><div class="torso"></div><div class="arm r"></div>
         <div class="leg l"></div><div class="leg r"></div>
       </div>
+      <div class="premio" id="premioBanner"></div>
       <div class="panel">
         <h2>Elige tu tabla ⭐</h2>
         <div class="table-grid" id="tableGrid"></div>
@@ -179,7 +210,7 @@
     <section id="modes" class="hidden">
       <div class="panel">
         <h2 id="modesTitle">Tabla del 2 · ¿Cómo quieres jugar?</h2>
-        <button class="study-btn" id="studyBtn">📖 Estudiar la tabla primero</button>
+        <button class="study-btn" id="studyBtn">📖 Aprender la tabla (fácil)</button>
         <div class="modes-grid" id="modesGrid"></div>
       </div>
     </section>
@@ -188,8 +219,16 @@
     <section id="study" class="hidden">
       <div class="panel">
         <h2 id="studyTitle">📖 Tabla del 2</h2>
-        <div class="study-list" id="studyList"></div>
-        <button class="study-go" id="studyGoBtn">✅ ¡Ya la aprendí, a jugar!</button>
+        <div class="study-eq" id="studyEq">2 <span class="x">×</span> 1 <span class="x">=</span> <span class="res">2</span></div>
+        <div class="study-help" id="studyHelp">2 grupo de 1 🍬</div>
+        <div class="study-array" id="studyArray"></div>
+        <button class="study-say" id="studySay">🔊 Escuchar otra vez</button>
+        <div class="study-dots" id="studyDots"></div>
+        <div class="study-nav">
+          <button class="snav prev" id="studyPrev">◀</button>
+          <button class="snav next" id="studyNext">Siguiente ▶</button>
+        </div>
+        <button class="study-go" id="studyGoBtn">✅ ¡A jugar!</button>
       </div>
     </section>
 
@@ -226,17 +265,33 @@
     </section>
   </div>
 
+  <!-- REWARD overlay -->
+  <div class="reward-ov hidden" id="rewardOv">
+    <div class="reward-card">
+      <div class="reward-burst">🎉🎁🎉</div>
+      <h2>¡PREMIO<br>DESBLOQUEADO!</h2>
+      <p>Aprendiste las tablas <b>1, 2 y 3</b> 🌟</p>
+      <div class="robux-card">
+        <div class="rb-top"><span class="rb-logo">ROBUX</span><span class="rb-gem">💎</span></div>
+        <div class="rb-mid">TARJETA DE REGALO</div>
+        <div class="rb-amt">🎁 ¡Te la ganaste!</div>
+      </div>
+      <p class="reward-note">📱 Enséñale esta pantalla a tus papás 💚</p>
+      <button class="cta play" id="rewardClose" style="margin-top:6px;">¡GENIAL! 🎮</button>
+    </div>
+  </div>
+
 <script>
 (function(){
   "use strict";
-  var LS_COINS='ketzy_tablas_coins', LS_STARS='ketzy_tablas_stars';
+  var LS_COINS='ketzy_tablas_coins', LS_STARS='ketzy_tablas_stars', LS_ROBUX='ketzy_tablas_robux';
   var coins=parseInt(localStorage.getItem(LS_COINS)||'0',10)||0;
   var stars={}; try{ stars=JSON.parse(localStorage.getItem(LS_STARS)||'{}')||{}; }catch(e){ stars={}; }
-  var muted=false, TOTAL=10, CLOCK_SECS=60;
+  var robuxClaimed = localStorage.getItem(LS_ROBUX)==='1';
+  var muted=false, TOTAL=10, CLOCK_SECS=60, REQ=2; // REQ = estrellas para "dominar" una tabla
   var $=function(id){return document.getElementById(id);};
   var scr={menu:$('menu'),modes:$('modes'),study:$('study'),game:$('game'),end:$('end')};
 
-  // background blocks
   (function(){var colors=['#ffd23f','#e2231a','#3aa0ff','#8b5cf6','#2fbf4e','#ff9f1c'],box=$('blocks'),html='';
    for(var i=0;i<14;i++){var s=26+((i*13)%46),x=(i*67)%100,y=(i*41)%100,c=colors[i%colors.length],d=(i%7);
    html+='<span class="blk" style="width:'+s+'px;height:'+s+'px;left:'+x+'%;top:'+y+'%;background:'+c+';animation-delay:'+d+'s;"></span>';}box.innerHTML=html;})();
@@ -249,6 +304,8 @@
   function sndCoin(){tone(988,.08,'square',0);tone(1319,.1,'square',.07);}
   function sndWin(){[523,659,784,1047].forEach(function(f,i){tone(f,.16,'square',i*.12);});}
   function unlockAudio(){try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();}catch(e){}}
+  // voz
+  function speak(txt){ if(muted)return; try{ if(!('speechSynthesis' in window))return; var u=new SpeechSynthesisUtterance(txt); u.lang='es-MX'; u.rate=0.9; u.pitch=1.15; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){} }
 
   function setCoins(v){coins=v;localStorage.setItem(LS_COINS,String(coins));$('coinCount').textContent=coins;}
   $('coinCount').textContent=coins;
@@ -265,7 +322,23 @@
 
   // ===== menu =====
   function starStr(t){var s=stars[t]||0;return s>0?'⭐'.repeat(s):'';}
-  function buildMenu(){var g=$('tableGrid'),html='';for(var t=1;t<=10;t++){html+='<button class="tbtn" data-t="'+t+'"><span class="stars">'+starStr(t)+'</span><span class="big">'+t+'</span><span class="lbl">tabla del '+t+'</span></button>';}g.innerHTML=html;Array.prototype.forEach.call(g.querySelectorAll('.tbtn'),function(b){b.addEventListener('click',function(){unlockAudio();openModes(parseInt(b.getAttribute('data-t'),10));});});}
+  function mastered(t){return (stars[String(t)]||0)>=REQ;}
+  function renderPremio(){
+    var b=$('premioBanner'); var got=[1,2,3].filter(mastered).length;
+    if(robuxClaimed){
+      b.className='premio done';
+      b.innerHTML='<span class="gift">🎁</span><div class="ptxt"><b>¡Ganaste tu Tarjeta de Robux! 💚</b><span>Enséñasela a tus papás para reclamarla</span></div>';
+    }else{
+      b.className='premio';
+      var mini=[1,2,3].map(function(t){return mastered(t)?'⭐':'☆';}).join(' ');
+      b.innerHTML='<span class="gift">🎁</span><div class="ptxt"><b>Premio: Tarjeta de Robux</b><span>Aprende las tablas 1, 2 y 3</span><span class="pstars">Tablas '+got+'/3 &nbsp; '+mini+'</span></div>';
+    }
+  }
+  function buildMenu(){
+    renderPremio();
+    var g=$('tableGrid'),html='';for(var t=1;t<=10;t++){html+='<button class="tbtn" data-t="'+t+'"><span class="stars">'+starStr(t)+'</span><span class="big">'+t+'</span><span class="lbl">tabla del '+t+'</span></button>';}g.innerHTML=html;
+    Array.prototype.forEach.call(g.querySelectorAll('.tbtn'),function(b){b.addEventListener('click',function(){unlockAudio();openModes(parseInt(b.getAttribute('data-t'),10));});});
+  }
 
   // ===== mode selection =====
   var MODES=[
@@ -279,53 +352,50 @@
   function openModes(table){
     chosenTable=table;
     $('modesTitle').textContent=(table==='adv'?'Aventura':'Tabla del '+table)+' · ¿Cómo quieres jugar?';
-    $('studyBtn').style.display = (table==='adv')?'none':'block';
-    var g=$('modesGrid'),html='';
-    MODES.forEach(function(m){html+='<button class="mode-btn" data-m="'+m.id+'"><span class="me">'+m.e+'</span><span class="mn">'+m.n+'</span><span class="ms">'+m.s+'</span></button>';});
-    g.innerHTML=html;
+    $('studyBtn').style.display=(table==='adv')?'none':'block';
+    var g=$('modesGrid'),html='';MODES.forEach(function(m){html+='<button class="mode-btn" data-m="'+m.id+'"><span class="me">'+m.e+'</span><span class="mn">'+m.n+'</span><span class="ms">'+m.s+'</span></button>';});g.innerHTML=html;
     Array.prototype.forEach.call(g.querySelectorAll('.mode-btn'),function(b){b.addEventListener('click',function(){unlockAudio();startRound(chosenTable,b.getAttribute('data-m'));});});
     show('modes');
   }
 
-  // ===== study =====
-  function openStudy(){
-    var t=chosenTable; $('studyTitle').textContent='📖 Tabla del '+t;
-    var l=$('studyList'),html='';
-    for(var b=1;b<=10;b++){html+='<div class="study-row">'+t+' <span class="eq">×</span> '+b+' <span class="eq">=</span> <span class="res">'+(t*b)+'</span></div>';}
-    l.innerHTML=html; show('study');
+  // ===== STUDY (fácil + divertido) =====
+  var DOTCOL=['#3aa0ff','#ffca3a','#8b5cf6','#2fbf4e','#ff6b6b','#00b8d4','#ff9f1c','#e2231a','#12a9e0','#f06292'];
+  var studyStep=1;
+  function openStudy(){ studyStep=1; $('studyTitle').textContent='📖 Tabla del '+chosenTable; renderStudy(); show('study'); }
+  function renderStudy(){
+    var t=chosenTable, b=studyStep, prod=t*b;
+    $('studyEq').innerHTML = t+' <span class="x">×</span> '+b+' <span class="x">=</span> <span class="res">'+prod+'</span>';
+    $('studyHelp').textContent = b+' '+(b===1?'grupo':'grupos')+' de '+t+' 🧱';
+    // array: b filas de t puntos
+    var arr=$('studyArray'), html='';
+    for(var r=0;r<b;r++){ html+='<div class="arr-row">'; for(var c=0;c<t;c++){ html+='<span class="dot" style="background:'+DOTCOL[r%DOTCOL.length]+';animation-delay:'+((r*t+c)*0.012)+'s"></span>'; } html+='</div>'; }
+    arr.innerHTML=html;
+    // dots progreso
+    var d='';for(var i=1;i<=10;i++){ d+='<span class="sdot'+(i===b?' on':'')+'"></span>'; } $('studyDots').innerHTML=d;
+    $('studyPrev').style.visibility = b===1?'hidden':'visible';
+    $('studyNext').textContent = b>=10 ? '¡Ya está! ✅' : 'Siguiente ▶';
+    react('menuNoob',true);
+    speak(t+' por '+b+' es igual a '+prod);
   }
 
   // ===== round / questions =====
   var round=null, clockTimer=null;
-  function nextPair(){
-    if(chosenTable==='adv') return [2+((Math.random()*9)|0), 1+((Math.random()*10)|0)];
-    return [chosenTable, 0]; // b filled by sequence for fixed tables
-  }
-  function buildQueue(){
-    if(chosenTable==='adv') return null; // generated on the fly
-    return shuffle([1,2,3,4,5,6,7,8,9,10]);
-  }
-
+  function buildQueue(){ if(chosenTable==='adv') return null; return shuffle([1,2,3,4,5,6,7,8,9,10]); }
   function startRound(table,mode){
     chosenTable=table;
     round={mode:mode,queue:buildQueue(),i:0,correct:0,streak:0,earned:0,answered:0};
-    $('streakCount').textContent='0';
-    clearClock();
+    $('streakCount').textContent='0'; clearClock();
     if(mode==='clock'){ round.timeLeft=CLOCK_SECS; startClock(); }
-    show('game');
-    loadQuestion();
+    show('game'); loadQuestion();
   }
-
   function currentPair(){
     if(chosenTable==='adv') return [2+((Math.random()*9)|0), 1+((Math.random()*10)|0)];
-    var b = round.queue ? round.queue[round.i % round.queue.length] : (1+((Math.random()*10)|0));
-    return [chosenTable, b];
+    var b=round.queue?round.queue[round.i%round.queue.length]:(1+((Math.random()*10)|0));
+    return [chosenTable,b];
   }
-
-  function makeOptions(correct, a, b){
+  function makeOptions(correct,a,b){
     var set={},opts=[correct];set[correct]=1;
-    var cand=[a*(b+1),a*(b-1),(a+1)*b,(a-1)*b,correct+a,correct-a,correct+b,correct-b,correct+1,correct-1,correct+2,correct+10];
-    shuffle(cand);
+    var cand=[a*(b+1),a*(b-1),(a+1)*b,(a-1)*b,correct+a,correct-a,correct+b,correct-b,correct+1,correct-1,correct+2,correct+10];shuffle(cand);
     for(var i=0;i<cand.length&&opts.length<4;i++){var v=cand[i];if(v>0&&!set[v]){set[v]=1;opts.push(v);}}
     while(opts.length<4){var r=correct+((Math.random()*8|0)-4);if(r>0&&!set[r]){set[r]=1;opts.push(r);}}
     return shuffle(opts);
@@ -336,13 +406,11 @@
     while(opts.length<4){var r=1+((Math.random()*10)|0);if(!set[r]){set[r]=1;opts.push(r);}}
     return shuffle(opts);
   }
-
   var cur=null;
   function loadQuestion(){
-    var p=currentPair(), a=p[0], b=p[1]; cur={a:a,b:b,prod:a*b};
-    $('tableTag').textContent = chosenTable==='adv'?'🚀 Aventura':('Tabla del '+chosenTable);
-    if(round.mode!=='clock') $('progFill').style.width=(round.i/TOTAL*100)+'%';
-    else $('progFill').style.width='100%';
+    var p=currentPair(),a=p[0],b=p[1];cur={a:a,b:b,prod:a*b};
+    $('tableTag').textContent=chosenTable==='adv'?'🚀 Aventura':('Tabla del '+chosenTable);
+    $('progFill').style.width = round.mode==='clock'?'100%':(round.i/TOTAL*100)+'%';
     $('feedback').textContent='';
     var area=$('answerArea');
     if(round.mode==='mc'||round.mode==='clock') renderMC(area,a,b);
@@ -350,133 +418,117 @@
     else if(round.mode==='tf') renderTF(area,a,b);
     else if(round.mode==='missing') renderMissing(area,a,b);
   }
-
   function setQ(html){ $('question').innerHTML=html; }
-
   function renderMC(area,a,b){
     setQ(a+' <span class="qm">×</span> '+b);
-    var opts=makeOptions(a*b,a,b),html='<div class="options" id="optWrap"></div>';area.innerHTML=html;
-    var w=$('optWrap');
+    var opts=makeOptions(a*b,a,b);area.innerHTML='<div class="options" id="optWrap"></div>';var w=$('optWrap');
     opts.forEach(function(v){var btn=document.createElement('button');btn.className='opt';btn.textContent=v;btn.setAttribute('data-v',v);btn.addEventListener('click',function(ev){onOption(btn,v===a*b,a*b,ev,'#optWrap');});w.appendChild(btn);});
   }
   function renderMissing(area,a,b){
     setQ(a+' <span class="qm">×</span> <span class="miss">?</span> <span class="qm">=</span> '+(a*b));
-    var opts=missingOptions(b),html='<div class="options" id="optWrap"></div>';area.innerHTML=html;
-    var w=$('optWrap');
+    var opts=missingOptions(b);area.innerHTML='<div class="options" id="optWrap"></div>';var w=$('optWrap');
     opts.forEach(function(v){var btn=document.createElement('button');btn.className='opt';btn.textContent=v;btn.setAttribute('data-v',v);btn.addEventListener('click',function(ev){onOption(btn,v===b,b,ev,'#optWrap');});w.appendChild(btn);});
   }
   function renderTF(area,a,b){
-    var prod=a*b, showCorrect=Math.random()<0.5, shown=prod;
+    var prod=a*b,showCorrect=Math.random()<0.5,shown=prod;
     if(!showCorrect){var cands=[prod+a,prod-a,prod+b,prod-b,prod+1,prod-1,prod+2].filter(function(v){return v>0&&v!==prod;});shown=cands[(Math.random()*cands.length)|0];}
     setQ(a+' <span class="qm">×</span> '+b+' <span class="qm">=</span> '+shown);
     area.innerHTML='<div class="tf-row"><button class="tf-btn t" data-a="1">✅ Verdadero</button><button class="tf-btn f" data-a="0">❌ Falso</button></div>';
-    var truth = showCorrect?1:0;
+    var truth=showCorrect?1:0;
     Array.prototype.forEach.call(area.querySelectorAll('.tf-btn'),function(btn){btn.addEventListener('click',function(ev){var ans=parseInt(btn.getAttribute('data-a'),10);var ok=(ans===truth);btn.classList.add(ok?'correct':'wrong');commit(ok,ev);});});
   }
   var typed='';
   function renderWrite(area,a,b){
-    typed='';
-    setQ(a+' <span class="qm">×</span> '+b);
+    typed=''; setQ(a+' <span class="qm">×</span> '+b);
     var html='<div class="answer-slot" id="slot">_</div><div class="keypad" id="kp">';
-    ['1','2','3','4','5','6','7','8','9','del','0','ok'].forEach(function(k){
-      if(k==='del')html+='<button class="key del" data-k="del">⌫</button>';
-      else if(k==='ok')html+='<button class="key ok" data-k="ok">✓</button>';
-      else html+='<button class="key" data-k="'+k+'">'+k+'</button>';
-    });
-    html+='</div>'; area.innerHTML=html;
-    Array.prototype.forEach.call($('kp').querySelectorAll('.key'),function(btn){
-      btn.addEventListener('click',function(ev){
-        var k=btn.getAttribute('data-k');
-        if(k==='del'){ typed=typed.slice(0,-1); }
-        else if(k==='ok'){ if(typed==='')return; submitWrite(a*b,ev); return; }
-        else { if(typed.length<3) typed+=k; }
-        $('slot').textContent = typed===''?'_':typed;
-      });
-    });
+    ['1','2','3','4','5','6','7','8','9','del','0','ok'].forEach(function(k){ if(k==='del')html+='<button class="key del" data-k="del">⌫</button>';else if(k==='ok')html+='<button class="key ok" data-k="ok">✓</button>';else html+='<button class="key" data-k="'+k+'">'+k+'</button>'; });
+    html+='</div>';area.innerHTML=html;
+    Array.prototype.forEach.call($('kp').querySelectorAll('.key'),function(btn){btn.addEventListener('click',function(ev){var k=btn.getAttribute('data-k');if(k==='del'){typed=typed.slice(0,-1);}else if(k==='ok'){if(typed==='')return;submitWrite(a*b,ev);return;}else{if(typed.length<3)typed+=k;}$('slot').textContent=typed===''?'_':typed;});});
   }
-  function submitWrite(correct,ev){
-    var val=parseInt(typed,10), ok=(val===correct), slot=$('slot');
-    slot.classList.add(ok?'correct':'wrong');
-    if(!ok) slot.textContent = typed+' → '+correct;
-    Array.prototype.forEach.call($('kp').querySelectorAll('.key'),function(b){b.style.pointerEvents='none';});
-    commit(ok,ev);
-  }
+  function submitWrite(correct,ev){var val=parseInt(typed,10),ok=(val===correct),slot=$('slot');slot.classList.add(ok?'correct':'wrong');if(!ok)slot.textContent=typed+' → '+correct;Array.prototype.forEach.call($('kp').querySelectorAll('.key'),function(b){b.style.pointerEvents='none';});commit(ok,ev);}
 
   var YAY=['¡GENIAL! 🎉','¡EXCELENTE! ⭐','¡SÚPER! 🚀','¡PERFECTO! 💎','¡WOW! 🔥','¡CAMPEONA! 🏆'];
   var OOPS=['¡Casi! 💪','¡Tú puedes! 🌟','¡La próxima! 😊'];
-
   function onOption(btn,ok,correctVal,ev,wrapSel){
-    var all=document.querySelectorAll(wrapSel+' .opt');
-    all.forEach(function(o){o.style.pointerEvents='none';});
-    if(ok){ btn.classList.add('correct'); }
-    else { btn.classList.add('wrong'); all.forEach(function(o){if(parseInt(o.getAttribute('data-v'),10)===correctVal)o.classList.add('correct');else if(o!==btn)o.classList.add('dim');}); }
+    var all=document.querySelectorAll(wrapSel+' .opt');all.forEach(function(o){o.style.pointerEvents='none';});
+    if(ok){btn.classList.add('correct');}else{btn.classList.add('wrong');all.forEach(function(o){if(parseInt(o.getAttribute('data-v'),10)===correctVal)o.classList.add('correct');else if(o!==btn)o.classList.add('dim');});}
     commit(ok,ev);
   }
-
   function commit(ok,ev){
     round.answered++;
     if(ok){
-      round.correct++; round.streak++; $('streakCount').textContent=round.streak;
-      var gain=10+(round.streak>=3?5:0); round.earned+=gain; setCoins(coins+gain);
-      react('gameNoob',true); sndCorrect(); sndCoin();
-      var x=(ev&&ev.clientX)||innerWidth/2, y=(ev&&ev.clientY)||innerHeight/2; floatPoints(x,y,'+'+gain);
+      round.correct++;round.streak++;$('streakCount').textContent=round.streak;
+      var gain=10+(round.streak>=3?5:0);round.earned+=gain;setCoins(coins+gain);
+      react('gameNoob',true);sndCorrect();sndCoin();
+      var x=(ev&&ev.clientX)||innerWidth/2,y=(ev&&ev.clientY)||innerHeight/2;floatPoints(x,y,'+'+gain);
       $('feedback').textContent=YAY[(Math.random()*YAY.length)|0];
-      if(round.streak>0&&round.streak%5===0) confetti(60);
+      if(round.streak>0&&round.streak%5===0)confetti(60);
     }else{
-      round.streak=0; $('streakCount').textContent='0';
-      react('gameNoob',false); sndWrong();
+      round.streak=0;$('streakCount').textContent='0';react('gameNoob',false);sndWrong();
       $('feedback').textContent=OOPS[(Math.random()*OOPS.length)|0];
     }
-    if(round.mode==='clock'){ setTimeout(loadQuestion, ok?300:650); }
+    if(round.mode==='clock'){ setTimeout(loadQuestion,ok?300:650); }
     else{ round.i++; setTimeout(function(){ round.i>=TOTAL?finish():loadQuestion(); }, ok?750:1300); }
   }
 
-  // clock
   function startClock(){ $('timerCount').textContent=round.timeLeft; clockTimer=setInterval(function(){ round.timeLeft--; $('timerCount').textContent=round.timeLeft; if(round.timeLeft<=0){ clearClock(); finish(); } },1000); }
   function clearClock(){ if(clockTimer){ clearInterval(clockTimer); clockTimer=null; } }
 
   function finish(){
-    clearClock();
-    $('progFill').style.width='100%';
-    var c=round.correct, s;
-    if(round.mode==='clock'){ s = c>=15?3:c>=10?2:c>=5?1:0; }
-    else { s = c>=9?3:c>=7?2:c>=5?1:0; }
-    if(chosenTable!=='adv'){ var key=String(chosenTable); if(!stars[key]||s>stars[key]){ stars[key]=s; localStorage.setItem(LS_STARS,JSON.stringify(stars)); } }
+    clearClock(); $('progFill').style.width='100%';
+    var c=round.correct,s;
+    if(round.mode==='clock'){ s=c>=15?3:c>=10?2:c>=5?1:0; } else { s=c>=9?3:c>=7?2:c>=5?1:0; }
+    var newReward=false;
+    if(chosenTable!=='adv'){ var key=String(chosenTable); if(!stars[key]||s>stars[key]){ stars[key]=s; localStorage.setItem(LS_STARS,JSON.stringify(stars)); } newReward=checkRobux(); }
     var bonus=s*20; if(bonus){ setCoins(coins+bonus); round.earned+=bonus; }
-    $('endTitle').textContent = s>=3?'¡PERFECTA! 🏆':s>=1?'¡MUY BIEN! 🎉':'¡BUEN INTENTO! 💪';
-    var sr=$('starsRow').children; for(var i=0;i<3;i++){ sr[i].className='star'+(i<s?' on':''); }
-    $('endScore').textContent = round.mode==='clock' ? ('Acertaste '+c+' en '+CLOCK_SECS+'s') : ('Acertaste '+c+' de '+TOTAL);
+    $('endTitle').textContent=s>=3?'¡PERFECTA! 🏆':s>=1?'¡MUY BIEN! 🎉':'¡BUEN INTENTO! 💪';
+    var sr=$('starsRow').children;for(var i=0;i<3;i++){sr[i].className='star'+(i<s?' on':'');}
+    $('endScore').textContent=round.mode==='clock'?('Acertaste '+c+' en '+CLOCK_SECS+'s'):('Acertaste '+c+' de '+TOTAL);
     $('endCoins').textContent='🪙 +'+round.earned+' monedas';
     show('end');
-    if(s>=2){ sndWin(); confetti(140); } else { sndCoin(); }
+    if(s>=2){sndWin();confetti(140);}else{sndCoin();}
+    if(newReward){ setTimeout(showReward,900); }
   }
 
-  // navigation
+  function checkRobux(){
+    if(robuxClaimed) return false;
+    var ok=[1,2,3].every(function(t){ return (stars[String(t)]||0)>=REQ; });
+    if(ok){ robuxClaimed=true; localStorage.setItem(LS_ROBUX,'1'); return true; }
+    return false;
+  }
+  function showReward(){
+    $('rewardOv').classList.remove('hidden');
+    sndWin(); confetti(200);
+    speak('¡Felicidades! Te ganaste una tarjeta de Robux. Enséñasela a tus papás.');
+  }
+
   function show(which){
-    Object.keys(scr).forEach(function(k){ scr[k].classList.add('hidden'); });
+    Object.keys(scr).forEach(function(k){scr[k].classList.add('hidden');});
     scr[which].classList.remove('hidden');
-    $('streakPill').classList.toggle('hidden', !(which==='game' && round && round.mode!=='clock'));
-    $('timerPill').classList.toggle('hidden', !(which==='game' && round && round.mode==='clock'));
+    $('streakPill').classList.toggle('hidden',!(which==='game'&&round&&round.mode!=='clock'));
+    $('timerPill').classList.toggle('hidden',!(which==='game'&&round&&round.mode==='clock'));
     scrollTo(0,0);
   }
   function goBack(){
-    clearClock();
+    clearClock(); try{speechSynthesis.cancel();}catch(e){}
     if(!scr.game.classList.contains('hidden')||!scr.study.classList.contains('hidden')){ show('modes'); }
-    else if(!scr.modes.classList.contains('hidden')||!scr.end.classList.contains('hidden')){ show('menu'); buildMenu(); }
     else { show('menu'); buildMenu(); }
   }
 
   // events
   $('backBtn').addEventListener('click',goBack);
   $('advBtn').addEventListener('click',function(){ unlockAudio(); openModes('adv'); });
-  $('studyBtn').addEventListener('click',function(){ openStudy(); });
-  $('studyGoBtn').addEventListener('click',function(){ show('modes'); });
+  $('studyBtn').addEventListener('click',function(){ unlockAudio(); openStudy(); });
+  $('studyPrev').addEventListener('click',function(){ if(studyStep>1){studyStep--;renderStudy();} });
+  $('studyNext').addEventListener('click',function(){ if(studyStep<10){studyStep++;renderStudy();} else { show('modes'); } });
+  $('studySay').addEventListener('click',function(){ speak(chosenTable+' por '+studyStep+' es igual a '+(chosenTable*studyStep)); });
+  $('studyGoBtn').addEventListener('click',function(){ try{speechSynthesis.cancel();}catch(e){} show('modes'); });
   $('againBtn').addEventListener('click',function(){ startRound(chosenTable, round?round.mode:'mc'); });
   $('otherModeBtn').addEventListener('click',function(){ openModes(chosenTable); });
   $('toMenuBtn').addEventListener('click',function(){ show('menu'); buildMenu(); });
-  $('muteBtn').addEventListener('click',function(){ muted=!muted; $('muteBtn').textContent=muted?'🔇':'🔊'; if(!muted){ unlockAudio(); sndCoin(); } });
+  $('rewardClose').addEventListener('click',function(){ $('rewardOv').classList.add('hidden'); });
+  $('muteBtn').addEventListener('click',function(){ muted=!muted; $('muteBtn').textContent=muted?'🔇':'🔊'; if(muted){try{speechSynthesis.cancel();}catch(e){}} else { unlockAudio(); sndCoin(); } });
 
-  // init
   buildMenu(); show('menu');
 })();
 </script>
