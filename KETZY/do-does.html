@@ -91,6 +91,15 @@
   .ab span{border-radius:12px;padding:7px 6px;font-weight:700;font-size:.82rem;color:#fff;line-height:1.2;}
   .ab .a{background:#2b7fe0;} .ab .b{background:#7c3aed;}
 
+  .rulebar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px;}
+  .rb{display:flex;align-items:center;gap:7px;border-radius:15px;padding:7px 9px;color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.22);}
+  .rb.do{background:linear-gradient(180deg,#4aa8ff,#2b7fe0);}
+  .rb.does{background:linear-gradient(180deg,#a78bfa,#7c3aed);}
+  .rb b{font-family:'Luckiest Guy';font-size:1.05rem;letter-spacing:1px;flex:none;line-height:1;}
+  .rb span{display:flex;flex-wrap:wrap;gap:3px;}
+  .rb i{font-style:normal;font-weight:700;font-size:.74rem;background:rgba(255,255,255,.22);border-radius:7px;padding:1px 6px;transition:transform .15s;}
+  .rb i.hi{background:#ffd23f;color:#5b3d00;box-shadow:0 2px 0 rgba(0,0,0,.25);transform:scale(1.14);}
+
   .stagewrap{position:relative;margin-top:10px;border-radius:20px;overflow:hidden;border:5px solid #fff;box-shadow:0 9px 0 var(--shadow);background:#7cc6ff;line-height:0;}
   #cv{display:block;width:100%;}
   .toast{position:absolute;left:50%;top:12px;transform:translateX(-50%);background:rgba(10,20,40,.66);color:#fff;font-family:'Luckiest Guy';font-size:1.05rem;padding:6px 16px;border-radius:14px;pointer-events:none;opacity:0;transition:opacity .25s;white-space:nowrap;}
@@ -126,6 +135,49 @@
   .cta{border:none;cursor:pointer;border-radius:18px;padding:14px 18px;font-family:'Fredoka';font-weight:700;font-size:1.02rem;color:#fff;box-shadow:0 6px 0 rgba(0,0,0,.25);}
   .cta:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.25);}
   .cta.play{background:linear-gradient(180deg,#2fbf4e,#22a03f);} .cta.other{background:linear-gradient(180deg,#8b5cf6,#6d3fd6);} .cta.menu{background:linear-gradient(180deg,#3aa0ff,#2b7fe0);}
+
+  /* ===== iPad y pantallas grandes ===== */
+  @media (min-width:700px){
+    .wrap{max-width:880px;padding:18px 22px 40px;}
+    .pill{font-size:1.15rem;padding:9px 16px;} .icon-btn{width:58px;height:58px;font-size:1.6rem;}
+    .qbanner{padding:14px 18px 16px;border-radius:24px;}
+    .tag{font-size:.98rem;padding:6px 16px;} .marks{font-size:1.1rem;}
+    .qhelp{font-size:1rem;} .trans{font-size:1.06rem;}
+    .ab span{font-size:1.02rem;padding:10px 12px;}
+    .rb b{font-size:1.45rem;} .rb i{font-size:.98rem;padding:3px 10px;} .rb{padding:10px 14px;gap:10px;}
+    .pad{gap:14px;margin-top:14px;} .pbtn{padding:28px 0;font-size:2rem;border-radius:22px;}
+    .padhint{font-size:.98rem;margin-top:10px;}
+    .lvgrid{grid-template-columns:repeat(10,1fr);gap:11px;}
+    .lv{font-size:1.6rem;padding:16px 2px 20px;}
+    .worldband .wt b{font-size:1.35rem;} .worldband .wt span{font-size:.95rem;} .worldband .we{font-size:2.4rem;}
+    .worldband .wl{font-size:1rem;padding:11px 16px;}
+    .panel h2{font-size:1.6rem;} .rule .col b{font-size:2.4rem;} .rule .col .who{font-size:1.3rem;} .rule .col .tip{font-size:.95rem;}
+    .rule-toggle{font-size:1.15rem;padding:14px;}
+    .ovcard{max-width:540px;padding:26px 24px 28px;}
+    .ovcard .eh{font-size:1.7rem;} .ovcard .why{font-size:1.15rem;} .ovcard .fix{font-size:1.5rem;}
+    .lesson .lex .en{font-size:1.6rem;} .lesson .lex .es{font-size:1.05rem;} .lesson .note{font-size:1.1rem;}
+    .end-panel h2{font-size:2.4rem;} .end-score{font-size:1.35rem;} .end-coins{font-size:1.4rem;}
+    .cta{font-size:1.15rem;padding:16px 24px;}
+    .logo .l1{font-size:4rem;} .tagline{font-size:1.2rem;}
+  }
+
+  /* celulares angostos: que los pronombres quepan en un renglón */
+  @media (max-width:420px){
+    .rb{gap:6px;padding:7px 8px;} .rb b{font-size:1rem;}
+    .rb span{gap:2px;} .rb i{font-size:.72rem;padding:1px 5px;}
+  }
+
+  /* iPad acostado (pantalla ancha y bajita): que quepa sin scroll */
+  @media (min-width:700px) and (max-height:830px){
+    .wrap{padding:10px 20px 18px;}
+    .topbar{margin-bottom:6px;}
+    .qbanner{padding:10px 16px 12px;}
+    .sentence{font-size:1.75rem;}
+    .rulebar{margin-top:7px;} .rb{padding:7px 12px;} .rb b{font-size:1.25rem;} .rb i{font-size:.9rem;}
+    .stagewrap{margin-top:8px;}
+    .pad{margin-top:9px;} .pbtn{padding:19px 0;font-size:1.65rem;}
+    .padhint{display:none;}
+  }
 
   #confetti{position:fixed;inset:0;z-index:40;pointer-events:none;}
   .credit{text-align:center;color:#fff;opacity:.85;font-size:.78rem;margin-top:auto;padding-top:14px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.3);}
@@ -191,6 +243,10 @@
         <div class="sentence" id="sentence"></div>
         <div class="trans" id="trans"></div>
         <div class="ab hidden" id="abBox"></div>
+      </div>
+      <div class="rulebar" id="ruleBar">
+        <div class="rb do"><b>DO</b><span><i data-w="I">I</i><i data-w="You">You</i><i data-w="We">We</i><i data-w="They">They</i></span></div>
+        <div class="rb does"><b>DOES</b><span><i data-w="He">He</i><i data-w="She">She</i><i data-w="It">It</i></span></div>
       </div>
       <div class="stagewrap">
         <canvas id="cv"></canvas>
@@ -626,12 +682,18 @@
   var GRAV=.62, JUMPV=-12.6, SPD=3.2;
   var PW=24, PH=36;
 
+  var ZOOM=1;
   function fitCanvas(){
-    var w=(CV.parentNode&&CV.parentNode.clientWidth)||360; VW=Math.max(280,w);
+    var cssW=(CV.parentNode&&CV.parentNode.clientWidth)||360;
     DPR=Math.min(2,window.devicePixelRatio||1);
-    CV.width=Math.round(VW*DPR); CV.height=Math.round(VH*DPR);
-    CV.style.height=VH+'px';
-    CTX.setTransform(DPR,0,0,DPR,0,0);
+    /* en pantallas grandes (iPad) se agranda todo en vez de mostrar más mundo */
+    var availH=Math.max(240,(window.innerHeight||760)-470);
+    ZOOM=clamp(Math.min(cssW/420,availH/320),1,2);
+    VW=cssW/ZOOM;
+    var cssH=Math.round(320*ZOOM);
+    CV.width=Math.round(cssW*DPR); CV.height=Math.round(cssH*DPR);
+    CV.style.height=cssH+'px';
+    CTX.setTransform(ZOOM*DPR,0,0,ZOOM*DPR,0,0);
   }
   addEventListener('resize',function(){ fitCanvas(); if(state!=='off') draw(); });
 
@@ -725,12 +787,18 @@
   }
   function toast(t,ms){ var el=$('toast'); el.textContent=t; el.classList.add('on'); clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('on'); },ms||1100); }
 
+  function hiliteRule(sub){
+    var w=(sub&&sub.kind==='pron')?sub.s:null;   /* con nombres propios no se resalta: eso lo tiene que deducir ella */
+    Array.prototype.forEach.call($('ruleBar').querySelectorAll('i'),function(el){
+      el.classList.toggle('hi', !!w && el.getAttribute('data-w')===w);
+    });
+  }
   function updateBanner(){
     var g=CRS.gates[cur];
     $('levelTag').textContent='Nivel '+round.n+' · '+WORLDS[round.cfg.w].e+' '+Math.min(cur+1,CRS.gates.length)+'/'+CRS.gates.length;
     $('marks').innerHTML=round.marks.join('');
     $('gateCount').textContent=cur+'/'+CRS.gates.length;
-    if(!g){ $('sentence').innerHTML='🏁 ¡CORRE A LA META!'; $('trans').textContent=''; $('qhelp').textContent=''; $('abBox').classList.add('hidden'); return; }
+    if(!g){ $('sentence').innerHTML='🏁 ¡CORRE A LA META!'; $('trans').textContent=''; $('qhelp').textContent=''; $('abBox').classList.add('hidden'); hiliteRule(null); return; }
     var q=g.q;
     $('sentence').innerHTML=q.sentence;
     $('trans').textContent=q.trans||'';
@@ -738,6 +806,7 @@
     var ab=$('abBox');
     if(g.ab){ ab.innerHTML='<span class="a">A) '+g.Atxt+'</span><span class="b">B) '+g.Btxt+'</span>'; ab.classList.remove('hidden'); }
     else ab.classList.add('hidden');
+    hiliteRule(q.sub);
   }
 
   /* ---------- física ---------- */
