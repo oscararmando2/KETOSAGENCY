@@ -1,11 +1,37 @@
 {
   "redirects": [
-    { "source": "/ketzy", "destination": "/ketzy/", "permanent": false }
+    {
+      "source": "/ketzy",
+      "destination": "/ketzy/",
+      "permanent": false
+    },
+    {
+      "source": "/KETZY",
+      "destination": "/ketzy/",
+      "permanent": false
+    },
+    {
+      "source": "/Ketzy",
+      "destination": "/ketzy/",
+      "permanent": false
+    }
   ],
   "rewrites": [
-    { "source": "/ketzy/", "destination": "/KETZY/index.html" },
-    { "source": "/ketzy/:path*", "destination": "/KETZY/:path*" },
-    { "source": "/portafolio", "destination": "/portafolio/index.html" },
-    { "source": "/cuenta", "destination": "/cuenta/index.html" }
+    {
+      "source": "/ketzy/",
+      "destination": "/KETZY/index.html"
+    },
+    {
+      "source": "/ketzy/:path*",
+      "destination": "/KETZY/:path*"
+    },
+    {
+      "source": "/portafolio",
+      "destination": "/portafolio/index.html"
+    },
+    {
+      "source": "/cuenta",
+      "destination": "/cuenta/index.html"
+    }
   ]
 }
