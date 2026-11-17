@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Brief para tu sitio web — KETOS AGENCY</title>
+<meta name="description" content="Cuéntanos de tu negocio en 3 minutos y empezamos tu página web." />
+<meta name="theme-color" content="#0E0E11" />
+<meta property="og:title" content="Brief para tu sitio web — KETOS AGENCY" />
+<meta property="og:description" content="Llénalo en 3 minutos. Al terminar se genera un PDF y nos lo mandas por WhatsApp." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0E0E11; --panel:#15161B; --panel2:#1B1D24; --line:#2A2D37;
+    --ink:#F2F2F2; --dim:#9AA2B1; --cyan:#00f3ff; --mag:#ff00c1; --ok:#2fbf4e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;
+    min-height:100vh;overflow-x:hidden;line-height:1.45;}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(900px 500px at 15% -10%,rgba(0,243,255,.13),transparent 60%),
+               radial-gradient(800px 500px at 110% 10%,rgba(255,0,193,.12),transparent 60%);}
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 18px 140px;}
+
+  header{padding:34px 0 18px;}
+  .brand{font-family:'Protest Guerrilla',sans-serif;font-size:.95rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;}
+  h1{font-family:'Protest Guerrilla',sans-serif;font-size:clamp(2rem,8vw,3.1rem);line-height:1.02;margin:8px 0 10px;letter-spacing:.5px;}
+  h1 em{font-style:normal;color:var(--mag);}
+  .lead{color:var(--dim);font-size:1rem;max-width:52ch;}
+  .lead b{color:var(--ink);font-weight:600;}
+
+  .bar{position:sticky;top:0;z-index:5;margin:18px -18px 0;padding:10px 18px;
+    background:rgba(14,14,17,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;}
+  .bar .track{flex:1;height:7px;background:#23262F;border-radius:5px;overflow:hidden;}
+  .bar .track i{display:block;height:100%;width:0;border-radius:5px;
+    background:linear-gradient(90deg,var(--cyan),var(--mag));transition:width .3s;}
+  .bar .pct{font-size:.82rem;color:var(--dim);font-variant-numeric:tabular-nums;min-width:74px;text-align:right;}
+
+  section.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;
+    padding:20px 18px 22px;margin-top:18px;}
+  section.card > h2{font-size:1.05rem;letter-spacing:.3px;display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+  section.card > h2 span.num{font-family:'Protest Guerrilla',sans-serif;color:var(--bg);background:var(--cyan);
+    width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:.95rem;flex:none;}
+
+  .grid{display:flex;flex-wrap:wrap;gap:14px;}
+  .fld{display:flex;flex-direction:column;gap:6px;min-width:0;}
+  label.lb{font-size:.74rem;letter-spacing:.8px;text-transform:uppercase;color:var(--dim);font-weight:600;}
+  label.lb .req{color:var(--mag);}
+  input[type=text],input[type=tel],input[type=email],input[type=url],textarea{
+    width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:12px;
+    color:var(--ink);font-family:inherit;font-size:1rem;padding:13px 14px;outline:none;transition:border-color .15s,box-shadow .15s;}
+  input:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,243,255,.14);}
+  input::placeholder,textarea::placeholder{color:#5C6473;}
+  textarea{resize:vertical;min-height:84px;line-height:1.5;}
+  .fld.bad input,.fld.bad textarea{border-color:#ff5a5a;box-shadow:0 0 0 3px rgba(255,90,90,.15);}
+
+  .opts{display:flex;flex-wrap:wrap;gap:9px;}
+  .opt{position:relative;}
+  .opt input{position:absolute;opacity:0;pointer-events:none;}
+  .opt span{display:inline-block;padding:11px 15px;border:1px solid var(--line);border-radius:999px;
+    background:var(--panel2);color:var(--dim);font-size:.93rem;cursor:pointer;transition:.15s;user-select:none;}
+  .opt input:checked + span{background:rgba(0,243,255,.14);border-color:var(--cyan);color:var(--ink);font-weight:600;}
+  .opt input:focus-visible + span{box-shadow:0 0 0 3px rgba(0,243,255,.2);}
+
+  .scale{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;margin:2px 0 4px;}
+  .scale .pole{font-size:.86rem;color:var(--dim);white-space:nowrap;}
+  .scale .dots{display:flex;justify-content:space-between;gap:6px;}
+  .scale .dots label{flex:1;display:grid;place-items:center;cursor:pointer;}
+  .scale .dots input{position:absolute;opacity:0;pointer-events:none;}
+  .scale .dots i{display:block;width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--panel2);transition:.15s;}
+  .scale .dots input:checked + i{background:linear-gradient(135deg,var(--cyan),var(--mag));border-color:transparent;transform:scale(1.18);}
+
+  .hint{font-size:.82rem;color:var(--dim);margin-top:-2px;}
+  .hint b{color:var(--cyan);font-weight:600;}
+
+  .foot{position:fixed;left:0;right:0;bottom:0;z-index:6;padding:12px 18px calc(12px + env(safe-area-inset-bottom));
+    background:rgba(14,14,17,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);}
+  .foot .inner{max-width:760px;margin:0 auto;display:flex;gap:10px;align-items:center;}
+  .btn{border:none;border-radius:14px;font-family:inherit;font-weight:700;font-size:1.02rem;padding:16px 18px;cursor:pointer;transition:transform .08s,filter .15s;}
+  .btn:active{transform:translateY(2px);}
+  .btn.go{flex:1;background:linear-gradient(135deg,var(--cyan),#00b8ff);color:#06121a;box-shadow:0 6px 22px rgba(0,243,255,.25);}
+  .btn.ghost{background:var(--panel2);color:var(--dim);border:1px solid var(--line);font-size:.92rem;padding:16px 14px;}
+  .saved{font-size:.74rem;color:var(--dim);text-align:center;margin-top:7px;}
+
+  .ov{position:fixed;inset:0;z-index:20;background:rgba(5,6,9,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    display:grid;place-items:center;padding:20px;overflow:auto;}
+  .ov[hidden]{display:none;}
+  .ovcard{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:26px 22px 24px;max-width:430px;width:100%;text-align:center;}
+  .ovcard .tick{width:62px;height:62px;border-radius:50%;background:rgba(47,191,78,.15);border:1px solid rgba(47,191,78,.5);
+    display:grid;place-items:center;margin:0 auto 14px;font-size:1.9rem;}
+  .ovcard h3{font-family:'Protest Guerrilla',sans-serif;font-size:1.5rem;margin-bottom:8px;}
+  .ovcard p{color:var(--dim);font-size:.95rem;margin-bottom:8px;}
+  .ovcard .file{background:var(--panel2);border:1px dashed var(--line);border-radius:12px;padding:10px 12px;
+    font-size:.85rem;color:var(--ink);margin:12px 0;word-break:break-all;}
+  .btn.wa{width:100%;background:#25D366;color:#06210f;margin-top:4px;}
+  .btn.alt{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);margin-top:9px;font-size:.95rem;}
+  .ovcard .num{color:var(--cyan);font-weight:700;}
+  .ovcard .close{display:block;margin:14px auto 0;background:none;border:none;color:var(--dim);font-family:inherit;font-size:.85rem;cursor:pointer;text-decoration:underline;}
+
+  .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(14px);z-index:30;
+    background:#23262F;border:1px solid var(--line);color:var(--ink);padding:11px 18px;border-radius:999px;
+    font-size:.88rem;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap;}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  footer.end{text-align:center;color:#5C6473;font-size:.78rem;padding:26px 0 0;}
+  footer.end a{color:var(--dim);text-decoration:none;}
+
+  @media(min-width:620px){ .wrap{padding-bottom:120px;} header{padding-top:48px;} }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">Ketos Agency</div>
+      <h1>Brief para tu <em>sitio web</em></h1>
+      <p class="lead">Contéstalo en <b>3 minutos</b>. Al terminar se arma un <b>PDF</b> con tus respuestas y nos lo mandas por WhatsApp. Si algo no lo sabes, déjalo en blanco.</p>
+    </header>
+
+    <div class="bar"><div class="track"><i id="prog"></i></div><div class="pct" id="pct">0% listo</div></div>
+
+    <form id="form" autocomplete="on" novalidate></form>
+
+    <footer class="end">KETOS AGENCY · <a href="https://ketos.agency">ketos.agency</a></footer>
+  </div>
+
+  <div class="foot">
+    <div class="inner">
+      <button type="button" class="btn ghost" id="clear">Borrar</button>
+      <button type="button" class="btn go" id="send">Generar PDF y enviar</button>
+    </div>
+    <div class="saved" id="saved">Se guarda solo en tu teléfono mientras lo llenas</div>
+  </div>
+
+  <div class="ov" id="ov" hidden><div class="ovcard" id="ovcard"></div></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+          integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    /* si el CDN falla, probamos con el espejo antes de que el cliente toque el botón */
+    if(!(window.jspdf && window.jspdf.jsPDF)){
+      var _s=document.createElement('script');
+      _s.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
+      _s.crossOrigin='anonymous';
+      document.head.appendChild(_s);
+    }
+  </script>
+<script>
+(function(){
+  "use strict";
+  var WA='13148509615', WATXT='+1 314 850 96 15';
+  var LS='ketos_brief_v1';
+  var $=function(id){return document.getElementById(id);};
+
+  /* ===== las preguntas (de aquí sale el formulario Y el PDF) ===== */
+  var SCHEMA=[
+    {t:'Tu negocio', f:[
+      {n:'nombre',  l:'Nombre comercial (como va en la web)', t:'text', w:60, req:1, ph:'Ej. Tortillería Xela'},
+      {n:'giro',    l:'A qué se dedica',  t:'text', w:40, req:1, ph:'Ej. Venta de tortillas'},
+      {n:'dir',     l:'Dirección (calle, número, colonia, ciudad)', t:'text', w:75},
+      {n:'cp',      l:'C.P.', t:'text', w:25},
+      {n:'dirweb',  l:'¿La dirección va en la página?', t:'radio', opts:['Sí, con mapa','Sí, solo el texto','No la pongas']},
+      {n:'tel',     l:'Teléfono', t:'tel', w:33},
+      {n:'wa',      l:'WhatsApp', t:'tel', w:33, req:1},
+      {n:'mail',    l:'Correo', t:'email', w:34},
+      {n:'horario', l:'Horario de atención', t:'text', w:34, ph:'Lun a Sáb 9–7'},
+      {n:'ig',      l:'Instagram', t:'text', w:33, ph:'@tunegocio'},
+      {n:'fb',      l:'Facebook', t:'text', w:33, ph:'Tu página'}
+    ]},
+    {t:'Logotipo y fotos', f:[
+      {n:'logo', l:'¿Tienes logotipo?', t:'radio', opts:['Sí, lo mando','Tengo uno pero quiero mejorarlo','No tengo, lo necesito']},
+      {n:'formato', l:'¿En qué archivo lo tienes?', t:'checks', opts:['AI / EPS','SVG','PDF','PNG','JPG','Solo una captura'],
+       hint:'Mándalo en la <b>mejor calidad</b> que tengas. AI o SVG es lo ideal; una captura de pantalla sale pixeleada.'},
+      {n:'fotos', l:'¿Tienes fotos del negocio o de tus productos?', t:'radio', opts:['Sí, las mando','Tengo pocas','No tengo']}
+    ]},
+    {t:'Cómo quieres que se vea', f:[
+      {n:'_n1', t:'note', l:'Tres palabras que describan tu marca',
+       hint:'Las que te gustaría que usaran tus clientes al recomendarte.'},
+      {n:'p1', l:'Palabra 1', t:'text', w:33, ph:'Confiable'},
+      {n:'p2', l:'Palabra 2', t:'text', w:33, ph:'Moderna'},
+      {n:'p3', l:'Palabra 3', t:'text', w:34, ph:'Cercana'},
+      {n:'e1', l:'Marca dónde cae tu marca', t:'scale', a:'Clásica',   b:'Moderna'},
+      {n:'e2', l:'', t:'scale', a:'Económica', b:'Premium'},
+      {n:'e3', l:'', t:'scale', a:'Sobria',    b:'Llamativa'},
+      {n:'ref1', l:'Una página que te guste', t:'url', w:50, ph:'https://...'},
+      {n:'ref2', l:'Otra que te guste', t:'url', w:50, ph:'https://...'}
+    ]},
+    {t:'Qué lleva la página', f:[
+      {n:'secs', l:'Secciones que quieres', t:'checks', opts:['Inicio','Nosotros','Servicios','Productos / Catálogo','Galería de fotos','Precios','Testimonios','Preguntas frecuentes','Contacto','Mapa / Ubicación','Tienda en línea','Agendar cita']},
+      {n:'serv', l:'Tus servicios o productos principales (los que quieres destacar)', t:'area'}
+    ]},
+    {t:'Objetivo y dominio', f:[
+      {n:'obj', l:'¿Qué quieres que haga quien entre a tu página?', t:'checks', opts:['Que me escriba por WhatsApp','Que me llame','Que compre en línea','Que agende una cita','Que vaya a mi local','Que conozca la marca']},
+      {n:'dom', l:'¿Ya tienes dominio? ¿Cuál?', t:'text', w:60, ph:'Si no tienes, escribe NO'},
+      {n:'donde', l:'¿Dónde lo compraste?', t:'text', w:40, ph:'GoDaddy, Hostinger...'}
+    ]},
+    {t:'Tus datos', f:[
+      {n:'quien', l:'Quién llena este brief', t:'text', w:60, req:1},
+      {n:'telq', l:'Teléfono de contacto', t:'tel', w:40}
+    ]}
+  ];
+
+  /* ===== construir el formulario ===== */
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+  var form=$('form'), html='';
+  SCHEMA.forEach(function(sec,si){
+    html+='<section class="card"><h2><span class="num">'+(si+1)+'</span>'+sec.t+'</h2><div class="grid">';
+    sec.f.forEach(function(f){
+      if(f.t==='note'){
+        html+='<div class="fld" style="flex:1 1 100%;min-width:100%;gap:3px">'+
+              '<label class="lb">'+f.l+'</label>'+(f.hint?'<div class="hint">'+f.hint+'</div>':'')+'</div>';
+        return;
+      }
+      var w=f.w||100, basis=(w>=100)?'100%':('calc('+w+'% - 10px)');
+      html+='<div class="fld" data-n="'+f.n+'" style="flex:1 1 '+basis+';min-width:148px">';
+      if(f.t==='radio'||f.t==='checks'){
+        html+='<label class="lb">'+f.l+'</label>';
+        if(f.hint) html+='<div class="hint">'+f.hint+'</div>';
+        html+='<div class="opts">';
+        f.opts.forEach(function(o,i){
+          var tp=(f.t==='radio')?'radio':'checkbox';
+          html+='<label class="opt"><input type="'+tp+'" name="'+f.n+'" value="'+esc(o)+'"><span>'+esc(o)+'</span></label>';
+        });
+        html+='</div>';
+      } else if(f.t==='scale'){
+        if(f.l) html+='<label class="lb">'+f.l+'</label>';
+        html+='<div class="scale"><span class="pole">'+f.a+'</span><div class="dots">';
+        for(var i=1;i<=5;i++) html+='<label><input type="radio" name="'+f.n+'" value="'+i+'"><i></i></label>';
+        html+='</div><span class="pole">'+f.b+'</span></div>';
+      } else if(f.t==='area'){
+        html+='<label class="lb" for="'+f.n+'">'+f.l+(f.req?' <span class="req">*</span>':'')+'</label>';
+        html+='<textarea id="'+f.n+'" name="'+f.n+'" rows="3" placeholder="'+esc(f.ph||'')+'"></textarea>';
+      } else {
+        html+='<label class="lb" for="'+f.n+'">'+f.l+(f.req?' <span class="req">*</span>':'')+'</label>';
+        html+='<input type="'+f.t+'" id="'+f.n+'" name="'+f.n+'" placeholder="'+esc(f.ph||'')+'"'+
+              (f.t==='tel'?' inputmode="tel"':'')+(f.t==='email'?' inputmode="email"':'')+'>';
+      }
+      html+='</div>';
+    });
+    html+='</div></section>';
+  });
+  form.innerHTML=html;
+
+  /* ===== leer / guardar respuestas ===== */
+  function campos(){ var a=[]; SCHEMA.forEach(function(s){ s.f.forEach(function(f){ if(f.t!=='note') a.push(f); }); }); return a; }
+  var FIELDS=campos();
+  function val(f){
+    if(f.t==='checks'){
+      return Array.prototype.filter.call(form.querySelectorAll('[name="'+f.n+'"]'),function(i){return i.checked;})
+             .map(function(i){return i.value;});
+    }
+    if(f.t==='radio'||f.t==='scale'){
+      var c=form.querySelector('[name="'+f.n+'"]:checked'); return c?c.value:'';
+    }
+    var el=form.querySelector('[name="'+f.n+'"]'); return el?el.value.trim():'';
+  }
+  function lleno(f){ var v=val(f); return Array.isArray(v)?v.length>0:v!==''; }
+
+  function guardar(){
+    var d={}; FIELDS.forEach(function(f){ d[f.n]=val(f); });
+    try{ localStorage.setItem(LS,JSON.stringify(d)); }catch(e){}
+    progreso();
+  }
+  function cargar(){
+    var d; try{ d=JSON.parse(localStorage.getItem(LS)||'{}'); }catch(e){ d={}; }
+    FIELDS.forEach(function(f){
+      var v=d[f.n]; if(v===undefined||v===null||v==='') return;
+      if(f.t==='checks'){
+        (v||[]).forEach(function(x){ var i=form.querySelector('[name="'+f.n+'"][value="'+CSS.escape(x)+'"]'); if(i) i.checked=true; });
+      } else if(f.t==='radio'||f.t==='scale'){
+        var i=form.querySelector('[name="'+f.n+'"][value="'+CSS.escape(String(v))+'"]'); if(i) i.checked=true;
+      } else { var el=form.querySelector('[name="'+f.n+'"]'); if(el) el.value=v; }
+    });
+    progreso();
+  }
+  function progreso(){
+    var tot=FIELDS.length, hechos=0;
+    FIELDS.forEach(function(f){ if(lleno(f)) hechos++; });
+    var p=Math.round(hechos/tot*100);
+    $('prog').style.width=p+'%';
+    $('pct').textContent=p+'% listo';
+  }
+  form.addEventListener('input',guardar);
+  form.addEventListener('change',guardar);
+
+  /* ===== avisos ===== */
+  var tto;
+  function toast(t,ms){ var el=$('toast'); el.textContent=t; el.classList.add('on');
+    clearTimeout(tto); tto=setTimeout(function(){ el.classList.remove('on'); },ms||2600); }
+
+  function valida(){
+    var falta=null;
+    FIELDS.forEach(function(f){
+      var box=form.querySelector('.fld[data-n="'+f.n+'"]');
+      if(!f.req) return;
+      if(!lleno(f)){ box.classList.add('bad'); if(!falta) falta=box; }
+      else box.classList.remove('bad');
+    });
+    if(falta){
+      falta.scrollIntoView({behavior:'smooth',block:'center'});
+      var inp=falta.querySelector('input,textarea'); if(inp) setTimeout(function(){inp.focus();},400);
+      toast('Faltan datos obligatorios (marcados con *)');
+      return false;
+    }
+    return true;
+  }
+
+  /* ===== armar el PDF ===== */
+  function escala(f,v){
+    if(!v) return '';
+    var a=f.a.charAt(0).toLowerCase()+f.a.slice(1), b=f.b.charAt(0).toLowerCase()+f.b.slice(1);
+    return ['Muy '+a,'Más '+a,'En medio',' Más '+b,'Muy '+b][parseInt(v,10)-1].trim();
+  }
+  function hoy(){
+    var d=new Date(), z=function(n){return (n<10?'0':'')+n;};
+    return z(d.getDate())+'/'+z(d.getMonth()+1)+'/'+d.getFullYear();
+  }
+  function makePDF(){
+    var J=window.jspdf.jsPDF, doc=new J({unit:'pt',format:'letter'});
+    var PW=612, PH=792, M=42, y=0, pag=1;
+    var INK=[14,14,17], CY=[0,200,212], GR=[107,114,128], LN=[215,220,229], SOFT=[160,167,180];
+    var negocio=val({n:'nombre',t:'text'})||'Sin nombre';
+
+    function pie(){
+      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor.apply(doc,GR);
+      doc.text('KETOS AGENCY  ·  ketos.agency', M, PH-26);
+      doc.text('Página '+pag, PW-M, PH-26, {align:'right'});
+    }
+    function portada(){
+      doc.setFillColor.apply(doc,INK); doc.rect(0,0,PW,74,'F');
+      doc.setTextColor.apply(doc,CY); doc.setFont('helvetica','bold'); doc.setFontSize(8);
+      doc.text('K E T O S   A G E N C Y', M, 26);
+      doc.setTextColor(255,255,255); doc.setFontSize(17);
+      doc.text('BRIEF PARA TU SITIO WEB', M, 48);
+      doc.setTextColor.apply(doc,SOFT); doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+      doc.text('Enviado el '+hoy(), PW-M, 48, {align:'right'});
+      doc.setFillColor(212,0,159); doc.rect(M, 60, 44, 2.6, 'F');
+      y=96;
+      doc.setTextColor.apply(doc,INK); doc.setFont('helvetica','bold'); doc.setFontSize(15);
+      doc.text(doc.splitTextToSize(negocio, PW-2*M), M, y); y+=20;
+      var g=val({n:'giro',t:'text'});
+      if(g){ doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor.apply(doc,GR);
+             doc.text(g, M, y); y+=8; }
+      y+=12;
+    }
+    function nueva(){
+      pie(); doc.addPage(); pag++;
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor.apply(doc,GR);
+      doc.text('KETOS AGENCY  ·  BRIEF  ·  '+negocio, M, 34);
+      doc.setDrawColor.apply(doc,LN); doc.setLineWidth(.7); doc.line(M,42,PW-M,42);
+      y=62;
+    }
+    function need(h){ if(y+h>PH-46) nueva(); }
+    function barra(n,t){
+      need(44);
+      doc.setFillColor.apply(doc,INK); doc.rect(M,y,PW-2*M,17,'F');
+      doc.setFillColor.apply(doc,CY); doc.rect(M,y,3,17,'F');
+      doc.setTextColor.apply(doc,CY); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+      doc.text(n+'.', M+9, y+12);
+      doc.setTextColor(255,255,255); doc.text(t.toUpperCase(), M+22, y+12);
+      y+=27;
+    }
+    function dato(l,v){
+      var vacio=!v;
+      if(vacio) v='(sin contestar)';
+      var lineas=doc.splitTextToSize(String(v), PW-2*M);
+      need(13+lineas.length*12+6);
+      doc.setFont('helvetica','bold'); doc.setFontSize(6.8); doc.setTextColor.apply(doc,GR);
+      doc.text(String(l).replace(/&nbsp;/g,'').toUpperCase(), M, y); y+=11;
+      doc.setFont('helvetica', vacio?'italic':'normal'); doc.setFontSize(10);
+      if(vacio) doc.setTextColor(170,176,186); else doc.setTextColor.apply(doc,INK);
+      doc.text(lineas, M, y); y+=lineas.length*12+7;
+    }
+
+    portada();
+    SCHEMA.forEach(function(sec,si){
+      barra(si+1, sec.t);
+      sec.f.forEach(function(f){
+        var v=val(f);
+        if(f.t==='note') return;
+        if(f.n==='nombre'||f.n==='giro') return;          /* ya van en la portada */
+        if(f.n==='p2'||f.n==='p3') return;                /* se imprimen junto con p1 */
+        if(f.n==='p1'){
+          var pal=[val({n:'p1',t:'text'}),val({n:'p2',t:'text'}),val({n:'p3',t:'text'})]
+                  .filter(function(x){return x;});
+          dato('Tres palabras que describan tu marca', pal.join('   ·   '));
+          return;
+        }
+        if(f.t==='checks') v=v.join('   ·   ');
+        if(f.t==='scale'){ dato(f.a+' / '+f.b, escala(f,v)); return; }
+        dato(f.l, v);
+      });
+    });
+    pie();
+    return doc.output('blob');
+  }
+
+  /* ===== enviar ===== */
+  function slug(s){
+    return (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'')
+      .replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);
+  }
+  function descargar(blob,name){
+    var url=URL.createObjectURL(blob), a=document.createElement('a');
+    a.href=url; a.download=name; document.body.appendChild(a); a.click();
+    setTimeout(function(){ a.remove(); URL.revokeObjectURL(url); },2000);
+  }
+  function waLink(){
+    var n=val({n:'nombre',t:'text'})||'mi negocio';
+    return 'https://wa.me/'+WA+'?text='+encodeURIComponent('¡Hola KETOS! Ya llené el brief de '+n+'. Les adjunto el PDF.');
+  }
+  function listo(name,compartido,blob){
+    $('ovcard').innerHTML=
+      '<div class="tick">✓</div>'+
+      '<h3>¡Listo, ya quedó!</h3>'+
+      (compartido
+        ? '<p>Elige <b>WhatsApp</b> en el menú que se abrió y mándaselo a KETOS.</p>'
+        : '<p>Se descargó tu brief en PDF. Ahora ábrelo en WhatsApp y <b>adjúntalo</b> en el chat de KETOS.</p>')+
+      '<div class="file">'+name+'</div>'+
+      '<a class="btn wa" href="'+waLink()+'" target="_blank" rel="noopener">Abrir el WhatsApp de KETOS</a>'+
+      '<button class="btn alt" id="redl">Descargar el PDF otra vez</button>'+
+      '<p style="margin-top:14px;font-size:.85rem">O mándalo al <span class="num">'+WATXT+'</span></p>'+
+      '<button class="close" id="cerrar">Volver al formulario</button>';
+    $('ov').hidden=false;
+    $('redl').addEventListener('click',function(){ descargar(blob,name); toast('Descargando el PDF…'); });
+    $('cerrar').addEventListener('click',function(){ $('ov').hidden=true; });
+  }
+  function enviar(){
+    if(!valida()) return;
+    if(!(window.jspdf&&window.jspdf.jsPDF)){ toast('No cargó el generador de PDF. Revisa tu internet.'); return; }
+    var btn=$('send'), txt=btn.textContent;
+    btn.textContent='Armando tu PDF…'; btn.disabled=true;
+    setTimeout(function(){
+      var blob, name;
+      try{ blob=makePDF(); name='Brief-'+(slug(val({n:'nombre',t:'text'}))||'KETOS')+'.pdf'; }
+      catch(e){ btn.textContent=txt; btn.disabled=false; toast('Algo falló al armar el PDF'); return; }
+      btn.textContent=txt; btn.disabled=false;
+      var file=null;
+      try{ file=new File([blob],name,{type:'application/pdf'}); }catch(e){}
+      if(file && navigator.canShare && navigator.canShare({files:[file]})){
+        navigator.share({files:[file],title:'Brief para mi sitio web',
+                         text:'Les mando mi brief para la página web.'})
+          .then(function(){ listo(name,true,blob); })
+          .catch(function(){ descargar(blob,name); listo(name,false,blob); });
+      } else {
+        descargar(blob,name); listo(name,false,blob);
+      }
+    },60);
+  }
+
+  $('send').addEventListener('click',enviar);
+  $('clear').addEventListener('click',function(){
+    if(!confirm('¿Borrar todo lo que llevas escrito?')) return;
+    try{ localStorage.removeItem(LS); }catch(e){}
+    form.reset(); progreso(); scrollTo({top:0,behavior:'smooth'}); toast('Formulario vacío');
+  });
+
+  if(!window.CSS||!CSS.escape){ window.CSS=window.CSS||{}; CSS.escape=function(s){ return String(s).replace(/[^a-zA-Z0-9_-]/g,function(c){ return '\\'+c; }); }; }
+  cargar();
+})();
+</script>
+</body>
+</html>
