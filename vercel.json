@@ -14,6 +14,16 @@
       "source": "/Ketzy",
       "destination": "/ketzy/",
       "permanent": false
+    },
+    {
+      "source": "/BRIEF",
+      "destination": "/brief",
+      "permanent": false
+    },
+    {
+      "source": "/Brief",
+      "destination": "/brief",
+      "permanent": false
     }
   ],
   "rewrites": [
@@ -24,6 +34,10 @@
     {
       "source": "/ketzy/:path*",
       "destination": "/KETZY/:path*"
+    },
+    {
+      "source": "/brief",
+      "destination": "/brief/index.html"
     },
     {
       "source": "/portafolio",
