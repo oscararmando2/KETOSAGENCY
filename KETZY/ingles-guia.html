@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>Mi guía de inglés — KETZY</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --clima:#3aa0ff;   --clima-2:#e8f3ff;
+    --animal:#2fbf4e;  --animal-2:#e6f8ea;
+    --materia:#8b5cf6; --materia-2:#f0eaff;
+    --adj:#ff9f1c;     --adj-2:#fff3e0;
+    --ropa:#e84393;    --ropa-2:#ffe9f3;
+    --ink:#22304a; --dim:#6b7a90; --line:#e4eaf2; --bg:#f5f8fc;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{font-family:'Fredoka',system-ui,sans-serif;background:var(--bg);color:var(--ink);
+    line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:40px;}
+  h1,h2,h3,.titulo{font-family:'Baloo 2',cursive;line-height:1.1;}
+  .wrap{width:min(860px,100% - 28px);margin-inline:auto;}
+
+  header{background:linear-gradient(135deg,#3aa0ff,#8b5cf6);color:#fff;padding:26px 0 70px;position:relative;overflow:hidden;}
+  header::after{content:"";position:absolute;inset:0;opacity:.18;
+    background-image:radial-gradient(circle at 20% 30%,#fff 2px,transparent 2px),radial-gradient(circle at 70% 70%,#fff 2px,transparent 2px);
+    background-size:46px 46px,62px 62px;}
+  .barra-top{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:2;}
+  .volver{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.2);color:#fff;
+    text-decoration:none;padding:9px 15px;border-radius:999px;font-size:.9rem;font-weight:600;}
+  .racha{background:rgba(255,255,255,.2);border-radius:999px;padding:9px 15px;font-size:.9rem;font-weight:700;}
+  header h1{font-size:clamp(1.9rem,6.5vw,2.8rem);margin-top:18px;position:relative;z-index:2;}
+  header p{opacity:.95;font-size:1rem;margin-top:6px;position:relative;z-index:2;}
+
+  .tabs{display:flex;gap:8px;background:#fff;border-radius:18px;padding:7px;margin-top:-42px;
+    position:relative;z-index:5;box-shadow:0 10px 30px rgba(34,48,74,.14);overflow-x:auto;}
+  .tab{flex:1;border:none;background:none;font-family:inherit;font-weight:600;font-size:.92rem;
+    color:var(--dim);padding:12px 10px;border-radius:13px;cursor:pointer;white-space:nowrap;transition:.25s;}
+  .tab.on{background:var(--ink);color:#fff;}
+  @media(max-width:430px){
+    .tabs{gap:4px;padding:5px;} .tab{font-size:.8rem;padding:11px 4px;}
+  }
+
+  .vista{display:none;} .vista.on{display:block;}
+
+  /* ── GUÍA ── */
+  .grupo{margin-top:26px;}
+  .grupo h2{font-size:1.35rem;display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .grupo h2 .em{font-size:1.5rem;}
+  .grupo h2 small{font-family:'Fredoka';font-size:.8rem;font-weight:500;color:var(--dim);margin-left:auto;}
+  .lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:12px;}
+  .pal{background:#fff;border:2px solid var(--line);border-left-width:6px;border-radius:14px;
+    padding:13px 15px;display:flex;align-items:center;gap:12px;transition:.2s;}
+  .pal:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,48,74,.1);}
+  .pal .txt{flex:1;min-width:0;}
+  .pal .en{font-family:'Baloo 2';font-size:1.22rem;font-weight:700;line-height:1.15;}
+  .pal .es{font-size:.95rem;color:var(--dim);}
+  .pal .son{font-size:.78rem;color:#9aa6b8;font-style:italic;margin-top:1px;}
+  .pal .oir{width:40px;height:40px;border:none;border-radius:50%;background:var(--bg);
+    font-size:1.1rem;cursor:pointer;flex:none;transition:.2s;}
+  .pal .oir:active{transform:scale(.9);}
+  .pal.sabida{border-color:#2fbf4e!important;background:#f3fcf5;}
+  .pal .check{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);flex:none;
+    cursor:pointer;display:grid;place-items:center;font-size:.8rem;color:transparent;}
+  .pal.sabida .check{background:#2fbf4e;border-color:#2fbf4e;color:#fff;}
+
+  /* ── TARJETAS ── */
+  .tarjeta-zona{margin-top:30px;text-align:center;}
+  .tarjeta{perspective:1200px;max-width:420px;margin:0 auto;cursor:pointer;}
+  .tarjeta .cara{position:relative;width:100%;min-height:230px;transform-style:preserve-3d;
+    transition:transform .6s cubic-bezier(.22,1,.36,1);}
+  .tarjeta.volteada .cara{transform:rotateY(180deg);}
+  .lado{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;padding:26px;
+    display:grid;place-content:center;gap:10px;box-shadow:0 12px 32px rgba(34,48,74,.14);}
+  .lado.frente{background:#fff;border:3px solid var(--line);}
+  .lado.atras{background:linear-gradient(140deg,#3aa0ff,#8b5cf6);color:#fff;transform:rotateY(180deg);}
+  .lado .grande{font-family:'Baloo 2';font-size:2.1rem;font-weight:800;line-height:1.1;}
+  .lado .chico{font-size:1rem;opacity:.85;}
+  .lado .pista{font-size:.85rem;font-style:italic;opacity:.75;}
+  .toca{font-size:.82rem;color:var(--dim);margin-top:14px;}
+  .nav-t{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap;}
+  .bt{border:none;border-radius:14px;padding:13px 20px;font-family:inherit;font-weight:600;
+    font-size:.98rem;cursor:pointer;background:#fff;color:var(--ink);box-shadow:0 4px 0 var(--line);}
+  .bt:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line);}
+  .bt.ppal{background:var(--ink);color:#fff;box-shadow:0 4px 0 #0e1726;}
+  .bt.ok{background:#2fbf4e;color:#fff;box-shadow:0 4px 0 #1f8c3a;}
+  .contador{font-size:.9rem;color:var(--dim);margin-top:12px;}
+
+  /* ── PRÁCTICA ── */
+  .quiz{background:#fff;border-radius:22px;padding:26px 20px;margin-top:26px;
+    box-shadow:0 10px 30px rgba(34,48,74,.1);text-align:center;}
+  .quiz .pregunta{font-family:'Baloo 2';font-size:clamp(1.6rem,5.5vw,2.3rem);font-weight:800;margin:6px 0 4px;}
+  .quiz .de{font-size:.85rem;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;font-weight:600;}
+  .ops{display:grid;gap:11px;margin-top:20px;}
+  .op{border:2px solid var(--line);background:#fff;border-radius:14px;padding:15px;
+    font-family:inherit;font-size:1.05rem;font-weight:600;cursor:pointer;transition:.18s;color:var(--ink);}
+  .op:hover{border-color:#3aa0ff;}
+  .op.bien{background:#e6f8ea;border-color:#2fbf4e;color:#1f8c3a;}
+  .op.mal{background:#ffe9e9;border-color:#e2231a;color:#b01109;}
+  .marcador{display:flex;justify-content:space-between;font-size:.9rem;color:var(--dim);margin-bottom:10px;font-weight:600;}
+  .barra{height:9px;background:var(--line);border-radius:6px;overflow:hidden;margin-bottom:16px;}
+  .barra i{display:block;height:100%;background:linear-gradient(90deg,#3aa0ff,#8b5cf6);width:0;transition:width .35s;}
+
+  /* ── ESCRIBIR ── */
+  .escribe input{width:100%;max-width:340px;margin:16px auto 0;display:block;text-align:center;
+    font-family:'Baloo 2';font-size:1.5rem;font-weight:700;padding:14px;border:3px solid var(--line);
+    border-radius:14px;outline:none;color:var(--ink);text-transform:lowercase;}
+  .escribe input:focus{border-color:#3aa0ff;}
+  .escribe input.bien{border-color:#2fbf4e;background:#f3fcf5;}
+  .escribe input.mal{border-color:#e2231a;background:#fff0ef;}
+  .aviso{min-height:26px;font-weight:600;margin-top:12px;}
+  .aviso.ok{color:#1f8c3a;} .aviso.no{color:#b01109;}
+
+  .fin{text-align:center;padding:30px 16px;}
+  .fin .em{font-size:3.4rem;} .fin h3{font-size:1.8rem;margin:8px 0;}
+  .fin p{color:var(--dim);margin-bottom:16px;}
+
+  @media print{
+    header{background:#fff;color:#000;padding:10px 0;} header::after,.tabs,.volver,.racha,.oir,.check{display:none!important;}
+    .vista{display:block!important;} .quiz,.tarjeta-zona,.escribe{display:none!important;}
+    .pal{break-inside:avoid;border-color:#ccc!important;} body{background:#fff;}
+    .lista{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="barra-top">
+      <a class="volver" href="/ketzy/">← Menú</a>
+      <span class="racha" id="racha">0 / 42 aprendidas</span>
+    </div>
+    <h1>Mi guía de inglés</h1>
+    <p>40 palabras · clima, animales, materias, adjetivos y ropa</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab on" data-v="guia">📖 Guía</button>
+    <button class="tab" data-v="tarjetas">🃏 Tarjetas</button>
+    <button class="tab" data-v="practica">🎯 Practicar</button>
+    <button class="tab" data-v="escribir">⌨️ Escribir</button>
+  </div>
+
+  <section class="vista on" id="v-guia"></section>
+
+  <section class="vista" id="v-tarjetas">
+    <div class="tarjeta-zona">
+      <div class="tarjeta" id="tarjeta">
+        <div class="cara">
+          <div class="lado frente">
+            <div class="grande" id="tFrente">word</div>
+            <div class="pista" id="tPista">pronunciación</div>
+            <div class="toca">Toca la tarjeta para voltearla</div>
+          </div>
+          <div class="lado atras">
+            <div class="grande" id="tAtras">palabra</div>
+            <div class="chico" id="tChico"></div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-t">
+        <button class="bt" id="tAnt">◀ Anterior</button>
+        <button class="bt ok" id="tSe">✓ Ya me la sé</button>
+        <button class="bt ppal" id="tSig">Siguiente ▶</button>
+      </div>
+      <div class="nav-t" style="margin-top:10px">
+        <button class="bt" id="tOir">🔊 Escuchar</button>
+        <button class="bt" id="tRevolver">🔀 Revolver</button>
+      </div>
+      <p class="contador" id="tCont">1 de 42</p>
+    </div>
+  </section>
+
+  <section class="vista" id="v-practica">
+    <div class="quiz">
+      <div class="marcador"><span id="qNum">Pregunta 1 de 10</span><span id="qPts">0 aciertos</span></div>
+      <div class="barra"><i id="qBarra"></i></div>
+      <div id="qCuerpo">
+        <p class="de" id="qDe">¿Qué significa?</p>
+        <p class="pregunta" id="qPreg">word</p>
+        <button class="bt" id="qOir" style="margin-top:4px">🔊 Escuchar</button>
+        <div class="ops" id="qOps"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="vista" id="v-escribir">
+    <div class="quiz escribe">
+      <div class="marcador"><span id="eNum">Palabra 1 de 10</span><span id="ePts">0 aciertos</span></div>
+      <div class="barra"><i id="eBarra"></i></div>
+      <div id="eCuerpo">
+        <p class="de">Escríbela en inglés</p>
+        <p class="pregunta" id="ePreg">palabra</p>
+        <p class="de" id="ePista" style="text-transform:none;letter-spacing:0"></p>
+        <input id="eInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="escribe aquí" />
+        <p class="aviso" id="eAviso"></p>
+        <button class="bt ppal" id="eBtn" style="margin-top:4px">Revisar</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  /* ═══ Las 40 palabras de su lista. en · es · pronunciación aproximada ═══ */
+  var GRUPOS=[
+   {t:'El clima', em:'🌦️', c:'clima', p:[
+    ['windy','viento','GÜIN-di'],
+    ['foggy','neblina','FO-gui'],
+    ['storm','tormenta','storm'],
+    ['hail','granizo','jéil'],
+    ['thunder','trueno','ZÁN-der'],
+    ['lightning','rayos','LÁIT-ning'],
+    ['sleet','aguanieve','slit'],
+    ['tornado','tornado','tor-NÉI-dou']
+   ]},
+   {t:'Animales', em:'🦘', c:'animal', p:[
+    ['crocodile','cocodrilo','CRO-co-dail'],
+    ['kangaroo','canguro','kan-ga-RÚ'],
+    ['cheetah','guepardo','CHÍ-ta'],
+    ['seal','foca','siil'],
+    ['panda','panda','PÁN-da'],
+    ['snake','serpiente','snéik'],
+    ['camel','camello','CÁ-mel'],
+    ['whale','ballena','uéil']
+   ]},
+   {t:'Materias', em:'🎒', c:'materia', p:[
+    ['math','matemáticas','maz'],
+    ['art','artes','art'],
+    ['computer science','computación','com-PIÚ-ter SÁI-ens'],
+    ['music','música','MIÚ-sic'],
+    ['science','ciencias','SÁI-ens'],
+    ['P.E.','educación física','pi-Í'],
+    ['violin practice','práctica de violín','vai-o-LÍN PRÁC-tis'],
+    ['piano practice','práctica de piano','pi-Á-nou PRÁC-tis']
+   ]},
+   {t:'¿Cómo es?', em:'😄', c:'adj', p:[
+    ['angry','enojado','ÁN-gri'],
+    ['smart','inteligente','smart'],
+    ['funny','divertido','FÁ-ni'],
+    ['lazy','flojo','LÉI-si'],
+    ['fat','gordo','fat'],
+    ['thin','delgado','zin'],
+    ['dangerous','peligroso','DÉIN-ye-rus'],
+    ['strong','fuerte','strong']
+   ]},
+   {t:'La ropa', em:'🧢', c:'ropa', p:[
+    ['scarf','bufanda','scarf'],
+    ['cap','gorra','cap'],
+    ['sneakers','tenis','SNÍ-kers'],
+    ['flip flops','chanclas','flip flops'],
+    ['sunglasses','lentes de sol','SÁN-gla-ses'],
+    ['sweat suits','pants','SUÉT suts'],
+    ['robe','bata','róub'],
+    ['slippers','pantuflas','SLÍ-pers']
+   ]}
+  ];
+
+  var LS='ketzy_ingles_guia';
+  var $=function(i){return document.getElementById(i);};
+  var TODAS=[]; GRUPOS.forEach(function(g){ g.p.forEach(function(p){ TODAS.push({en:p[0],es:p[1],son:p[2],c:g.c}); }); });
+
+  var sabidas={}; try{ sabidas=JSON.parse(localStorage.getItem(LS)||'{}')||{}; }catch(e){ sabidas={}; }
+  function guardar(){ try{ localStorage.setItem(LS,JSON.stringify(sabidas)); }catch(e){} marcador(); }
+  function marcador(){
+    var n=TODAS.filter(function(p){return sabidas[p.en];}).length;
+    $('racha').textContent=n+' / '+TODAS.length+' aprendidas';
+  }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+  function revolver(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){var j=(Math.random()*(i+1))|0,t=a[i];a[i]=a[j];a[j]=t;} return a; }
+  function decir(t){
+    try{ if(!('speechSynthesis' in window)) return;
+      var u=new SpeechSynthesisUtterance(t.replace(/\./g,'')); u.lang='en-US'; u.rate=.82;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+    }catch(e){}
+  }
+  function limpia(s){ return s.toLowerCase().replace(/[.\s]+/g,' ').trim(); }
+
+  /* ═══ GUÍA ═══ */
+  var h='';
+  GRUPOS.forEach(function(g){
+    h+='<div class="grupo"><h2><span class="em">'+g.em+'</span>'+g.t+
+       '<small>'+g.p.length+' palabras</small></h2><div class="lista">';
+    g.p.forEach(function(p){
+      h+='<div class="pal" data-en="'+esc(p[0])+'" style="border-left-color:var(--'+g.c+')">'+
+         '<button class="oir" data-say="'+esc(p[0])+'" aria-label="Escuchar">🔊</button>'+
+         '<div class="txt"><div class="en">'+esc(p[0])+'</div><div class="es">'+esc(p[1])+'</div>'+
+         '<div class="son">se dice: '+esc(p[2])+'</div></div>'+
+         '<div class="check" title="Ya me la sé">✓</div></div>';
+    });
+    h+='</div></div>';
+  });
+  $('v-guia').innerHTML=h;
+  $('v-guia').addEventListener('click',function(e){
+    var oir=e.target.closest('.oir');
+    if(oir){ decir(oir.getAttribute('data-say')); return; }
+    var chk=e.target.closest('.check');
+    if(chk){ var card=chk.closest('.pal'), en=card.getAttribute('data-en');
+      if(sabidas[en]) delete sabidas[en]; else sabidas[en]=1;
+      card.classList.toggle('sabida',!!sabidas[en]); guardar(); }
+  });
+  function pintarSabidas(){
+    Array.prototype.forEach.call(document.querySelectorAll('.pal'),function(c){
+      c.classList.toggle('sabida', !!sabidas[c.getAttribute('data-en')]);
+    });
+  }
+  pintarSabidas(); marcador();
+
+  /* ═══ pestañas ═══ */
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(b){
+    b.addEventListener('click',function(){
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(x){x.classList.remove('on');});
+      Array.prototype.forEach.call(document.querySelectorAll('.vista'),function(x){x.classList.remove('on');});
+      b.classList.add('on'); $('v-'+b.getAttribute('data-v')).classList.add('on');
+      scrollTo({top:0,behavior:'smooth'});
+      if(b.getAttribute('data-v')==='practica') nuevoQuiz();
+      if(b.getAttribute('data-v')==='escribir') nuevoEscribir();
+      if(b.getAttribute('data-v')==='tarjetas') pintarTarjeta();
+      if(b.getAttribute('data-v')==='guia') pintarSabidas();
+    });
+  });
+
+  /* ═══ TARJETAS ═══ */
+  var mazo=TODAS.slice(), iT=0;
+  function pintarTarjeta(){
+    var p=mazo[iT]; if(!p) return;
+    $('tarjeta').classList.remove('volteada');
+    $('tFrente').textContent=p.en; $('tPista').textContent='se dice: '+p.son;
+    $('tAtras').textContent=p.es;  $('tChico').textContent=p.en;
+    $('tCont').textContent=(iT+1)+' de '+mazo.length;
+    $('tSe').textContent=sabidas[p.en]?'✓ Ya la sé':'✓ Ya me la sé';
+  }
+  $('tarjeta').addEventListener('click',function(){ this.classList.toggle('volteada'); });
+  $('tSig').addEventListener('click',function(){ iT=(iT+1)%mazo.length; pintarTarjeta(); });
+  $('tAnt').addEventListener('click',function(){ iT=(iT-1+mazo.length)%mazo.length; pintarTarjeta(); });
+  $('tOir').addEventListener('click',function(){ decir(mazo[iT].en); });
+  $('tRevolver').addEventListener('click',function(){ mazo=revolver(TODAS); iT=0; pintarTarjeta(); });
+  $('tSe').addEventListener('click',function(){
+    var en=mazo[iT].en; if(sabidas[en]) delete sabidas[en]; else sabidas[en]=1;
+    guardar(); pintarTarjeta();
+    if(sabidas[en]){ iT=(iT+1)%mazo.length; setTimeout(pintarTarjeta,180); }
+  });
+  pintarTarjeta();
+
+  /* ═══ PRACTICAR ═══ */
+  var quiz=null;
+  function nuevoQuiz(){
+    quiz={ lista:revolver(TODAS).slice(0,10), i:0, pts:0 };
+    $('qCuerpo').style.display=''; pintarQuiz();
+  }
+  function pintarQuiz(){
+    var q=quiz.lista[quiz.i];
+    var alReves=Math.random()<0.5;              /* a veces inglés→español, a veces al revés */
+    quiz.alReves=alReves;
+    $('qNum').textContent='Pregunta '+(quiz.i+1)+' de '+quiz.lista.length;
+    $('qPts').textContent=quiz.pts+' aciertos';
+    $('qBarra').style.width=(quiz.i/quiz.lista.length*100)+'%';
+    $('qDe').textContent=alReves?'¿Cómo se dice en inglés?':'¿Qué significa?';
+    $('qPreg').textContent=alReves?q.es:q.en;
+    $('qOir').style.display=alReves?'none':'';
+    var malas=revolver(TODAS.filter(function(x){return x.en!==q.en;})).slice(0,3);
+    var ops=revolver([q].concat(malas));
+    $('qOps').innerHTML=ops.map(function(o){
+      return '<button class="op" data-en="'+esc(o.en)+'">'+esc(alReves?o.en:o.es)+'</button>';
+    }).join('');
+  }
+  $('qOir').addEventListener('click',function(){ decir(quiz.lista[quiz.i].en); });
+  $('qOps').addEventListener('click',function(e){
+    var b=e.target.closest('.op'); if(!b||quiz.bloqueado) return;
+    quiz.bloqueado=true;
+    var q=quiz.lista[quiz.i], bien=b.getAttribute('data-en')===q.en;
+    Array.prototype.forEach.call($('qOps').children,function(x){
+      if(x.getAttribute('data-en')===q.en) x.classList.add('bien');
+      else if(x===b) x.classList.add('mal');
+    });
+    if(bien){ quiz.pts++; sabidas[q.en]=1; guardar(); }
+    decir(q.en);
+    setTimeout(function(){
+      quiz.bloqueado=false; quiz.i++;
+      if(quiz.i>=quiz.lista.length) finQuiz(); else pintarQuiz();
+    }, bien?850:1500);
+  });
+  function finQuiz(){
+    $('qBarra').style.width='100%';
+    var p=quiz.pts, n=quiz.lista.length;
+    $('qCuerpo').innerHTML='<div class="fin"><div class="em">'+(p===n?'🏆':p>=n*.7?'🌟':'💪')+'</div>'+
+      '<h3>'+(p===n?'¡Perfecto!':p>=n*.7?'¡Muy bien!':'¡Buen intento!')+'</h3>'+
+      '<p>Acertaste '+p+' de '+n+'</p>'+
+      '<button class="bt ppal" id="qOtra">Jugar otra vez</button></div>';
+    $('qOtra').addEventListener('click',nuevoQuiz);
+  }
+
+  /* ═══ ESCRIBIR ═══ */
+  var esc2=null;
+  function nuevoEscribir(){
+    esc2={ lista:revolver(TODAS).slice(0,10), i:0, pts:0 };
+    $('eCuerpo').style.display=''; pintarEscribir();
+  }
+  function pintarEscribir(){
+    var q=esc2.lista[esc2.i];
+    $('eNum').textContent='Palabra '+(esc2.i+1)+' de '+esc2.lista.length;
+    $('ePts').textContent=esc2.pts+' aciertos';
+    $('eBarra').style.width=(esc2.i/esc2.lista.length*100)+'%';
+    $('ePreg').textContent=q.es;
+    $('ePista').textContent='se dice: '+q.son+' · '+q.en.length+' letras';
+    var inp=$('eInput'); inp.value=''; inp.className=''; inp.disabled=false; inp.focus();
+    $('eAviso').textContent=''; $('eAviso').className='aviso';
+    $('eBtn').textContent='Revisar';
+  }
+  function revisar(){
+    var q=esc2.lista[esc2.i], inp=$('eInput');
+    if(inp.disabled){ esc2.i++; if(esc2.i>=esc2.lista.length) finEscribir(); else pintarEscribir(); return; }
+    if(!inp.value.trim()) { inp.focus(); return; }
+    var bien=limpia(inp.value)===limpia(q.en);
+    inp.className=bien?'bien':'mal'; inp.disabled=true;
+    if(bien){ esc2.pts++; sabidas[q.en]=1; guardar();
+      $('eAviso').textContent='¡Correcto! 🎉'; $('eAviso').className='aviso ok';
+    }else{
+      $('eAviso').innerHTML='Se escribe: <b>'+esc(q.en)+'</b>'; $('eAviso').className='aviso no';
+    }
+    decir(q.en);
+    $('eBtn').textContent='Siguiente ▶';
+    $('ePts').textContent=esc2.pts+' aciertos';
+  }
+  $('eBtn').addEventListener('click',revisar);
+  $('eInput').addEventListener('keydown',function(e){ if(e.key==='Enter') revisar(); });
+  function finEscribir(){
+    $('eBarra').style.width='100%';
+    var p=esc2.pts, n=esc2.lista.length;
+    $('eCuerpo').innerHTML='<div class="fin"><div class="em">'+(p===n?'🏆':p>=n*.7?'🌟':'💪')+'</div>'+
+      '<h3>'+(p===n?'¡Sin una falta!':'¡Bien hecho!')+'</h3><p>Escribiste bien '+p+' de '+n+'</p>'+
+      '<button class="bt ppal" id="eOtra">Otra ronda</button></div>';
+    $('eOtra').addEventListener('click',nuevoEscribir);
+  }
+})();
+</script>
+</body>
+</html>
